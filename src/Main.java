@@ -17,8 +17,7 @@ public class Main {
 	{
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
 		ActivityDiagram activityDiagram = adParser.parseActivityDiagram();
-		JwtActivityDiagram diagramParser = new JwtActivityDiagram();
-		diagramParser.setActivityDiagram(activityDiagram);
+		JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
 		diagramParser.proccesActivityDiagram();
 		//activityDiagram.testClassDiagram();
 	}

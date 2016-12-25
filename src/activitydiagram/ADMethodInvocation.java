@@ -5,15 +5,17 @@ public class ADMethodInvocation {
 	private String parentClass;
 	private String methodName;
 	private ArrayList<String> paramList;
-	private ArrayList<String> invocationMethodList;
+	private ArrayList<String> invocationMethodList; 
+	private ArrayList<String> varDeclarationList; 
 	private String returnType;
 	
 	
-	public ADMethodInvocation(String parentClass, String methodName, ArrayList<String> paramList, ArrayList<String> invocationMethodList,
+	public ADMethodInvocation(String parentClass, String methodName, ArrayList<String> paramList, ArrayList<String> varDeclarationList, ArrayList<String> invocationMethodList,
 			String returnType) {
 		this.methodName = methodName;
 		this.parentClass = parentClass;
 		this.paramList = paramList;
+		this.varDeclarationList = varDeclarationList;
 		this.invocationMethodList = invocationMethodList;
 		this.returnType = returnType;
 	}
