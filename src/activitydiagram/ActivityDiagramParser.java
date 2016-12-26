@@ -7,14 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.core.internal.utils.FileUtil;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
@@ -25,6 +21,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.IVariableBinding;
 
 import visitors.MethodDeclarationVisitor;
 import visitors.MethodInvocationVisitor;
@@ -132,7 +129,12 @@ public class ActivityDiagramParser
 		parser.setEnvironment(classpath, sources, new String[] { "UTF-8"}, true);
 		parser.setSource(classSource);
 		
-		return (CompilationUnit) parser.createAST(null); // create and parse
+		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+		 
+		if (cu.getAST().hasBindingsRecovery()) {
+			//System.out.println("Binding activated.");
+		}
+		return cu; // create and parse
 	}
 	
 	
@@ -171,7 +173,7 @@ public class ActivityDiagramParser
 	}
 	
 	
-	public ArrayList<String> getVariableDeclaration(MethodDeclaration method)
+	public ArrayList<String> getVariableDeclaration(ASTNode method)
 	{
 		ArrayList<String> varDecList = new ArrayList<String>();
 		VariableDeclarationFragmentVisitor visitor2 = new VariableDeclarationFragmentVisitor();
@@ -181,14 +183,14 @@ public class ActivityDiagramParser
 			String tmp = "" //+ variableDeclarationFragment.getInitializer().get + " "
 					+ variableDeclarationFragment.getInitializer()
 					+ " ->" +  variableDeclarationFragment.getName();
-			System.out.println("		variable name: " + tmp);
+			//System.out.println("		variable name: " + tmp);
 			varDecList.add(tmp);
 		}
 		return varDecList;
 	}
 	
 	
-	public ArrayList<String> getSingleVariableDeclarationType(MethodDeclaration method)
+	public ArrayList<String> getSingleVariableDeclarationType(ASTNode method)
 	{
 		ArrayList<String> paramTypeList = new ArrayList<String>();
 		SingleVariableDeclarationVisitor visitor2 = new SingleVariableDeclarationVisitor();
@@ -202,7 +204,7 @@ public class ActivityDiagramParser
 		return paramTypeList;
 	}
 	
-	public ArrayList<String> getSingleVariableDeclaration(MethodDeclaration method)
+	public ArrayList<String> getSingleVariableDeclaration(ASTNode method)
 	{
 		ArrayList<String> paramList = new ArrayList<String>();
 		SingleVariableDeclarationVisitor visitor2 = new SingleVariableDeclarationVisitor();
@@ -225,13 +227,13 @@ public class ActivityDiagramParser
 		parse.accept(visitor1);
 		for (MethodDeclaration method : visitor1.getMethods()) {
 
-			getMethodInvocationList(method);
+			getMethodInvocationList(method, "");
 
 		}
 	}
 	
 	
-	public ArrayList<String> getMethodInvocationList(MethodDeclaration method) 
+	public ArrayList<String> getMethodInvocationList(MethodDeclaration method, String className) 
 	{
 		ArrayList<String> invocationMethodList = new ArrayList<String>();
 		MethodInvocationVisitor visitor2 = new MethodInvocationVisitor();
@@ -248,31 +250,75 @@ public class ActivityDiagramParser
 		        }
 		    }
 		    
-		    String methodNameWithVars = getActMethodName(method, typeName);
-			invocationMethodList.add(methodNameWithVars);
+		    //String methodName = getActMethodName(method, typeName);
+		    String methodName= getActMethodName(method, typeName, node.getName().toString());
+		    invocationMethodList.add(methodName);
 		}
 		return invocationMethodList;
 	}
 	
-	public ArrayList<String> getMethodInvocationListWithVars(MethodDeclaration method) 
+	
+	public ArrayList<String> getArgumentsByMethodInvocation(MethodInvocation node)
+	{
+		ArrayList<String> argumentsList = new ArrayList<String>();
+		List<Expression> listExpr = node.arguments();
+		for(Expression expression : listExpr){
+			ITypeBinding typeBinding = expression.resolveTypeBinding();
+	        String typeBindingName = "";
+			if (typeBinding != null) {
+				typeBindingName = typeBinding.getName() + " ";
+	        }
+			String tmp = typeBindingName + "" + expression.toString();
+    		System.out.println("		listExpr: " + tmp );
+    		argumentsList.add(tmp);
+    	}
+		return argumentsList;
+	}
+	
+	public ArrayList<String> getMethodInvocationListWithVars(MethodDeclaration method, String className) 
 	{
 		ArrayList<String> invocationMethodList = new ArrayList<String>();
 		MethodInvocationVisitor visitor2 = new MethodInvocationVisitor();
 		method.accept(visitor2);
 		
+		
 		for (MethodInvocation node : visitor2.getMethods()) {
 			String expresion = "";
+			
+			
 		    Expression expression = node.getExpression();
+		    //node.
 		    if (expression != null) {
 		    	expresion = expression.toString();//Var name
+		    	System.out.println("		+expresion " + expresion);
 		        //System.out.println("		Expr: " + expression.toString());
-		    	/*
+		    	//expression.
+		    	
 		    	ITypeBinding typeBinding = expression.resolveTypeBinding();
 		        if (typeBinding != null) {
-		            //System.out.println("Type: " + typeBinding.getName());
+		        	
+		        	
+		        	System.out.println("	^^^" + className + "." + method.getName() + "() -> " + node.getName().toString() + "():  Type: " + typeBinding.getName());
+		        	
+		        	/*
+		        	 ITypeBinding[] variableBindingList = typeBinding.getTypeArguments();
+		        	for(ITypeBinding var : variableBindingList){
+		        		System.out.println("		-----  " + var.getName() );
+		        	}
+		        	*/
+		        	
+		        	
+		        	
+		        	//System.out.println("		+++ " + typeBinding.getBinaryName() );
+		        	/*
+		        	ITypeBinding[] params = typeBinding.getTypeParameters();
+		        	for(ITypeBinding param : params){
+		        		System.out.println("		+++ " + param.getDeclaredModifiers() );
+		        	}
+		        	*/
+		            
 		            //methodInvData += typeBinding.getName() + " ";
 		        }
-		        */
 		        //methodInvData += typeBinding.getName() + " " + expression.toString();
 		    }
 		    
@@ -286,7 +332,8 @@ public class ActivityDiagramParser
 		        }
 		    }
 		    
-		    String methodNameWithVars = getActMethodNameWithVars(method, typeName) + " ->" + expresion;
+		    //String methodNameWithVars = getActMethodNameWithVars(method, typeName) + " ->" + expresion;
+		    String methodNameWithVars = getActMethodNameWithVars(method, node, expresion, node.getName().toString());//expression -> s.xxxx()
 			invocationMethodList.add(methodNameWithVars);
 		}
 		return invocationMethodList;
@@ -294,6 +341,9 @@ public class ActivityDiagramParser
 	
 	
 	
+	
+
+
 	public HashMap<String, ADMethodInvocation> getListInvocationMethods(CompilationUnit parse)
 	{
 		List<TypeDeclaration> listClasses = getClassList(parse);
@@ -301,45 +351,62 @@ public class ActivityDiagramParser
 		for (TypeDeclaration classOb : listClasses) {
 			for (MethodDeclaration method : classOb.getMethods()) {
 				
-				String key = "" + classOb.getName().toString() + "-" + method.getName();
-				ArrayList<String> paramList = getSingleVariableDeclaration(method);
+				String className = classOb.getName().toString();
+				List<String> paramList = getSingleVariableDeclaration(method);
 				List<String> paramTypeList = getSingleVariableDeclarationType(method);
-				ArrayList<String> invocationMethodList = getMethodInvocationList(method);
-				ArrayList<String> varDecList = getVariableDeclaration(method);
-				String methodName = getActMethodName(method, classOb.getName().toString());
-				String methodNameWithVars = getActMethodNameWithVars(method, classOb.getName().toString());
-				System.out.println("methodName: " +  methodName);
-				System.out.println("methodNameWithVars: " +  methodNameWithVars);
+				List<String> invocationMethodList = getMethodInvocationList(method, className);
+				List<String> invocationMethodListWithVars = getMethodInvocationListWithVars(method, className);
+				List<String> varDeclarationList = getVariableDeclaration(method);
+				String methodName = getActMethodName(method, className, method.getName().toString());
+				String methodNameWithVars = getActMethodNameWithVars(method, className, method.getName().toString());
+				
 				
 				String returnType = method.getReturnType2() + "";
-				ADMethodInvocation  objMethInv = new ADMethodInvocation(classOb.getName().toString(), methodName, paramList, varDecList, invocationMethodList, returnType);
+				ADMethodInvocation  objMethInv = new ADMethodInvocation();
+				objMethInv.setInvocationMethodList(invocationMethodList);
+				objMethInv.setInvocationMethodListWithVars(invocationMethodListWithVars);
+				objMethInv.setMethodName(methodName);
+				objMethInv.setMethodNameWithVars(methodNameWithVars);
+				objMethInv.setParamList(paramList);
+				objMethInv.setParamTypeList(paramTypeList);
+				objMethInv.setParentClass(classOb.getName().toString());
+				objMethInv.setReturnType(returnType);
+				objMethInv.setVarDeclarationList(varDeclarationList);
 				
+				//System.out.println("methodName: " +  methodName);
+				//System.out.println("	methodNameWithVars: " +  methodNameWithVars);
+				String key = methodName;
 				listInvocationMethods.put(key, objMethInv);
 			}
 		}
 		return listInvocationMethods;
 	}
 	
-	public String getActMethodName(MethodDeclaration method, String className )
+	public String getActMethodName(MethodDeclaration method, String className, String methodName )
 	{
 		List<String> paramTypeList = getSingleVariableDeclarationType(method);
-		String methodName = "" + className + "." +  method.getName() + "(" + String.join(",",paramTypeList) + ")" + ":" + method.getReturnType2();
+		//String methodName = "" + className + "." +  method.getName() + "(" + String.join(",",paramTypeList) + ")" + ":" + method.getReturnType2();
+		methodName = "" + className + "." +  methodName + "(" + String.join(",",paramTypeList) + ")" + ":" + method.getReturnType2();
 		return methodName;
 	}
 	
-	public String getActMethodNameWithVars(MethodDeclaration method, String className )
+	public String getActMethodNameWithVars(MethodDeclaration method, String className, String methodName )
 	{
-		List<String> paramTypeList = getSingleVariableDeclaration(method);
-		/*
-		Expression expression = method.getExpression();
-	    if (expression != null) {
-	        //System.out.println("		Expr: " + expression.toString());
-	    }
-	    */
-		
-		String methodName = "" + className + "." +  method.getName() + "(" + String.join(",",paramTypeList) + ")" + ":" + method.getReturnType2();
+		List<String> paramList = getSingleVariableDeclaration(method);
+		methodName = "" + className + "." +  methodName + "(" + String.join(",",paramList) + ")" + ":" + method.getReturnType2();
 		return methodName;
 	}
+	
+	public String getActMethodNameWithVars(MethodDeclaration method, MethodInvocation node, String className, String methodName )
+	{
+		//List<String> paramList = getSingleVariableDeclaration(node);
+		List<String> argsList = getArgumentsByMethodInvocation(node);
+		
+		String resultmethodName = (className.isEmpty())? "" : "" + className + "." ;
+		resultmethodName +=  methodName + "(" + String.join(",",argsList) + ")" + ":" + method.getReturnType2();
+		return resultmethodName;
+	}
+	
 	
 
 }

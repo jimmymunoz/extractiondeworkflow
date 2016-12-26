@@ -75,9 +75,18 @@ public class ActivityDiagram
 		for (Map.Entry<String, ADMethodInvocation> entry : listInvocationMethods.entrySet()) {
 		    String key = entry.getKey();
 		    ADMethodInvocation daMethodInvOb = entry.getValue();
-		    System.out.println("	key: " + key);
+		    System.out.println("  key: " + key);
+		    System.out.println("     - params: " +  daMethodInvOb.getMethodNameWithVars());
+		    /*
+		    for(String param : daMethodInvOb.getParamList()){
+		    	System.out.println("   - param: " + param);
+		    }
+		    */
 		    for(String methodInvData : daMethodInvOb.getInvocationMethodList()){
-		    	System.out.println("		" + methodInvData);
+		    	System.out.println("	 - " + methodInvData);
+		    }
+		    for(String methodInvData : daMethodInvOb.getInvocationMethodListWithVars()){
+		    	System.out.println("	   - vars: " + methodInvData);
 		    }
 		}
 		System.out.println("end printListInvocationMethods ");

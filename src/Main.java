@@ -8,7 +8,10 @@ public class Main {
 
 	public static final String projectPath = "/Users/jimmymunoz/Documents/workspace-neon/visitor";
 	public static final String projectSourcePath = projectPath + "/src";
-	public static final String jrePath = "/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/jre/lib/rt.jar";
+	public static final String jrePath = "/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/rt.jar"; // which java
+	// http://stackoverflow.com/questions/4681090/how-do-i-find-where-jdk-is-installed-on-my-windows-machine
+	// ls /System/Library/Frameworks/JavaVM.framework/Versions
+	// /System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Commands/java
 	public static final String entryClass = "Principale";
 	public static final String entryMethod = "main";
 

@@ -27,7 +27,7 @@ public class MethodInvocationVisitor extends ASTVisitor {
 		return methods;
 	}
 	
-	public List<SuperMethodInvocation> getSuperMethod() {
+	public List<SuperMethodInvocation> getSuperMethods() {
 		return superMethods;
 	}
 }
