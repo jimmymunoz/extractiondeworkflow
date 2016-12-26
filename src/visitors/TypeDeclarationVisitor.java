@@ -11,7 +11,6 @@ public class TypeDeclarationVisitor extends ASTVisitor {
 	List<TypeDeclaration> listTypeDeclaration = new ArrayList<TypeDeclaration>();
 	
 	public boolean visit(TypeDeclaration typeDeclaration) {
-		System.out.println("typeDeclaration: " + typeDeclaration.getName());
 		//ITypeBinding typeBind = typeDeclaration.resolveBinding();
         //ITypeBinding superTypeBind = typeBind.getSuperclass();
         //ITypeBinding[] interfaceBinds = typeBind.getInterfaces();      
