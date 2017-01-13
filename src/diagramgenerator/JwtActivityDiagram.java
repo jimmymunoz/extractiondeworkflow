@@ -51,7 +51,7 @@ import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.DecisionNode;
 import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.common.util.CacheAdapter;
-import org.eclipse.ocl.uml.*;
+//import org.eclipse.ocl.uml.*;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -231,10 +231,10 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		
 		
 		//Activity parentActivity =  UMLFactory.eINSTANCE.createActivity(); // m.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
+		InitialNode initialNode = (InitialNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getInitialNode());
 		
-		InitialNode initialNode = UMLFactory.eINSTANCE.createInitialNode();
 		//initialNode.setName("init");
-		
+		/*
 		CallBehaviorAction sumAction = UMLFactory.eINSTANCE.createCallBehaviorAction();
 		//CallBehaviorAction sumAction = (CallBehaviorAction) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
 		//cba1.setBehavior(a2);
@@ -257,6 +257,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		cf.setSource(sumAction);
 		cf.setTarget(decisionnode);
 		
+		
 		CallBehaviorAction sumAction1 = (CallBehaviorAction) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
 		
 		//CallBehaviorAction sumAction1 = UMLFactory.eINSTANCE.createCallBehaviorAction();
@@ -270,6 +271,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		MergeNode merge = UMLFactory.eINSTANCE.createMergeNode();
 		//merge.setName("endif");
 		
+		
 		ControlFlow edg2 = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
 		edg2.setSource(sumAction1);
 		cf.setTarget(merge);
@@ -279,17 +281,17 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		cf.setTarget(merge);
 		
 		CallBehaviorAction printAction = UMLFactory.eINSTANCE.createCallBehaviorAction();
-		printAction.setName("print(z);");
+		//printAction.setName("print(z);");
 		parentActivity.getNodes().add(printAction);
 		
 		ActivityFinalNode finalNode = UMLFactory.eINSTANCE.createActivityFinalNode();
-		finalNode.setName("final");
+		//finalNode.setName("final");
 		
 		
 		ControlFlow edg4 = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
 		edg4.setSource(printAction);
 		cf.setTarget(finalNode);
-		
+		*/
 		saveModel("model/ActivityModelResult.xmi", parentActivity);
 		
 		/*

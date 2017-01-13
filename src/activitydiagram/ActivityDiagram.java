@@ -3,7 +3,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import org.eclipse.emf.*;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.*;
+import org.eclipse.emf.ecore.*;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLMapImpl;
+import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Generalization;
+import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.PackageableElement;
+import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.TypedElement;
+import org.eclipse.uml2.uml.UMLFactory;
+import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.VisibilityKind;
+import org.eclipse.uml2.uml.internal.impl.OperationImpl;
+import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.DataType;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -27,6 +49,34 @@ public class ActivityDiagram
 		this.listClasses = listClasses;
 		this.entryMethodObj = getEntryPoint();
 		//setMethodHashMap();
+		
+		
+	}
+	
+	public static Class getClassByName(String className, Package packagesrc){
+		Class resultClass = null;
+		EList<PackageableElement> packageList = packagesrc.getPackagedElements();
+		
+		for(PackageableElement tmpElement : packageList ){
+			//System.out.println("tmpElement: " + tmpElement.getName());
+			if( tmpElement instanceof Class ){
+				//System.out.println("tmpElement is class");
+				if(tmpElement.getName().equals(className) ){
+					System.out.println("Class: " + tmpElement.getName()); 
+					resultClass = (Class) tmpElement;
+					
+				}
+			}
+			if( resultClass != null ){
+				return resultClass;
+			}
+			else if( tmpElement instanceof Package ){
+				//System.out.println("tmpElement is Package");
+				resultClass = getClassByName(className, (Package) tmpElement);
+			}
+		}
+		return resultClass;
+		
 	}
 	
 	public void validateClassDiagram()
