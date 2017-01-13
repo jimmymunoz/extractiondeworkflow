@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uml:Activity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" name="A1">
+  <ownedNode xsi:type="uml:InitialNode"/>
+</uml:Activity>
