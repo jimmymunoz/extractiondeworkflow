@@ -134,7 +134,11 @@ public class ActivityDiagram
 	
 	public ADMethodInvocation getMainActivityInstructions(){
 		//keyEntryPoint
-		return hashInvocationMethods.get(keyEntryPoint);
+		return getActivityInstructions(keyEntryPoint);
+	}
+	
+	public ADMethodInvocation getActivityInstructions(String key){
+		return hashInvocationMethods.get(key);
 	}
 	
 	private void processEntryMethod()
