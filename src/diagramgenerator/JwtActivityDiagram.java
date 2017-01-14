@@ -49,7 +49,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	private String exportFolder;
 	private String diagramName;
 	private String strWorkflowModel = "";
-	
+	private Model umlmodel;
 	
 	
 	public JwtActivityDiagram(ActivityDiagram activityDiagram, String exportFolder, String diagramName) {
@@ -57,7 +57,15 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		this.diagramName = diagramName;
 		this.exportFolder = exportFolder;
 	}
-
+	
+	public void proccesActivityDiagram()
+	{
+		createActivityDiagram();
+		createModel();
+		System.out.println(strWorkflowModel);
+		writeFiles();
+	}
+	
 	public void setActivityDiagram(ActivityDiagram activityDiagram) 
 	{
 		this.activityDiagram = activityDiagram;
@@ -80,16 +88,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		   }
 		   return resource;
 		}
-	public void proccesActivityDiagram()
-	{
-		
-		createActivityDiagram();
-		
-		
-		//createModel();
-		System.out.println(strWorkflowModel);
-		writeFiles();
-	}
+	
 	
 	public static void saveModel(String uri, EObject root) {
 	   Resource resource = null;
@@ -164,7 +163,44 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		return str;
 	}
 	
+	public String getNodeType(ActivityNode nodeA){
+		String result = "";
+		if( nodeA instanceof DecisionNode ){
+			result = "DecisionNode";
+		}
+		else if( nodeA instanceof InitialNode ){
+			result = "InitialNode";
+		}
+		else if( nodeA instanceof ActivityFinalNode ){
+			result = "FinalNode";
+		}
+		else if( nodeA instanceof StructuredActivityNode ){
+			result = "StructuredActivityNode";
+		}
+		else if( nodeA instanceof Action ){
+			result = "Action";
+		}
+		else if( nodeA instanceof CallBehaviorAction ){
+			result = "Action";
+		}
+		else if( nodeA instanceof MergeNode ){
+			result = "MergeNode";
+		}
+		return result;
+	}
+	
 	private String getElements(){
+		String nodesStr = "";
+		for(PackageableElement packElement :umlmodel.getPackagedElements()){
+			if( packElement instanceof Activity ){
+				//nodesStr += packElement.getName() + "\n";
+				for ( ActivityNode nodeA : ((Activity) packElement).getNodes() ){
+					// in=\"//@elements.0/@edges.5\" out=\"//@elements.0/@edges.3 //@elements.0/@edges.4\"
+					nodesStr += "	<nodes xsi:type=\"processes:" + getNodeType(nodeA) + "\" name=\""+ nodeA.getName() + "\"/>" + "\n";
+				}
+			}
+			
+		}
 		String str = "" +
 				" <elements xsi:type=\"processes:Activity\" name=\"VisitorWorkflowDiagram1\">\n" + 
 				"    <ownedComment text=\"This is a basic activity\"/>\n" + 
@@ -176,6 +212,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 				"      <nodes xsi:type=\"processes:Action\" name=\"Subproccess2\" in=\"//@elements.0/@nodes.3/@edges.0\"/>\n" + 
 				"      <edges source=\"//@elements.0/@nodes.3/@nodes.0\" target=\"//@elements.0/@nodes.3/@nodes.1\"/>\n" + 
 				"    </nodes>\n" + 
+				nodesStr + "\n" + 
 				"    <nodes xsi:type=\"processes:DecisionNode\" name=\"Condition\" in=\"//@elements.0/@edges.5\" out=\"//@elements.0/@edges.3 //@elements.0/@edges.4\"/>\n" + 
 				"    <nodes xsi:type=\"processes:Action\" name=\"YesProcess\" in=\"//@elements.0/@edges.3\" out=\"//@elements.0/@edges.1\" inputs=\"//@subpackages.2/@subpackages.0/@elements.5 //@subpackages.2/@elements.1\" outputs=\"//@subpackages.2/@subpackages.0/@elements.5\"/>\n" + 
 				"    <nodes xsi:type=\"processes:Action\" name=\"NoProcess\" in=\"//@elements.0/@edges.4\"/>\n" + 
@@ -200,7 +237,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		//	cba2.setName("Activity2");
 		//ForkNode fn = (ForkNode) parentActivity.createOwnedNode("A3", UMLPackage.eINSTANCE.getForkNode());
 		/*--------------------------------*/
-		/*
+		
 		StructuredActivityNode ln =  (StructuredActivityNode) parentActivity.createOwnedNode("A3", UMLPackage.eINSTANCE.getStructuredActivityNode());
 		CallBehaviorAction cba2 = (CallBehaviorAction) (ln).createNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());				
 		DecisionNode decisionstructurednode = (DecisionNode) parentActivity.createOwnedNode("1<0",UMLPackage.eINSTANCE.getDecisionNode());
@@ -237,7 +274,10 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		InitialNode initialNode = (InitialNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getInitialNode());
 		initialNode.setName("init");
 		parentActivity.getNodes().add(initialNode);
-		/*
+		
+	
+		
+		
 		//CallBehaviorAction sumAction = UMLFactory.eINSTANCE.createCallBehaviorAction();
 		CallBehaviorAction sumAction = (CallBehaviorAction) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
 		//cba1.setBehavior(a2);
@@ -310,7 +350,8 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		edg4.setSource(printAction);
 		cf.setTarget(finalNode);
 	
-	*/
+	
+		umlmodel = m;
 		saveModel("model/ActivityModelResult.uml", m);
 		
 		/*
