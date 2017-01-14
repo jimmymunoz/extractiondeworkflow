@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="ASCII"?>
 <uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
   <packagedElement xsi:type="uml:Activity" name="A1">
-    <edge xsi:type="uml:ControlFlow" name="edgeinit" target="//A1/@ownedNode.2" source="//A1/init"/>
-    <edge xsi:type="uml:ControlFlow" name="cf" target="//A1/@ownedNode.7" source="//A1/@ownedNode.2"/>
-    <edge xsi:type="uml:ControlFlow" name="cf" target="//A1/@ownedNode.4" source="//A1/@ownedNode.3"/>
-    <edge xsi:type="uml:ControlFlow" name="cf" target="//A3/Action1subactivity" source="//A1/@ownedNode.3"/>
-    <edge xsi:type="uml:ControlFlow" name="cf" target="//A1/@ownedNode.5" source="//A1/@ownedNode.4"/>
-    <edge xsi:type="uml:ControlFlow" name="cf" source="//A3/Action2subactivity"/>
-    <edge xsi:type="uml:ControlFlow" name="cf" source="//A1/@ownedNode.6"/>
-    <ownedNode xsi:type="uml:StructuredActivityNode" name="A3">
-      <node xsi:type="uml:CallBehaviorAction"/>
-      <node xsi:type="uml:DecisionNode" name="decisionstructurednode"/>
-    </ownedNode>
-    <ownedNode xsi:type="uml:InitialNode" name="init" outgoing="//A1/edgeinit"/>
-    <ownedNode xsi:type="uml:CallBehaviorAction" incoming="//A1/edgeinit" outgoing="//A1/cf" behavior="//A1"/>
-    <ownedNode xsi:type="uml:DecisionNode" outgoing="//A1/cf.1 //A1/cf.2"/>
-    <ownedNode xsi:type="uml:CallBehaviorAction" incoming="//A1/cf.1" outgoing="//A1/cf.3"/>
-    <ownedNode xsi:type="uml:MergeNode" incoming="//A1/cf.3"/>
-    <ownedNode xsi:type="uml:CallBehaviorAction" outgoing="//A1/cf.5"/>
-    <ownedNode xsi:type="uml:ActivityFinalNode" incoming="//A1/cf"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.1"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.1"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.2"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.3"/>
+    <ownedNode xsi:type="uml:InitialNode" name="init"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="sum(int x,int y):int" behavior="//A1"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="sum(int z,int x):int" behavior="//A1"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="multiply(int x,int y):int" behavior="//A1"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="System.out.println(int z):void" behavior="//A1"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Activity" name="A2">
+    <edge xsi:type="uml:ControlFlow" name="edge.1"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.1"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.2"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.3"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="sum(int x,int y):int" behavior="//A2"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="sum(int z,int x):int" behavior="//A2"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="multiply(int x,int y):int" behavior="//A2"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="System.out.println(int z):void" behavior="//A2"/>
   </packagedElement>
   <packagedElement xsi:type="uml:Activity" name="A3">
-    <edge xsi:type="uml:ControlFlow" name="edgeinit" target="//A3/Action2subactivity" source="//A3/Action1subactivity"/>
-    <ownedNode xsi:type="uml:CallBehaviorAction" name="Action1subactivity" incoming="//A1/cf.2" outgoing="//A3/edgeinit" behavior="//A3"/>
-    <ownedNode xsi:type="uml:CallBehaviorAction" name="Action2subactivity" incoming="//A3/edgeinit" outgoing="//A1/cf.4" behavior="//A3"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.1"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.1"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.2"/>
+    <edge xsi:type="uml:ControlFlow" name="edge.3"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="sum(int x,int y):int" behavior="//A3"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="sum(int z,int x):int" behavior="//A3"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="multiply(int x,int y):int" behavior="//A3"/>
+    <ownedNode xsi:type="uml:CallBehaviorAction" name="System.out.println(int z):void" behavior="//A3"/>
   </packagedElement>
 </uml:Model>

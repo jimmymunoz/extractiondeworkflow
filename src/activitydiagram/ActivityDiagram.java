@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.*;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.*;
 import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -12,21 +11,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLMapImpl;
-import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.Generalization;
-import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.PackageableElement;
-import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.TypedElement;
-import org.eclipse.uml2.uml.UMLFactory;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.VisibilityKind;
-import org.eclipse.uml2.uml.internal.impl.OperationImpl;
-import org.eclipse.uml2.uml.Package;
-import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.DataType;
-
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
@@ -40,6 +25,8 @@ public class ActivityDiagram
 	private HashMap<String, ADMethodInvocation> hashInvocationMethods;//Class-Method, List DAMethodInvocation
 	private List<TypeDeclaration> listClasses;
 	private MethodDeclaration entryMethodObj;
+	private String keyEntryPoint = "";
+	
 	
 	public ActivityDiagram(HashMap<String, ADMethodInvocation> listInvocationMethods, List<TypeDeclaration> listClasses, String entryClass, String entryMethod) 
 	{
@@ -49,34 +36,6 @@ public class ActivityDiagram
 		this.listClasses = listClasses;
 		this.entryMethodObj = getEntryPoint();
 		//setMethodHashMap();
-		
-		
-	}
-	
-	public static Class getClassByName(String className, Package packagesrc){
-		Class resultClass = null;
-		EList<PackageableElement> packageList = packagesrc.getPackagedElements();
-		
-		for(PackageableElement tmpElement : packageList ){
-			//System.out.println("tmpElement: " + tmpElement.getName());
-			if( tmpElement instanceof Class ){
-				//System.out.println("tmpElement is class");
-				if(tmpElement.getName().equals(className) ){
-					System.out.println("Class: " + tmpElement.getName()); 
-					resultClass = (Class) tmpElement;
-					
-				}
-			}
-			if( resultClass != null ){
-				return resultClass;
-			}
-			else if( tmpElement instanceof Package ){
-				//System.out.println("tmpElement is Package");
-				resultClass = getClassByName(className, (Package) tmpElement);
-			}
-		}
-		return resultClass;
-		
 	}
 	
 	public void validateClassDiagram()
@@ -97,6 +56,34 @@ public class ActivityDiagram
 		
 	}
 	
+	public String getEntryClass() {
+		return entryClass;
+	}
+
+	public String getEntryMethod() {
+		return entryMethod;
+	}
+
+	public boolean isEntryValidated() {
+		return entryValidated;
+	}
+
+	public HashMap<String, MethodDeclaration[]> getHashClassesMethods() {
+		return hashClassesMethods;
+	}
+
+	public HashMap<String, ADMethodInvocation> getHashInvocationMethods() {
+		return hashInvocationMethods;
+	}
+
+	public List<TypeDeclaration> getListClasses() {
+		return listClasses;
+	}
+
+	public MethodDeclaration getEntryMethodObj() {
+		return entryMethodObj;
+	}
+
 	private MethodDeclaration getEntryPoint() {
 		for (TypeDeclaration classOb : listClasses) {
 			for (MethodDeclaration method : classOb.getMethods()) {
@@ -104,6 +91,7 @@ public class ActivityDiagram
 					System.out.println("Entry Method name: " + method.getName() + " Return type: " + method.getReturnType2());
 					entryValidated = true;
 					entryMethodObj = method;
+					keyEntryPoint = ActivityDiagramParser.getActMethodName(method, classOb.getName().toString(), method.getName().toString());
 					break;
 				}
 			}
@@ -129,11 +117,11 @@ public class ActivityDiagram
 		    ADMethodInvocation daMethodInvOb = entry.getValue();
 		    System.out.println("  key: " + key);
 		    System.out.println("     - params: " +  daMethodInvOb.getMethodNameWithVars());
-		    /*
+		    
 		    for(String param : daMethodInvOb.getParamList()){
 		    	System.out.println("   - param: " + param);
 		    }
-		    */
+		    
 		    for(String methodInvData : daMethodInvOb.getInvocationMethodList()){
 		    	System.out.println("	 - " + methodInvData);
 		    }
@@ -144,14 +132,18 @@ public class ActivityDiagram
 		System.out.println("end printListInvocationMethods ");
 	}
 	
+	public ADMethodInvocation getMainActivityInstructions(){
+		//keyEntryPoint
+		return hashInvocationMethods.get(keyEntryPoint);
+	}
+	
 	private void processEntryMethod()
 	{	
 		String content = entryMethodObj.getBody().toString();
 		System.out.println("Body " + content);
-		/*
-		CompilationUnit parse = parse(content.toCharArray());
-		printMethodInvocationInfo(parse);
-		*/
+		//CompilationUnit parse = parse(content.toCharArray());
+		//printMethodInvocationInfo(parse);
+		
 	}
 	
 }

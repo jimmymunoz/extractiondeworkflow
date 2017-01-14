@@ -98,8 +98,9 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	      resource = (new ResourceSetImpl()).createResource(uriUri);
 	      resource.getContents().add(root);
 	      resource.save(null);
+	      System.err.println("Model saved : " + uri);
 	   } catch (Exception e) {
-	      System.err.println("Error Saving the model : "+e);
+	      System.out.println("Error Saving the model : " + e);
 	      e.printStackTrace();
 	   }
 	}
@@ -352,7 +353,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	
 	
 		umlmodel = m;
-		saveModel("model/ActivityModelResult.uml", m);
+		//saveModel("model/ActivityModelResult.uml", m);
 		
 		/*
 		Activity parentActivity = (Activity) m.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
