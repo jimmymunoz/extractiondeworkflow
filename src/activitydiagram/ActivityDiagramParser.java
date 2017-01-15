@@ -259,7 +259,7 @@ public class ActivityDiagramParser
 				typeBindingName = typeBinding.getName();
 	        }
 			String tmp = typeBindingName; //+ "" + expression.toString();
-    		System.out.println("		typeBindingName: " + typeBindingName +  " -> listExpr: " + tmp );
+    		//System.out.println("		typeBindingName: " + typeBindingName +  " -> listExpr: " + tmp );
 			argumentsListType.add(tmp);
     	}
 		return argumentsListType;
@@ -295,7 +295,7 @@ public class ActivityDiagramParser
 		    	
 		    	ITypeBinding type = binding.getDeclaringClass();
 		        if (type != null) {
-		            System.out.println("Call: " + type.getName() + " -> " + node.getName() + " - Return " +  method.getReturnType2() +" != " + returnType.getName() );
+		            //System.out.println("Call: " + type.getName() + " -> " + node.getName() + " - Return " +  method.getReturnType2() +" != " + returnType.getName() );
 		        	typeName = "" + type.getName();
 		        }
 		    }

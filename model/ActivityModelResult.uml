@@ -10,15 +10,19 @@
     <ownedNode xsi:type="uml:InitialNode" name="init" outgoing="//A0/@edge.0 //A0/@edge.1"/>
     <ownedNode xsi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//A0/@edge.0" outgoing="//A0/@edge.2">
       <inputValue/>
+      <outputValue/>
     </ownedNode>
     <ownedNode xsi:type="uml:OpaqueAction" name="sum(int z,int x):int" incoming="//A0/@edge.1" outgoing="//A0/@edge.3">
       <inputValue/>
+      <outputValue/>
     </ownedNode>
     <ownedNode xsi:type="uml:OpaqueAction" name="multiply(int x,int y):int" incoming="//A0/@edge.2">
       <inputValue/>
+      <outputValue/>
     </ownedNode>
     <ownedNode xsi:type="uml:OpaqueAction" name="System.out.println(int z):void" incoming="//A0/@edge.3">
       <inputValue/>
+      <outputValue/>
     </ownedNode>
     <ownedNode xsi:type="uml:ActivityFinalNode" incoming="//A0/@edge.4" outgoing="//A0/@edge.4"/>
   </packagedElement>
@@ -32,6 +36,7 @@
     <variable name="factor"/>
     <ownedNode xsi:type="uml:OpaqueAction" name="sum(int result,int num):int" incoming="//A2/@edge.0" outgoing="//A2/@edge.0">
       <inputValue/>
+      <outputValue/>
     </ownedNode>
   </packagedElement>
 </uml:Model>
