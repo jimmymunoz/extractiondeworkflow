@@ -1,7 +1,11 @@
 package diagramgenerator;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 //import org.eclipse.gmf.runtime.diagram.ui.services.layout.LayoutType;
 import org.eclipse.emf.*;
 import org.eclipse.emf.common.util.*;
@@ -50,14 +54,64 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	private String diagramName;
 	private String strWorkflowModel = "";
 	private Model umlmodel;
-	
+	private int idInc = 0;
+	private int idEdgeInc = 0;
+	protected HashMap<String,Integer>idNode;
+	protected HashMap<String,Integer>idEdge;
 	
 	public JwtActivityDiagram(ActivityDiagram activityDiagram, String exportFolder, String diagramName) {
 		this.activityDiagram = activityDiagram;
 		this.diagramName = diagramName;
 		this.exportFolder = exportFolder;
+		createActivityDiagram();
+		idEdge = new HashMap<String,Integer>();
+		idNode = new HashMap<String,Integer>();
+		initNode();		
+		initEdge();
+
+		
 	}
-	
+	public void initEdge()
+	{
+		for(PackageableElement packElement :umlmodel.getPackagedElements()){
+			if( packElement instanceof Activity ){
+				for (ActivityEdge edge : ((Activity) packElement).getEdges())
+				{								
+					this.idEdge.put(edge.getName(), getidEdgeInc());
+					idEdgIncment();
+					
+				}
+			}
+		}
+	}
+	public void initNode()
+	{
+		for(PackageableElement packElement :umlmodel.getPackagedElements()){
+			if( packElement instanceof Activity ){
+				for ( ActivityNode nodeA : ((Activity) packElement).getNodes())
+				{								
+					this.idNode.put(nodeA.getName(), getidInc());
+					idIncment();					
+				}
+			}
+		}
+	}
+	public void idEdgIncment()
+	{
+		this.idEdgeInc ++;
+	}
+	public int getidEdgeInc()
+	{
+		return this.idEdgeInc;
+	}
+	public void idIncment()
+	{
+		this.idInc ++;
+	}
+	public int getidInc()
+	{
+		return this.idInc;
+	}
 	public void proccesActivityDiagram()
 	{
 		createActivityDiagram();
@@ -118,6 +172,8 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	
 	public void writeFiles(){
 		writeFile( diagramName+ ".workflow", strWorkflowModel);
+		
+		writeFile( diagramName+ ".workflow_view",getElementPosition());
 	}
 	
 	private void createModel(){
@@ -180,7 +236,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		else if( nodeA instanceof Action ){
 			result = "Action";
 		}
-		else if( nodeA instanceof CallBehaviorAction ){
+		else if( nodeA instanceof OpaqueAction ){
 			result = "Action";
 		}
 		else if( nodeA instanceof MergeNode ){
@@ -188,15 +244,109 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		}
 		return result;
 	}
+	public String getSourceEdge(ActivityEdge edge)
+	{
+		
+		return edge.getSource().getName();
+	}
+	public String getTargetEdge(ActivityEdge edge)
+	{
+		return edge.getTarget().getName();
+	}
+	public String getOutNode(ActivityNode node)
+	{
+		String result = "";
+		EList<ActivityEdge> outedges = node.getOutgoings();
+		// <nodes xsi:type=\"processes:DecisionNode\" name=\"Condition\" in=\"//@elements.0/@edges.5\" 
+		//out=\"//@elements.0/@edges.3 //@elements.0/@edges.4\"/>
+		
+		for ( ActivityEdge outedge : outedges)
+		{
+			result = String.valueOf(idEdge.get(outedge.getName()));
+			
+			
+		}
+			
+		return result;
+	}
+	public String getInNode(ActivityNode node)
+	{
+		String result = "";
+		EList<ActivityEdge> inedges = node.getIncomings();
+		
+		for ( ActivityEdge inedge : inedges)
+		{
+			result = String.valueOf(idEdge.get(inedge.getName()));
+			//result += id;
+			//"      <nodes xsi:type=\"processes:Action\" name=\"Subprocess1\" out=\"//@elements.0/@nodes.3/@edges.0\"/>\n" +
+		}
+		return result;
+		
+		
+	}
+	public String getNameEdgeSource(ActivityNode node)
+	{
+		String result = "";
+		 
+		EList<ActivityEdge> inedges = node.getIncomings();
+		
+		
+		for ( ActivityEdge inedge : inedges)
+		{
+	
+			
+			//"      <nodes xsi:type=\"processes:Action\" name=\"Subprocess1\" out=\"//@elements.0/@nodes.3/@edges.0\"/>\n" +
+		
+			
+		}
+			
+		return result;
+		
+		
+	}
+	public  String getIdNodeEdge(String name)
+	{
+		String result = "";
+		
+		return  String.valueOf((idNode.get(name)));
+	}
 	
 	private String getElements(){
-		String nodesStr = "";
+		
+		String nodesStr = "";	
 		for(PackageableElement packElement :umlmodel.getPackagedElements()){
 			if( packElement instanceof Activity ){
-				//nodesStr += packElement.getName() + "\n";
-				for ( ActivityNode nodeA : ((Activity) packElement).getNodes() ){
-					// in=\"//@elements.0/@edges.5\" out=\"//@elements.0/@edges.3 //@elements.0/@edges.4\"
-					nodesStr += "	<nodes xsi:type=\"processes:" + getNodeType(nodeA) + "\" name=\""+ nodeA.getName() + "\"/>" + "\n";
+				//nodesStr += packElement.getName() + "\n";		
+				
+				for ( ActivityNode nodeA : ((Activity) packElement).getNodes() ){									
+					String in = " ";
+					String out = " ";					
+					if(! getInNode(nodeA).equals("") )
+					{
+						in = " in=\"//@elements.0/@edges."+getInNode(nodeA) +"\" ";
+					}
+					if(! getOutNode(nodeA).equals("") )
+					{
+						out = "out=\"//@elements.0/@edges."+ getOutNode(nodeA)+ "\" ";
+					}
+					nodesStr += "	<nodes xsi:type=\"processes:" + getNodeType(nodeA) + "\" name=\""+ nodeA.getName() +"\""+
+							 in +  ""+ out + "/>" + "\n";											
+				}
+				for (ActivityEdge edge : ((Activity) packElement).getEdges())
+				{					
+					
+					String source ="";
+					String target = "";
+					if(!getIdNodeEdge(edge.getTarget().getName()).equals(""))
+					{
+						target = " target=\"//@element.0/@nodes."+ getIdNodeEdge(edge.getTarget().getName())+"\" ";
+					}
+					if(!getIdNodeEdge(edge.getSource().getName()).equals(""))
+					{
+						source = " source=\"//@elements.0/@nodes."+ getIdNodeEdge(edge.getSource().getName()) + "\" ";
+					}
+					//"    <edges source=\"//@elements.0/@nodes.4\" target=\"//@elements.0/@nodes.5\"/>\n" +
+					nodesStr += "	<edges"+ source + "" + target +"/>"+"\n";
 				}
 			}
 			
@@ -227,6 +377,63 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		return str;
 	}
 	
+	public String getElementPosition()
+	{
+		
+			
+		 String pos = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+				"<view:Diagram xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:view=\"org.eclipse.jwt/view\">\r\n" + 
+				"  <describesModel href=\"MyDiagram.workflow#/\"/>";
+		/*/<layoutData viewid="Technical">
+	    <describesElement href="MyDiagram.workflow#//@elements.0/@nodes.0"/>
+	    <layoutData viewid="Technical" x="210" y="3" initialized="true">
+	    </layoutData>*/
+		
+		for(PackageableElement packElement :umlmodel.getPackagedElements()){
+			int valuey = 3;
+			if( packElement instanceof Activity ){
+				for ( ActivityNode nodeA : ((Activity) packElement).getNodes())
+				{								
+					pos += "	    <layoutData viewid=\"Technical\" x=\"210\" y=\""+ valuey + "\" initialized=\"true\">\r\n" + 
+							"	    <describesElement href=\"MyDiagram.workflow#//@elements.0/@nodes."+getIdNode().get(nodeA.getName()) +"\"/>\r\n" + 
+							
+							"	    </layoutData>\n";
+				
+					valuey += 50;
+				}
+			}
+			pos+="</view:Diagram>";
+		}
+		
+		
+		return pos;
+	
+	}
+	
+	public int getIdInc() {
+		return idInc;
+	}
+	public void setIdInc(int idInc) {
+		this.idInc = idInc;
+	}
+	public int getIdEdgeInc() {
+		return idEdgeInc;
+	}
+	public void setIdEdgeInc(int idEdgeInc) {
+		this.idEdgeInc = idEdgeInc;
+	}
+	public HashMap<String, Integer> getIdNode() {
+		return idNode;
+	}
+	public void setIdNode(HashMap<String, Integer> idNode) {
+		this.idNode = idNode;
+	}
+	public HashMap<String, Integer> getIdEdge() {
+		return idEdge;
+	}
+	public void setIdEdge(HashMap<String, Integer> idEdge) {
+		this.idEdge = idEdge;
+	}
 	private void createActivityDiagram() {
 		Model m = UMLFactory.eINSTANCE.createModel();
 		
@@ -239,7 +446,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		/*--------------------------------*/
 		
 		StructuredActivityNode ln =  (StructuredActivityNode) parentActivity.createOwnedNode("A3", UMLPackage.eINSTANCE.getStructuredActivityNode());
-		CallBehaviorAction cba2 = (CallBehaviorAction) (ln).createNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());				
+		OpaqueAction cba2 = (OpaqueAction) (ln).createNode("model",UMLPackage.eINSTANCE.getOpaqueAction());				
 		DecisionNode decisionstructurednode = (DecisionNode) parentActivity.createOwnedNode("1<0",UMLPackage.eINSTANCE.getDecisionNode());
 		decisionstructurednode.setName("decisionstructurednode");
 		ln.getNodes().add(decisionstructurednode);
@@ -252,7 +459,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		
 		
 		//parentActivity.createOwnedNode("a3",a3);
-		/*CallBehaviorAction actionactivite2 = (CallBehaviorAction) a3.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+		/*OpaqueAction actionactivite2 = (OpaqueAction) a3.createOwnedNode(null,UMLPackage.eINSTANCE.getOpaqueAction());
 		actionactivite2.setBehavior(a3);
 		
 		
@@ -260,7 +467,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		init.setSource(cba2);
 		init.setTarget(actionactivite2);
 		
-		CallBehaviorAction sumActionA3 = (CallBehaviorAction) a3.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+		OpaqueAction sumActionA3 = (OpaqueAction) a3.createOwnedNode(null,UMLPackage.eINSTANCE.getOpaqueAction());
 		*/
 		
 		
@@ -271,106 +478,117 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		//parentActivity.createOwnedNode("A3",UMLPackage.eINSTANCE.getActivity());
 		//Activity parentActivity =  UMLFactory.eINSTANCE.createActivity(); // m.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
 		
-		InitialNode initialNode = (InitialNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getInitialNode());
+		InitialNode initialNode = (InitialNode) parentActivity.createOwnedNode("node",UMLPackage.eINSTANCE.getInitialNode());
 		initialNode.setName("init");
 		parentActivity.getNodes().add(initialNode);
 		
 	
 		
 		
-		//CallBehaviorAction sumAction = UMLFactory.eINSTANCE.createCallBehaviorAction();
-		CallBehaviorAction sumAction = (CallBehaviorAction) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+		//OpaqueAction sumAction = UMLFactory.eINSTANCE.createOpaqueAction();
+		OpaqueAction sumAction = (OpaqueAction) parentActivity.createOwnedNode("node0",UMLPackage.eINSTANCE.getOpaqueAction());
 		//cba1.setBehavior(a2);
-		
+		parentActivity.getNodes().add(sumAction);
 		//sumAction.setName("sum(x,y);");
 		
 		//parentActivity.getNodes().add(sumAction);
-		sumAction.setBehavior(parentActivity);
+		//sumAction.setBehavior(parentActivity);
 		
 		ControlFlow edgeinit = (ControlFlow) parentActivity.createEdge("edgeinit",UMLPackage.eINSTANCE.getControlFlow());
 		edgeinit.setSource(initialNode);
 		edgeinit.setTarget(sumAction);
 		
 		
-		DecisionNode decisionnode = (DecisionNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getDecisionNode());
+		DecisionNode decisionnode = (DecisionNode) parentActivity.createOwnedNode("node1",UMLPackage.eINSTANCE.getDecisionNode());
 		//decisionnode.setName("7>5");
 		parentActivity.getNodes().add(decisionnode);
+		
 		
 		ControlFlow cf = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
 		cf.setSource(sumAction);
 		cf.setTarget(decisionnode);
 		
 		
-		CallBehaviorAction sumAction1 = (CallBehaviorAction) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+		OpaqueAction sumAction1 = (OpaqueAction) parentActivity.createOwnedNode("node5",UMLPackage.eINSTANCE.getOpaqueAction());
 		
-		//CallBehaviorAction sumAction1 = UMLFactory.eINSTANCE.createCallBehaviorAction();
+		//OpaqueAction sumAction1 = UMLFactory.eINSTANCE.createOpaqueAction();
 		//sumAction.setName("sum(x,y);");
 		
 		parentActivity.getNodes().add(sumAction1);
 		
-		ControlFlow edg = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
+		ControlFlow edg = (ControlFlow) parentActivity.createEdge("edge",UMLPackage.eINSTANCE.getControlFlow());
 		edg.setSource(decisionnode);
 		edg.setTarget(sumAction1);	
 		
-		CallBehaviorAction cbsubactivity = (CallBehaviorAction) (a3).createOwnedNode("Action1subactivity",UMLPackage.eINSTANCE.getCallBehaviorAction());
-		cbsubactivity.setBehavior(a3);
+		OpaqueAction cbsubactivity = (OpaqueAction) (a3).createOwnedNode("Action1subactivity",UMLPackage.eINSTANCE.getOpaqueAction());
+		//cbsubactivity.setBehavior(a3);
 		
-		CallBehaviorAction cbsubactivity1 = (CallBehaviorAction) (a3).createOwnedNode("Action2subactivity",UMLPackage.eINSTANCE.getCallBehaviorAction());
-		cbsubactivity1.setBehavior(a3);
+		OpaqueAction cbsubactivity1 = (OpaqueAction) (a3).createOwnedNode("Action2subactivity",UMLPackage.eINSTANCE.getOpaqueAction());
+		//cbsubactivity1.setBehavior(a3);
 		
-		ControlFlow edgeinitsubactivity = (ControlFlow) a3.createEdge("edgeinit",UMLPackage.eINSTANCE.getControlFlow());
+		ControlFlow edgeinitsubactivity = (ControlFlow) a3.createEdge("edge0",UMLPackage.eINSTANCE.getControlFlow());
 		edgeinitsubactivity.setSource(cbsubactivity);
 		edgeinitsubactivity.setTarget(cbsubactivity1);
 		
-		ControlFlow edg2b = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
+		ControlFlow edg2b = (ControlFlow) parentActivity.createEdge("edge1",UMLPackage.eINSTANCE.getControlFlow());
 		edg2b.setSource(decisionnode);
 		edg2b.setTarget(cbsubactivity);
 		
 		
-		MergeNode merge = (MergeNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getMergeNode()); 
+		MergeNode merge = (MergeNode) parentActivity.createOwnedNode("n",UMLPackage.eINSTANCE.getMergeNode()); 
 		//merge.setName("endif");
 		
-		ControlFlow edg2 = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
+		ControlFlow edg2 = (ControlFlow) parentActivity.createEdge("edge0",UMLPackage.eINSTANCE.getControlFlow());
 		edg2.setSource(sumAction1);
 		edg2.setTarget(merge);
 		
-		ControlFlow edg3 = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
+		ControlFlow edg3 = (ControlFlow) parentActivity.createEdge("edge2",UMLPackage.eINSTANCE.getControlFlow());
 		edg3.setSource(cbsubactivity1);
-		cf.setTarget(merge);
+		edg3.setTarget(merge);
 		
-		CallBehaviorAction printAction =  (CallBehaviorAction) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+		OpaqueAction printAction =  (OpaqueAction) parentActivity.createOwnedNode("node2",UMLPackage.eINSTANCE.getOpaqueAction());
 		//printAction.setName("print(z);");
 		parentActivity.getNodes().add(printAction);
 		
-		ActivityFinalNode finalNode =  (ActivityFinalNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getActivityFinalNode());
+		ActivityFinalNode finalNode =  (ActivityFinalNode) parentActivity.createOwnedNode("node3",UMLPackage.eINSTANCE.getActivityFinalNode());
 		//finalNode.setName("final");
 		
 		
-		ControlFlow edg4 = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
+		ControlFlow edg4 = (ControlFlow) parentActivity.createEdge("edge3",UMLPackage.eINSTANCE.getControlFlow());
 		edg4.setSource(printAction);
-		cf.setTarget(finalNode);
+		edg4.setTarget(finalNode);
 	
+		InputPin inputpin = (InputPin) printAction.createInputValue(null, null);
 	
+		//parentActivity.getNodes().add(inputpin);						
+		//printAction.getInputs().add(inputpin);			
+		
+		OutputPin outputpin = (OutputPin) printAction.createOutputValue(null, null);
+
+		//parentActivity.getNodes().add(outputpin);
+		
+	//	printAction.getOutputs().add(outputpin);
+		//printAction.inputParameters().add((Parameter) inputpin);
 		umlmodel = m;
 		saveModel("model/ActivityModelResult.uml", m);
 		
 		/*
-		Activity parentActivity = (Activity) m.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
+		ActiviInputty parentActivity = (Activity) m.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
 		Activity a2 = (Activity) m.createPackagedElement("A2", UMLPackage.eINSTANCE.getActivity());
 		Activity a3 = (Activity) m.createPackagedElement("A3", UMLPackage.eINSTANCE.getActivity());
 
 		ActivityPartition p1 = parentActivity.createPartition("P1");
-		CallBehaviorAction cba0 = (CallBehaviorAction) parentActivity.createNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+		OpaqueAction cba0 = (OpaqueAction) parentActivity.createNode(null,UMLPackage.eINSTANCE.getOpaqueAction());
 		cba0.setBehavior(a2);
 		cba0.setName(a2.getName());
 		cba0.getInPartitions().add(p1);
 		
-		// create CallBehaviorActions
-		CallBehaviorAction cba1 = (CallBehaviorAction) parentActivity.createNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+		// create OpaqueActions
+		OpaqueAction cba1 = (OpaqueAction) parentActivity.createNode(null,UMLPackage.eINSTANCE.getOpaqueAction());
 		cba1.setBehavior(a2);
 		cba1.setName(a2.getName());
 		
-		CallBehaviorAction cba2 = (CallBehaviorAction) parentActivity.createNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+		OpaqueAction cba2 = (OpaqueAction) parentActivity.createNode(null,UMLPackage.eINSTANCE.getOpaqueAction());
 		cba2.setBehavior(a3);
 		cba2.setName(a3.getName());
 		
