@@ -1,5 +1,6 @@
 package activitydiagram;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,15 +15,20 @@ import org.eclipse.emf.ecore.xmi.impl.XMLMapImpl;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.InitialNode;
+import org.eclipse.uml2.uml.InputPin;
 import org.eclipse.uml2.uml.MergeNode;
 import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.OpaqueAction;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.OutputPin;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.StructuredActivityNode;
+import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.TypedElement;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.Variable;
 import org.eclipse.uml2.uml.VisibilityKind;
 import org.eclipse.uml2.uml.internal.impl.OperationImpl;
 import org.eclipse.uml2.uml.Package;
@@ -108,11 +114,10 @@ public class ActivityDiagramModel {
 	}
 	
 	private Activity proccessActivityInstructions(ADMethodInvocation daMethodInvOb, Activity activity, Integer indexParentNode ){
-		
-		
 		List<String> invocationMethodList = daMethodInvOb.getInvocationMethodList();
 		List<String> invocationMethodWithVarsList = daMethodInvOb.getInvocationMethodListWithVars();
 		System.out.println("     - params: " +  daMethodInvOb.getMethodNameWithVars());
+		
 		for(int i = 0; i < invocationMethodList.size(); i++) {
 			String methodInv = invocationMethodList.get(i);
 			String methodInvWithVars = invocationMethodWithVarsList.get(i);
@@ -127,8 +132,9 @@ public class ActivityDiagramModel {
 		    		if( oldId < _idActivity ){ //If did not exists
 		    			System.out.println("	 	- create " + methodInv);
 		    			tmpActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
-		    			listActivities.put(idActivity, tmpActivity);
 		    			ADMethodInvocation daMethodInvOb2 = activityDiagram.getActivityInstructions(methodInv);
+		    			getListVariablesByParams(tmpActivity, daMethodInvOb2);
+		    			listActivities.put(idActivity, tmpActivity);
 		    			//tmpActivity = proccessActivityInstructions(daMethodInvOb2, tmpActivity, parentNode);
 		    			tmpActivity = proccessActivityInstructions(daMethodInvOb2, tmpActivity, indexParentNode);
 		    			listActivities.put(idActivity, tmpActivity);
@@ -144,8 +150,19 @@ public class ActivityDiagramModel {
 	    	}
 	    	Integer idNode = getIdNode(methodInv);
 	    	indexParentNode = idNode - 1;
-	    	CallBehaviorAction tmpAction = (CallBehaviorAction) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+	    	
+	    	//CallBehaviorAction tmpAction = (CallBehaviorAction) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
+			//tmpAction.setName(methodInvWithVars.trim() );//+ "&#xA;"
+			
+			OpaqueAction tmpAction = (OpaqueAction) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getOpaqueAction());
 			tmpAction.setName(methodInvWithVars.trim() );//+ "&#xA;"
+			//http://download.eclipse.org/modeling/mdt/uml2/javadoc/4.1.0/org/eclipse/uml2/uml/OpaqueAction.html
+			InputPin inputValue = (InputPin) tmpAction.createInputValue(null,null);
+			OutputPin outputValue = (OutputPin) tmpAction.createOutputValue(null,null);
+			
+			
+			
+			//tmpAction.creat
 	    	//tmpAction.setBehavior(activity);
 	    	listNodes.put(idNode,tmpAction);
 			//activity.getNodes().add(tmpAction);
@@ -167,19 +184,36 @@ public class ActivityDiagramModel {
 	    return activity;
 	}
 	
-	
+	private List<Variable> getListVariablesByParams(Activity activity, ADMethodInvocation daMethodInvOb){
+		List<Variable> listVariables = new ArrayList<Variable>();
+		for(String param : daMethodInvOb.getParamList()){
+			//Type arg1 = (Type) UMLPackage.eINSTANCE.getType();
+			String[] pramssplit = param.split(" ");
+			//arg1.setName(pramssplit[0]);
+			Variable tmpVar = activity.createVariable(pramssplit[1], null);
+					//.createVariable(null, arg1 );
+			//Variable tmpVar = (Variable) activity.createVariable(null, UMLPackage.eINSTANCE.getVariable());
+			//tmpVar.setName(pramssplit[1]);
+			listVariables.add(tmpVar);
+		}
+		
+		return listVariables;
+	}
 	
 	private void createActivityDiagram() {
 		System.out.println("---------- createActivityDiagram() -----------------");
 		Integer idNode = getIdNode("init");
 		Integer idActivity = getIdActivity("MainActivity");
 		Activity parentActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
+		ADMethodInvocation daMethodInvOb = activityDiagram.getMainActivityInstructions();
+		getListVariablesByParams(parentActivity, daMethodInvOb);
+		
 		InitialNode initialNode = (InitialNode) parentActivity.createOwnedNode("init",UMLPackage.eINSTANCE.getInitialNode());
 		listNodes.put(idNode,initialNode);
 		parentActivity.getNodes().add(initialNode);
 		listActivities.put(idActivity, parentActivity);
 		
-		ADMethodInvocation daMethodInvOb = activityDiagram.getMainActivityInstructions();
+		
 		parentActivity = proccessActivityInstructions(daMethodInvOb, parentActivity, idNode);
 		listActivities.put(idActivity, parentActivity);
 		
