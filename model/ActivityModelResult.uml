@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <packagedElement xsi:type="uml:Activity" name="A0">
+    <edge xsi:type="uml:ControlFlow" target="//A0/sum(int%20x,int%20y):int" source="//A0/init"/>
+    <edge xsi:type="uml:ControlFlow" target="//A0/sum(int%20z,int%20x):int" source="//A0/init"/>
+    <edge xsi:type="uml:ControlFlow" target="//A0/multiply(int%20x,int%20y):int" source="//A0/sum(int%20x,int%20y):int"/>
+    <edge xsi:type="uml:ControlFlow" target="//A0/multiply(int%20x,int%20y):int.1" source="//A0/sum(int%20x,int%20y):int"/>
+    <edge xsi:type="uml:ControlFlow" target="//A0/System.out.println(int%20z):void" source="//A0/sum(int%20z,int%20x):int"/>
+    <edge xsi:type="uml:ControlFlow" target="//A0/@ownedNode.6" source="//A0/@ownedNode.6"/>
+    <variable name="args"/>
+    <ownedNode xsi:type="uml:InitialNode" name="init" outgoing="//A0/@edge.0 //A0/@edge.1"/>
+    <ownedNode xsi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//A0/@edge.0" outgoing="//A0/@edge.2 //A0/@edge.3">
+      <inputValue/>
+      <outputValue/>
+    </ownedNode>
+    <ownedNode xsi:type="uml:OpaqueAction" name="sum(int z,int x):int" incoming="//A0/@edge.1" outgoing="//A0/@edge.4">
+      <inputValue/>
+      <outputValue/>
+    </ownedNode>
+    <ownedNode xsi:type="uml:OpaqueAction" name="multiply(int x,int y):int" incoming="//A0/@edge.2">
+      <inputValue/>
+      <outputValue/>
+    </ownedNode>
+    <ownedNode xsi:type="uml:OpaqueAction" name="multiply(int x,int y):int" incoming="//A0/@edge.3">
+      <inputValue/>
+      <outputValue/>
+    </ownedNode>
+    <ownedNode xsi:type="uml:OpaqueAction" name="System.out.println(int z):void" incoming="//A0/@edge.4">
+      <inputValue/>
+      <outputValue/>
+    </ownedNode>
+    <ownedNode xsi:type="uml:ActivityFinalNode" incoming="//A0/@edge.5" outgoing="//A0/@edge.5"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Activity" name="A1">
+    <variable name="x"/>
+    <variable name="y"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Activity" name="A2">
+    <edge xsi:type="uml:ControlFlow" target="//A2/sum(int%20result,int%20num):int" source="//A2/sum(int%20result,int%20num):int"/>
+    <variable name="num"/>
+    <variable name="factor"/>
+    <ownedNode xsi:type="uml:OpaqueAction" name="sum(int result,int num):int" incoming="//A2/@edge.0" outgoing="//A2/@edge.0">
+      <inputValue/>
+      <outputValue/>
+    </ownedNode>
+  </packagedElement>
+</uml:Model>

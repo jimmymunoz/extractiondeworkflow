@@ -2,7 +2,7 @@ package activitydiagram;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ADMethodInvocation {
+public class ADMethodInvocation extends ADNode {
 	private String parentClass;
 	private String methodName;
 	private String methodNameWithVars;
@@ -12,8 +12,28 @@ public class ADMethodInvocation {
 	private List<String> paramTypeList;
 	private List<String> invocationMethodListWithVars;
 	private String returnType;
+	private int endposition ; 
+	private int startposition;
+	private List<Integer> invocationMethodStartPosition;
 	
 	
+	public ADMethodInvocation() {
+		super();
+		this.setTypeNode("ADMethodInvocation");
+		// TODO Auto-generated constructor stub
+	}
+	public int getEndposition() {
+		return endposition;
+	}
+	public void setEndposition(int endposition) {
+		this.endposition = endposition;
+	}
+	public int getStartposition() {
+		return startposition;
+	}
+	public void setStartposition(int startposition) {
+		this.startposition = startposition;
+	}
 	public String getParentClass() {
 		return parentClass;
 	}
@@ -67,6 +87,12 @@ public class ADMethodInvocation {
 	}
 	public void setReturnType(String returnType) {
 		this.returnType = returnType;
+	}
+	public List<Integer> getInvocationMethodStartPosition() {
+		return invocationMethodStartPosition;
+	}
+	public void setInvocationMethodStartPosition(List<Integer> invocationMethodStartPosition) {
+		this.invocationMethodStartPosition = invocationMethodStartPosition;
 	}
 		
 }
