@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-public class ActivityDiagram 
+public class ActivityDiagramAst 
 {
 	private String entryClass;
 	private String entryMethod;
@@ -23,19 +23,68 @@ public class ActivityDiagram
 	
 	private HashMap<String, MethodDeclaration[]> hashClassesMethods;////Method, List Methods
 	private HashMap<String, ADMethodInvocation> hashInvocationMethods;//Class-Method, List DAMethodInvocation
+	private HashMap<String, HashMap<Integer, ADCondition>> hashConditions;//Class-Method, HashMap <pos,ADContidion>
+	private HashMap<String, HashMap<Integer, ADNode>> hashNodes;//Class-Method, HashMap <pos,ADNode>
+	
 	private List<TypeDeclaration> listClasses;
 	private MethodDeclaration entryMethodObj;
 	private String keyEntryPoint = "";
 	
 	
-	public ActivityDiagram(HashMap<String, ADMethodInvocation> listInvocationMethods, List<TypeDeclaration> listClasses, String entryClass, String entryMethod) 
+	public ActivityDiagramAst(HashMap<String, ADMethodInvocation> listInvocationMethods,HashMap<String, HashMap<Integer, ADCondition>> hashConditions, List<TypeDeclaration> listClasses, String entryClass, String entryMethod) 
 	{
 		this.entryClass = entryClass;
 		this.entryMethod = entryMethod;
 		this.hashInvocationMethods = listInvocationMethods;
+		this.hashConditions = hashConditions;
 		this.listClasses = listClasses;
 		this.entryMethodObj = getEntryPoint();
+		this.hashNodes = new HashMap<String, HashMap<Integer, ADNode>>();
+		mergeInvocationsAndConditions();
+		//this.hashConditions = new HashMap<String, HashMap<Integer, ADCondition>>();
 		//setMethodHashMap();
+	}
+
+	private void mergeInvocationsAndConditions() {
+		for( String key : this.hashInvocationMethods.keySet()){
+			ADMethodInvocation methodinv = this.hashInvocationMethods.get(key);
+			HashMap<Integer, ADNode> tmphash = new HashMap<Integer, ADNode>();
+			tmphash.put(methodinv.getStartposition(), methodinv);
+			this.hashNodes.put(key, tmphash);
+		}
+		for( String key : this.hashConditions.keySet()){
+			HashMap<Integer, ADCondition> condition = this.hashConditions.get(key);
+			for( Integer key2 : condition.keySet()){
+				if( condition.get(key2) != null ){//If not contains the key
+					ADCondition adCondition = condition.get(key2);
+					HashMap<Integer, ADNode> tmphash = this.hashNodes.get(key);
+					//System.out.println("	--  key :" + key + " key2:" + key2 + " Condition -> "  + adCondition.getConditionExpression() + " parent:" + adCondition.getStartParentPosition());
+					tmphash.put(condition.get(key2).getStartPosition(), adCondition);
+					this.hashNodes.put(key, tmphash);
+				}
+			}
+		}
+		
+		//
+		for( String keyclassmethod : this.hashNodes.keySet()){
+			HashMap<Integer, ADNode> node = this.hashNodes.get(keyclassmethod);
+			for( Integer keypos : node.keySet()){
+				ADNode node2 = node.get(keypos);
+				System.out.println("key: " + keyclassmethod + " - key2: " + keypos + " = " + node2.displayInstruction);
+				if( node2 instanceof ADCondition ){
+					ADCondition adCondition = (ADCondition) node2;
+					for(Integer posThen : adCondition.getThenStatements().keySet()){
+						String thenInstruction = adCondition.getThenStatements().get(posThen);
+						System.out.println("	thenInstruction: " + thenInstruction);
+					}
+					for(Integer posElse : adCondition.getElseStatements().keySet()){
+						String elseInstruction = adCondition.getElseStatements().get(posElse);
+						System.out.println("	elseInstruction: " + elseInstruction);
+					}
+					
+				}
+			}
+		}
 	}
 	
 	public void validateClassDiagram()
@@ -116,17 +165,21 @@ public class ActivityDiagram
 		    String key = entry.getKey();
 		    ADMethodInvocation daMethodInvOb = entry.getValue();
 		    System.out.println("  key: " + key);
-		    System.out.println("     - params: " +  daMethodInvOb.getMethodNameWithVars());
+		    //System.out.println("     - params: " +  daMethodInvOb.getMethodNameWithVars());
 		    
 		    for(String param : daMethodInvOb.getParamList()){
-		    	System.out.println("   - param: " + param);
+		    	//System.out.println("   - param: " + param);
 		    }
 		    
 		    for(String methodInvData : daMethodInvOb.getInvocationMethodList()){
-		    	System.out.println("	 - " + methodInvData);
+		    	//System.out.println("	 - " + methodInvData);
 		    }
+		    for(int i = 0; i< daMethodInvOb.getInvocationMethodListWithVars().size(); i++){
+		    	String methodInvData = daMethodInvOb.getInvocationMethodListWithVars().get(i);
+		    	Integer pos = daMethodInvOb.getInvocationMethodStartPosition().get(i);
+		    	System.out.println("	   - vars: " + methodInvData + " pos: " + pos);
+			}
 		    for(String methodInvData : daMethodInvOb.getInvocationMethodListWithVars()){
-		    	System.out.println("	   - vars: " + methodInvData);
 		    }
 		}
 		System.out.println("end printListInvocationMethods ");
@@ -148,6 +201,14 @@ public class ActivityDiagram
 		//CompilationUnit parse = parse(content.toCharArray());
 		//printMethodInvocationInfo(parse);
 		
+	}
+
+	public HashMap<String, HashMap<Integer, ADCondition>> getHashConditions() {
+		return hashConditions;
+	}
+
+	public void setHashConditions(HashMap<String, HashMap<Integer, ADCondition>> hashConditions) {
+		this.hashConditions = hashConditions;
 	}
 	
 }

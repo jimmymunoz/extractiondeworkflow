@@ -1,10 +1,10 @@
 package diagramgenerator;
 //import ActivityDiagram;
 
-import activitydiagram.ActivityDiagram;
+import activitydiagram.ActivityDiagramAst;
 
 public interface IDiagramGenerator 
 {
-	 public void setActivityDiagram(ActivityDiagram activityDiagram);
+	 public void setActivityDiagram(ActivityDiagramAst activityDiagram);
 	
 }

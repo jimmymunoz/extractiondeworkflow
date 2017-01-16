@@ -46,7 +46,7 @@ import org.eclipse.uml2.uml.DecisionNode;
 
 public class ActivityDiagramModel {
 	private Model umlModel;
-	private ActivityDiagram activityDiagram;
+	private ActivityDiagramAst activityDiagram;
 	private HashMap<String, Integer> listIdsActivities;
 	private HashMap<String, Integer> listIdsNodes;
 	private HashMap<String, Integer> listIdsEdges;
@@ -57,7 +57,7 @@ public class ActivityDiagramModel {
 	private HashMap<Integer, ActivityEdge> listEdges;
 	private HashMap<Integer, ActivityNode> listNodes;
 	
-	public ActivityDiagramModel(ActivityDiagram activityDiagram){
+	public ActivityDiagramModel(ActivityDiagramAst activityDiagram){
 		listIdsActivities = new HashMap<String, Integer>();
 		listIdsNodes = new HashMap<String, Integer>();
 		listIdsEdges = new HashMap<String, Integer>();
@@ -413,7 +413,7 @@ public class ActivityDiagramModel {
 	   Resource resource = null;
 	   try {
 	      URI uriUri = URI.createURI(uri);
-	      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("uml", new XMIResourceFactoryImpl());
+	      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 	      resource = (new ResourceSetImpl()).createResource(uriUri);
 	      resource.getContents().add(root);
 	      resource.save(null);

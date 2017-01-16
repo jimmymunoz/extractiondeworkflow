@@ -1,6 +1,6 @@
 import java.io.IOException;
 
-import activitydiagram.ActivityDiagram;
+import activitydiagram.ActivityDiagramAst;
 import activitydiagram.ActivityDiagramModel;
 import activitydiagram.ActivityDiagramParser;
 import diagramgenerator.JwtActivityDiagram;
@@ -28,7 +28,7 @@ public class Main {
 	public static void main(String[] args) throws IOException
 	{
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
-		ActivityDiagram activityDiagram = adParser.parseActivityDiagram();
+		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
 		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
 		activityDiagramModel.getUmlmodel();
 		JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");

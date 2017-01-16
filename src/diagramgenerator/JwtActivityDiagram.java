@@ -38,7 +38,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import activitydiagram.ActivityDiagram;
+import activitydiagram.ActivityDiagramAst;
 /*
 http://stackoverflow.com/questions/878573/java-multiline-string
 In Eclipse if you turn on the option "Escape text when pasting into a string literal" 
@@ -49,7 +49,7 @@ it will automatically add " and \n" + for all your lines.
 public class JwtActivityDiagram implements IDiagramGenerator {
 	
 	
-	private ActivityDiagram activityDiagram;
+	private ActivityDiagramAst activityDiagram;
 	private String exportFolder;
 	private String diagramName;
 	private String strWorkflowModel = "";
@@ -59,7 +59,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	protected HashMap<String,Integer>idNode;
 	protected HashMap<String,Integer>idEdge;
 	
-	public JwtActivityDiagram(ActivityDiagram activityDiagram, String exportFolder, String diagramName) {
+	public JwtActivityDiagram(ActivityDiagramAst activityDiagram, String exportFolder, String diagramName) {
 		this.activityDiagram = activityDiagram;
 		this.diagramName = diagramName;
 		this.exportFolder = exportFolder;
@@ -120,7 +120,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		writeFiles();
 	}
 	
-	public void setActivityDiagram(ActivityDiagram activityDiagram) 
+	public void setActivityDiagram(ActivityDiagramAst activityDiagram) 
 	{
 		this.activityDiagram = activityDiagram;
 	}

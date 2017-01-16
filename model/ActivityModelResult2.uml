@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_hV3nUNtxEeaKj4bCC4grTw" name="RootElement">
+  <packagedElement xmi:type="uml:Activity" xmi:id="_hV4OYNtxEeaKj4bCC4grTw" name="A0">
+    <edge xmi:type="uml:ControlFlow" xmi:id="_hV4OYdtxEeaKj4bCC4grTw" target="_hV4OaNtxEeaKj4bCC4grTw" source="_hV4OZ9txEeaKj4bCC4grTw"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_hV4OYttxEeaKj4bCC4grTw" target="_hV4Oa9txEeaKj4bCC4grTw" source="_hV4OZ9txEeaKj4bCC4grTw"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_hV4OY9txEeaKj4bCC4grTw" target="_hV4ObttxEeaKj4bCC4grTw" source="_hV4OaNtxEeaKj4bCC4grTw"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_hV4OZNtxEeaKj4bCC4grTw" target="_hV4OcdtxEeaKj4bCC4grTw" source="_hV4Oa9txEeaKj4bCC4grTw"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_hV4OZdtxEeaKj4bCC4grTw" target="_hV4OdNtxEeaKj4bCC4grTw" source="_hV4OdNtxEeaKj4bCC4grTw"/>
+    <variable xmi:type="uml:Variable" xmi:id="_hV4OZttxEeaKj4bCC4grTw" name="args"/>
+    <node xmi:type="uml:InitialNode" xmi:id="_hV4OZ9txEeaKj4bCC4grTw" name="init" outgoing="_hV4OYdtxEeaKj4bCC4grTw _hV4OYttxEeaKj4bCC4grTw"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_hV4OaNtxEeaKj4bCC4grTw" name="sum(int x,int y):int" incoming="_hV4OYdtxEeaKj4bCC4grTw" outgoing="_hV4OY9txEeaKj4bCC4grTw">
+      <inputValue xmi:type="uml:InputPin" xmi:id="_hV4OadtxEeaKj4bCC4grTw"/>
+      <outputValue xmi:type="uml:OutputPin" xmi:id="_hV4OattxEeaKj4bCC4grTw"/>
+    </node>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_hV4Oa9txEeaKj4bCC4grTw" name="sum(int z,int x):int" incoming="_hV4OYttxEeaKj4bCC4grTw" outgoing="_hV4OZNtxEeaKj4bCC4grTw">
+      <inputValue xmi:type="uml:InputPin" xmi:id="_hV4ObNtxEeaKj4bCC4grTw"/>
+      <outputValue xmi:type="uml:OutputPin" xmi:id="_hV4ObdtxEeaKj4bCC4grTw"/>
+    </node>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_hV4ObttxEeaKj4bCC4grTw" name="multiply(int x,int y):int" incoming="_hV4OY9txEeaKj4bCC4grTw">
+      <inputValue xmi:type="uml:InputPin" xmi:id="_hV4Ob9txEeaKj4bCC4grTw"/>
+      <outputValue xmi:type="uml:OutputPin" xmi:id="_hV4OcNtxEeaKj4bCC4grTw"/>
+    </node>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_hV4OcdtxEeaKj4bCC4grTw" name="System.out.println(int z):void" incoming="_hV4OZNtxEeaKj4bCC4grTw">
+      <inputValue xmi:type="uml:InputPin" xmi:id="_hV4OcttxEeaKj4bCC4grTw"/>
+      <outputValue xmi:type="uml:OutputPin" xmi:id="_hV4Oc9txEeaKj4bCC4grTw"/>
+    </node>
+    <node xmi:type="uml:ActivityFinalNode" xmi:id="_hV4OdNtxEeaKj4bCC4grTw" incoming="_hV4OZdtxEeaKj4bCC4grTw" outgoing="_hV4OZdtxEeaKj4bCC4grTw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_hV4OddtxEeaKj4bCC4grTw" name="A1">
+    <variable xmi:type="uml:Variable" xmi:id="_hV4OdttxEeaKj4bCC4grTw" name="x"/>
+    <variable xmi:type="uml:Variable" xmi:id="_hV4Od9txEeaKj4bCC4grTw" name="y"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_hV4OeNtxEeaKj4bCC4grTw" name="A2">
+    <edge xmi:type="uml:ControlFlow" xmi:id="_hV4OedtxEeaKj4bCC4grTw" target="_hV4OfNtxEeaKj4bCC4grTw" source="_hV4OfNtxEeaKj4bCC4grTw"/>
+    <variable xmi:type="uml:Variable" xmi:id="_hV4OettxEeaKj4bCC4grTw" name="num"/>
+    <variable xmi:type="uml:Variable" xmi:id="_hV4Oe9txEeaKj4bCC4grTw" name="factor"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_hV4OfNtxEeaKj4bCC4grTw" name="sum(int result,int num):int" incoming="_hV4OedtxEeaKj4bCC4grTw" outgoing="_hV4OedtxEeaKj4bCC4grTw">
+      <inputValue xmi:type="uml:InputPin" xmi:id="_hV4OfdtxEeaKj4bCC4grTw"/>
+      <outputValue xmi:type="uml:OutputPin" xmi:id="_hV4OfttxEeaKj4bCC4grTw"/>
+    </node>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_lOdCcNtxEeaKj4bCC4grTw" name="Activity1" node="_xBTlcNtxEeaKj4bCC4grTw">
+    <node xmi:type="uml:InitialNode" xmi:id="_xBTlcNtxEeaKj4bCC4grTw" name="InitialNode1"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_78yTMNt_Eea24beP74qFnw" name="Activity2" node="_teQXoNuAEea24beP74qFnw">
+    <node xmi:type="uml:CallBehaviorAction" xmi:id="_teQXoNuAEea24beP74qFnw" name="CallBehaviorAction1" behavior="_hV4OddtxEeaKj4bCC4grTw"/>
+  </packagedElement>
+</uml:Model>
