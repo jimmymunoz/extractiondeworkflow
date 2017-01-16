@@ -1,16 +1,24 @@
 package activitydiagram;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.*;
 import org.eclipse.emf.common.util.*;
 import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.emf.ecore.xmi.XMLHelper;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.ElementHandlerImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIHelperImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMISaveImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLMapImpl;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Generalization;
@@ -65,7 +73,6 @@ public class ActivityDiagramModel {
 		listEdges = new HashMap<Integer, ActivityEdge>();
 		listNodes = new HashMap<Integer, ActivityNode>();
 		this.activityDiagram = activityDiagram;
-		umlModel = UMLFactory.eINSTANCE.createModel();
 		createActivityDiagram();
 	}
 	
@@ -202,6 +209,14 @@ public class ActivityDiagramModel {
 	
 	private void createActivityDiagram() {
 		System.out.println("---------- createActivityDiagram() -----------------");
+		//umlModel = UMLFactory.eINSTANCE.createModel();
+		Resource resource = loadModel("model/model_empty.uml", UMLPackage.eINSTANCE);
+		if (resource == null) 
+			System.err.println("Error Loading model");
+		
+		//Instruction récupérant le modèle sous forme d'arbre à partir de la classe racine "Model"
+		umlModel = (Model) resource.getContents().get(0);
+		
 		Integer idNode = getIdNode("init");
 		Integer idActivity = getIdActivity("MainActivity");
 		Activity parentActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
@@ -227,7 +242,7 @@ public class ActivityDiagramModel {
 			edgeFinal.setTarget(finalNode2);
 		}
 		
-		saveModel("model/ActivityModelResult.uml", umlModel);
+		saveModel("model/ActivityModelResult.xmi", umlModel);
 		
 		
 		
@@ -409,14 +424,77 @@ public class ActivityDiagramModel {
 		
 	}
 	
+	public static Resource loadModel(String uri, EPackage pack) {
+	   Resource resource = null;
+	   try {
+	      URI uriUri = URI.createURI(uri);
+	      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("uml", new XMIResourceFactoryImpl());
+	      resource = (new ResourceSetImpl()).createResource(uriUri);
+	      XMLResource.XMLMap xmlMap = new XMLMapImpl();
+	      xmlMap.setNoNamespacePackage(pack);
+	      HashMap options = new HashMap();
+	      //options.put(XMLResource.OPTION_XML_MAP, xmlMap);
+	      resource.load(options);
+	   }
+	   catch(Exception e) {
+	      System.err.println("Error Loading Model : "+e);
+	      e.printStackTrace();
+	   }
+	   return resource;
+	}
+	
 	public static void saveModel(String uri, EObject root) {
 	   Resource resource = null;
 	   try {
 	      URI uriUri = URI.createURI(uri);
+	      Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
+          Map<String, Object> m = reg.getExtensionToFactoryMap();
+          m.put("xmi", new XMIResourceFactoryImpl());
+	      
 	      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+	      
+	      HashMap options = new HashMap<String, String>();
+	      options.put(XMLResource.OPTION_ENCODING, "UTF-8"); // set encoding to utf-8
+	      options.put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
+	      options.put(XMLResource.OPTION_SAVE_TYPE_INFORMATION, false);
+	      
+	      /*
+	      options.put(XMLResource.OPTION_EXTENDED_META_DATA, true);
+	      options.put(XMLResource.OPTION_SUPPRESS_DOCUMENT_ROOT, true);
+	      options.put(XMLResource.OPTION_SCHEMA_LOCATION, true);
+	      options.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, true);
+	      options.put(XMLResource.OPTION_ELEMENT_HANDLER, new ElementHandlerImpl(true));
+	      options.put(XMLResource.OPTION_USE_LEXICAL_HANDLER, true);
+	      */
+	      
+	      options.put(XMIResource.OPTION_USE_XMI_TYPE, Boolean.TRUE);
+	      options.put(XMIResource.XMI_ID, Boolean.TRUE);
+	      //options.put(XMIResource., Boolean.TRUE);
+	      
+	       
+	      // options.put(XMLResource.OPTION_SCHEMA_LOCATION, xsdUri.toString()); // not working
+	      //options.put(XMLResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, ServerPackage.eINSTANCE.getNsURI()); // not working
+	      // save to file
+	      
+	      //XMLResource.XMLMap xmlMap = new XMLMapImpl();
+	      //xmlMap.setNoNamespacePackage(UMLPackage.eINSTANCE);
+	      //options.put(XMLResource.OPTION_XML_MAP, xmlMap);
+	      
 	      resource = (new ResourceSetImpl()).createResource(uriUri);
 	      resource.getContents().add(root);
-	      resource.save(null);
+	      
+	      
+	      resource.save(options);
+	      /*
+	      final XMLHelper xmlHelper = new XMIHelperImpl();
+	      XMISaveImpl x = new XMISaveImpl(xmlHelper);
+
+	      StringWriter sw = new StringWriter();
+	      x.save((XMLResource) resource, sw, options);
+	      */
+	    //resource.save(null);
+	      //resource.save(Collections.EMPTY_MAP);
+	      System.err.println("Model saved : " + uri);
 	   } catch (Exception e) {
 	      System.err.println("Error Saving the model : "+e);
 	      e.printStackTrace();

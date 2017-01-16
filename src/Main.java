@@ -31,8 +31,8 @@ public class Main {
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
 		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
 		activityDiagramModel.getUmlmodel();
-		JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
-		diagramParser.proccesActivityDiagram();
+		//JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
+		//diagramParser.proccesActivityDiagram();
 		//activityDiagram.testClassDiagram();
 	}
 

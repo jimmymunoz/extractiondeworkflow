@@ -5,6 +5,7 @@ public abstract class ADNode {
 	protected Integer posParent = -1;
 	protected String typeNode = "";
 	protected String displayInstruction = "";
+	protected String instructionKey;
 	
 	public String getDisplayInstruction() {
 		return displayInstruction;
@@ -23,5 +24,11 @@ public abstract class ADNode {
 	}
 	public void setTypeNode(String typeNode) {
 		this.typeNode = typeNode;
+	}
+	public String getInstructionKey() {
+		return instructionKey;
+	}
+	public void setInstructionKey(String instructionKey) {
+		this.instructionKey = instructionKey;
 	}
 }

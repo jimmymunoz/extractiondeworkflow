@@ -9,27 +9,30 @@ public class ADCondition extends ADNode{
 	private String conditionExpression;
 	private Map<Integer, String> thenStatements;
 	private Map<Integer, String> elseStatements ;
+	private Map<Integer, String> thenStatementsWithVars;
+	private Map<Integer, String> elseStatementsWithVars;
 	private Integer startParentPosition = -1;
 	private Integer startConditionPosition;
 	private Integer startThenPosition;
 	private Integer startElsePosition;
 	
+	
 
-	public ADCondition(Integer startPosition, Integer endPosition, String conditionExpression,
+	public ADCondition(Integer startPosition, Integer endPosition, String instructionKey, String conditionExpression,
 			Map<Integer, String> thenStatements, Map<Integer, String> elseStatements, Integer startConditionPosition,
 			Integer startThenPosition, Integer startElsePosition, Integer startParentPosition) {
 		super();
+		this.instructionKey = instructionKey;
 		this.setTypeNode("ADCondition");
-		this.startPosition = startPosition;
+		this.setStartPosition(startPosition);
 		this.endPosition = endPosition;
-		this.conditionExpression = conditionExpression;
+		setConditionExpression(conditionExpression);
 		this.thenStatements = thenStatements;
 		this.elseStatements = elseStatements;
 		this.startConditionPosition = startConditionPosition;
 		this.startThenPosition = startThenPosition;
 		this.startElsePosition = startElsePosition;
 		this.startParentPosition = startParentPosition;
-		this.displayInstruction  = conditionExpression;
 	}
 	
 	
@@ -47,10 +50,10 @@ public class ADCondition extends ADNode{
 		this.endPosition = endPosition;
 	}
 	public String getConditionExpression() {
-		this.displayInstruction  = conditionExpression;
 		return conditionExpression;
 	}
 	public void setConditionExpression(String conditionExpression) {
+		this.displayInstruction  = conditionExpression;
 		this.conditionExpression = conditionExpression;
 	}
 	public Map<Integer, String> getThenStatements() {
@@ -88,6 +91,30 @@ public class ADCondition extends ADNode{
 	}
 	public void setStartParentPosition(Integer startParentPosition) {
 		this.startParentPosition = startParentPosition;
+	}
+
+
+
+	public Map<Integer, String> getThenStatementsWithVars() {
+		return thenStatementsWithVars;
+	}
+
+
+
+	public void setThenStatementsWithVars(Map<Integer, String> thenStatementsWithVars) {
+		this.thenStatementsWithVars = thenStatementsWithVars;
+	}
+
+
+
+	public Map<Integer, String> getElseStatementsWithVars() {
+		return elseStatementsWithVars;
+	}
+
+
+
+	public void setElseStatementsWithVars(Map<Integer, String> elseStatementsWithVars) {
+		this.elseStatementsWithVars = elseStatementsWithVars;
 	}
 	
 }
