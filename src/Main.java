@@ -4,6 +4,7 @@ import activitydiagram.ActivityDiagramAst;
 import activitydiagram.ActivityDiagramModel;
 import activitydiagram.ActivityDiagramParser;
 import diagramgenerator.JwtActivityDiagram;
+import diagramgenerator.PapyrusTest;
 
 public class Main {
 
@@ -31,6 +32,7 @@ public class Main {
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
 		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
 		activityDiagramModel.getUmlmodel();
+		//PapyrusTest.test(activityDiagramModel.getUmlmodel());
 		//JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
 		//diagramParser.proccesActivityDiagram();
 		//activityDiagram.testClassDiagram();

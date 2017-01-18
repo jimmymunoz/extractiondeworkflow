@@ -25,6 +25,7 @@ import org.eclipse.uml2.uml.internal.impl.OperationImpl;
 import org.eclipse.uml2.uml.profile.standard.Process;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Class;
+
 //import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.common.util.CacheAdapter;

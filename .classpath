@@ -28,5 +28,33 @@
 	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/org.eclipse.uml2.uml.validation_5.0.0.v20160822-0739.jar"/>
 	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/org.eclipse.emf.common_2.12.0.v20160420-0247.jar"/>
 	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/org.eclipse.emf.ecore.xmi_2.12.0.v20160420-0247.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.ui-3.1.0.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.jface-3.1.0.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.ui.workbench-3.1.0.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core_2.3.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.log_1.2.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.log.source_1.2.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.pluginexplorer_1.2.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.pluginexplorer.source_1.2.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.sasheditor_2.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.sasheditor.di_2.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.sasheditor.di.source_2.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.sasheditor.source_2.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.sashwindows.di_1.2.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.sashwindows.di.source_1.2.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.core.source_2.3.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.editor.welcome_1.2.100.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.editor.welcome.internationalization_1.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.editor.welcome.internationalization.source_1.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.editor.welcome.nattable_2.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.editor.welcome.nattable.source_2.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.infra.editor.welcome.source_1.2.100.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.uml.diagram.wizards_3.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.uml.tools_3.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.uml.tools.utils_3.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.uml.types.core_3.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.papyrus.uml.types.ui.properties_3.0.0.201612141845.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.emf.transaction_1.4.0.v20100331-1738.jar"/>
+	<classpathentry kind="lib" path="/Users/jimmymunoz/Documents/workspace-neon/ExtractionWorkFlow/libstoadd/papyrus/org.eclipse.emf.edit_2.8.0.v20120608-0554.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

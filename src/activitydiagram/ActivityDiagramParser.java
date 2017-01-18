@@ -60,15 +60,15 @@ public class ActivityDiagramParser
 		List<TypeDeclaration> listClasses = getClassList(parse);
 		
 		HashMap<String, ADMethodInvocation> listInvocationMethods = getListInvocationMethods(parse);
-		HashMap<String, HashMap<Integer, ADCondition>> hashConditions = getHashConditions(parse);
+		Map<String, Map<Integer, ADCondition>> hashConditions = getHashConditions(parse);
 		printHashCondition(hashConditions);
 		activityDiagram = new ActivityDiagramAst(listInvocationMethods, hashConditions, listClasses, entryClass, entryMethod);
 		activityDiagram.testClassDiagram();
 		return activityDiagram;
 	}
 	
-	private HashMap<String, HashMap<Integer, ADCondition>> getHashConditions(CompilationUnit parse) {
-		HashMap<String, HashMap<Integer, ADCondition>> hashConditions = new HashMap<String, HashMap<Integer, ADCondition>>();
+	private Map<String, Map<Integer, ADCondition>> getHashConditions(CompilationUnit parse) {
+		Map<String, Map<Integer, ADCondition>> hashConditions = new HashMap<String, Map<Integer, ADCondition>>();
 		List<TypeDeclaration> listClasses = getClassList(parse);// ?
 		for (TypeDeclaration classOb : listClasses) {
 			for (MethodDeclaration method : classOb.getMethods()) {
@@ -84,10 +84,10 @@ public class ActivityDiagramParser
 		return hashConditions;
 	}
 
-	public void printHashCondition(HashMap<String, HashMap<Integer, ADCondition>> hashConditions)
+	public void printHashCondition(Map<String, Map<Integer, ADCondition>> hashConditions)
 	{
 		for(String key : hashConditions.keySet()){
-			HashMap<Integer, ADCondition> tmpHash = hashConditions.get(key);
+			HashMap<Integer, ADCondition> tmpHash = (HashMap<Integer, ADCondition>) hashConditions.get(key);
 			for(Integer key2 : tmpHash.keySet()){
 				ADCondition adCondition = tmpHash.get(key2);
 				System.out.println("	--  key :" + key + " key2:" + key2 + " Condition -> "  + adCondition.getConditionExpression() + " parent:" + adCondition.getStartParentPosition());
