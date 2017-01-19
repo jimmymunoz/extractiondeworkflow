@@ -413,7 +413,7 @@ public class ActivityDiagramModel {
 	   Resource resource = null;
 	   try {
 	      URI uriUri = URI.createURI(uri);
-	      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("uml", new XMIResourceFactoryImpl());
+	      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 	      resource = (new ResourceSetImpl()).createResource(uriUri);
 	      resource.getContents().add(root);
 	      resource.save(null);

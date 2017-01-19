@@ -40,7 +40,7 @@ public class ActivityDiagramAst
 		this.listClasses = listClasses;
 		this.entryMethodObj = getEntryPoint();
 		this.hashNodes = new HashMap<String, HashMap<Integer, ADNode>>();
-		mergeInvocationsAndConditions();
+		//mergeInvocationsAndConditions();
 		//this.hashConditions = new HashMap<String, HashMap<Integer, ADCondition>>();
 		//setMethodHashMap();
 	}

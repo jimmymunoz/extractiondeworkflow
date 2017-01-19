@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><uml:Model xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0">
+  <packagedElement name="A1" xsi:type="uml:Activity">
+ 
+    <edge name="edgeinit" source="N0" target="N1" xmi:id="E0" xsi:type="uml:ControlFlow"/>
+    <edge name="cf" source="N1" target="N2" xmi:id="E1" xsi:type="uml:ControlFlow"/>
+    <edge name="edge" source="N2" target="N3" xmi:id="E2" xsi:type="uml:ControlFlow"/>
+    <edge name="edge1" source="N2" target="N7" xmi:id="E3" xsi:type="uml:ControlFlow"/>
+    <edge name="edge0" source="N3" target="N4" xmi:id="E4" xsi:type="uml:ControlFlow"/>
+    <edge name="edge2" source="N8" target="N4" xmi:id="E5" xsi:type="uml:ControlFlow"/>
+    <edge name="edge3" source="N5" target="N6" xmi:id="E6" xsi:type="uml:ControlFlow"/>
+    <node name="init" outgoing="E0" xmi:id="N0" xsi:type="uml:InitialNode"/>
+    <node incoming="E0" name="node0" outgoing="E1" xmi:id="N1" xsi:type="uml:OpaqueAction"/>
+    <node incoming="E1" name="node1" outgoing="E2 E3" xmi:id="N2" xsi:type="uml:DecisionNode"/>
+    <node incoming="E2" name="node5" outgoing="E4" xmi:id="N3" xsi:type="uml:OpaqueAction"/>
+    <node incoming="E4 E5" name="n" xmi:id="N4" xsi:type="uml:MergeNode"/>
+    <node name="node2" outgoing="E6" xmi:id="N5" xsi:type="uml:OpaqueAction">
+  
+      <inputValue/>
+      <outputValue/>
+    </node>
+    <node incoming="E6" name="node3" xmi:id="N6" xsi:type="uml:ActivityFinalNode"/>
+  </packagedElement>
+
+</uml:Model>
