@@ -25,8 +25,8 @@ import org.eclipse.papyrus.infra.core.resource.ModelsReader;
 import org.eclipse.papyrus.infra.core.services.ExtensionServicesRegistry;
 import org.eclipse.papyrus.infra.core.services.ServiceException;
 import org.eclipse.papyrus.infra.core.services.ServicesRegistry;
-import org.eclipse.papyrus.infra.ui.extension.commands.IModelCreationCommand;
-import org.eclipse.papyrus.uml.diagram.common.commands.CreateUMLModelCommand;
+//import org.eclipse.papyrus.infra.ui.extension.commands.IModelCreationCommand;
+//import org.eclipse.papyrus.uml.diagram.common.commands.CreateUMLModelCommand;
 import org.eclipse.uml2.uml.internal.impl.ActivityImpl;
 import org.eclipse.uml2.uml.internal.impl.DirectedRelationshipImpl;
 import org.eclipse.uml2.uml.internal.impl.GeneralizationImpl;
@@ -34,6 +34,7 @@ import org.eclipse.uml2.uml.internal.impl.OperationImpl;
 import org.eclipse.uml2.uml.profile.standard.Process;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Class;
+
 //import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.common.util.CacheAdapter;
@@ -678,8 +679,8 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		 	//Ignore
 		 }
 
-		 IModelCreationCommand creationCommand = new CreateUMLModelCommand();
-		 creationCommand.createModel(modelSet);
+		 //IModelCreationCommand creationCommand = new CreateUMLModelCommand();
+		 //creationCommand.createModel(modelSet);
 		 try {
 			modelSet.save(new NullProgressMonitor());
 		} catch (IOException e) {

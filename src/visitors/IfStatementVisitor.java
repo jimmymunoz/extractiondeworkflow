@@ -68,7 +68,7 @@ public class IfStatementVisitor  extends ASTVisitor{
 			List<MethodInvocation> methodInvocationElseList = visitorElse.getMethods();
 			for (MethodInvocation method : methodInvocationElseList){
 				Integer methodposition = method.getStartPosition();
-				System.out.println("--> methodposition:" + methodposition + " startElsePosition: " + startElsePosition +  " endElse: " + endElsePosition+ " parentpos:" + method.getParent().getStartPosition());
+				//System.out.println("--> methodposition:" + methodposition + " startElsePosition: " + startElsePosition +  " endElse: " + endElsePosition+ " parentpos:" + method.getParent().getStartPosition());
 				
 				String methodName = ActivityDiagramParser.getMethodNameByMethodInvocation(method);
 				elseStatements.put(method.getStartPosition(), methodName);
