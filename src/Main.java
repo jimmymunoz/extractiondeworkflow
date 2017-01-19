@@ -25,6 +25,8 @@ public class Main {
 	public static String jrePath = "C:\\Program Files\\Java\\jre1.8.0_51\\lib\\rt.jar"; // which java
 	public static String entryClass = "Main";
 	public static String entryMethod = "main";
+	private static String fileModelResultEmf = "model/ActivityModelResult.xmi";
+	private static String fileModelResultPapyrus = "model/ActivityModelResult.uml";
 	
 	public static void main(String[] args) throws IOException
 	{
@@ -42,9 +44,9 @@ public class Main {
 			  
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
-		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram, "model/ActivityModelResult.xmi");
+		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram, fileModelResultEmf);
 		//activityDiagramModel.getUmlmodel();
-		PapyrusTransformation Ptrans = new PapyrusTransformation(activityDiagramModel.getFileModelPathSave(),"model/ActivityModelResult.uml");
+		PapyrusTransformation Ptrans = new PapyrusTransformation(activityDiagramModel.getFileModelPathSave(),fileModelResultPapyrus);
 		
 		//JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
 		//diagramParser.proccesActivityDiagram();
