@@ -57,21 +57,13 @@ public class Main {
 	    System.out.println("Paaaaath :"+path);
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
-		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
+		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram, "model/ActivityModelResult.xmi");
 		//activityDiagramModel.getUmlmodel();
-		/*
-		JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
-	
-		try {
-			PapyrusTransformation Ptrans = new PapyrusTransformation();
-		} catch (XPathExpressionException | SAXException | ParserConfigurationException
-				| TransformerFactoryConfigurationError | TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		PapyrusTransformation Ptrans = new PapyrusTransformation(activityDiagramModel.getFileModelPathSave(),"model/ActivityModelResult.uml");
+		
+		//JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
 		//diagramParser.proccesActivityDiagram();
 		//activityDiagram.testClassDiagram();
-		/**/
 	}
 
 }
