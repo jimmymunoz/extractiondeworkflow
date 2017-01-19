@@ -175,13 +175,8 @@ public class PapyrusTransformation {
 		    			items.set(i,hashEdges.get(item));
 		    		}
 		    	}
-		    	element.setAttribute("outgoing", String.join(" ", items));
-	
-			    
-		    }
-
-		    	
-		    
+		    	element.setAttribute("outgoing", String.join(" ", items));				    
+		    }		    			    
 		    		
 	    }
 	}
