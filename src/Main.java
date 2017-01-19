@@ -44,11 +44,12 @@ public class Main {
 			    });*/
 			  
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
-		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
+		//ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
 		//ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
 		//activityDiagramModel.getUmlmodel();
+		/*
 		JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
-		
+		*/
 		try {
 			PapyrusTransformation Ptrans = new PapyrusTransformation();
 		} catch (XPathExpressionException | SAXException | ParserConfigurationException
@@ -58,7 +59,7 @@ public class Main {
 		}
 		//diagramParser.proccesActivityDiagram();
 		//activityDiagram.testClassDiagram();
-		
+		/**/
 	}
 
 }
