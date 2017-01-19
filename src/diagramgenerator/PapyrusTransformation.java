@@ -63,6 +63,7 @@ public class PapyrusTransformation {
 			 this.hashInputValue = new  HashMap<String, String>();
 			 this.hashOutputtValue = new  HashMap<String, String>();
 			 this.hashParent =  new  HashMap<String, String>();
+		     this.hashOwnedComment =  new  HashMap<String, String>();
 			 //this.hashUmlModel = new  HashMap<String, String>();
 			 this.xformer = TransformerFactory.newInstance().newTransformer();
 			 this.edges = (NodeList) xpath.evaluate("//packagedElement/edge", this.doc, XPathConstants.NODESET);		   
@@ -71,6 +72,7 @@ public class PapyrusTransformation {
 			 this.packageable = (NodeList) xpath.evaluate("//packagedElement", this.doc, XPathConstants.NODESET);
 			 this.inputValue = (NodeList) xpath.evaluate("//node/inputValue", this.doc, XPathConstants.NODESET);		     
 			 this.outputtValue = (NodeList) xpath.evaluate("//node/outputValue", this.doc, XPathConstants.NODESET);
+		     this.ownedComment = (NodeList) xpath.evaluate("//packagedElement/ownedComment", this.doc,XPathConstants.NODESET);		 
 			 this.umlModel = (NodeList) xpath.evaluate("//node/outputValue", this.doc,XPathConstants.NODESET);
 			 //encodEdge();
 			 initialiseEdge();
@@ -78,6 +80,9 @@ public class PapyrusTransformation {
 			 initialiseEdge();
 			 initialisePackageable();
 			 initialisInputValue();
+	         initialiseOnwedComment();
+	         initialisInputValue();
+	         annotatedEelemenOwnedComment();
 			 addNameNodePackageable();
 			 extractNodes();
 			 extractEdges();
@@ -254,6 +259,45 @@ public class PapyrusTransformation {
 		    }
 		   
 	}
+	
+	public void  initialiseOnwedComment()
+	{		
+			
+	    for (int idx = 0; idx < getOwnedComment().getLength(); idx++) {
+	    	Element element = (Element) getOwnedComment().item(idx);	    	  
+	    	element.setAttribute( "xmi:type", "uml:Comment");
+		    element.setAttributeNS("http://www.omg.org/XMI", "xmi:id", "OW"+idx);
+		    String edgename = element.getAttribute("name");
+		    String actname = ((Element) element.getParentNode()).getAttribute("name");
+		    String key = "//"+ actname +"/" + edgename;			
+		    getHashOwnedComment().put(key, "Ow"+idx);		    
+	    }	
+	}
+	public void annotatedEelemenOwnedComment() throws UnsupportedEncodingException	
+	{		
+		for (int idx = 0; idx < getOwnedComment().getLength(); idx++) {
+			Element element = (Element) getOwnedComment().item(idx);		
+	    String annotatedElement = element.getAttribute("annotatedElement");	    
+	    	List<String> items = Arrays.asList(annotatedElement.split("\\s* \\s*"));
+	    	for(int i =0; i < items.size(); i++){
+		    	String item = items.get(i);		    	
+		    	if( getHashNodes().containsKey(java.net.URLDecoder.decode(item, "UTF-8"))){			    	
+		    		items.set(i, getHashNodes().get(java.net.URLDecoder.decode(item)));
+		    	}
+		    }
+		    
+		    element.setAttribute("annotatedElement", String.join(" ", items));
+	
+		}
+	}
+	public HashMap<String, String> getHashOwnedComment() {
+		return hashOwnedComment;
+	}
+
+	public NodeList getOwnedComment() {
+		return ownedComment;
+	}
+
 	public HashMap<String, String> getHashParent() {
 		return hashParent;
 	}
