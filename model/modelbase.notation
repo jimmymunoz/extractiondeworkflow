@@ -22,7 +22,7 @@
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UcmZ0d4tEeadSsjHkPsdYA"/>
     </children>
     <element xmi:type="uml:Activity" href="modelbase.uml#_UcS3wN4tEeadSsjHkPsdYA"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UcmZ0t4tEeadSsjHkPsdYA"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UcmZ0t4tEeadSsjHkPsdYA" width="325" height="297"/>
   </children>
   <styles xmi:type="notation:StringValueStyle" xmi:id="_UcmZ094tEeadSsjHkPsdYA" name="diagram_compatibility_version" stringValue="1.2.0"/>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_UcmZ1N4tEeadSsjHkPsdYA"/>

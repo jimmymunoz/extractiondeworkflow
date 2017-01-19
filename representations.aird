@@ -17,4 +17,6 @@
   <semanticResources>model/modelbase.notation</semanticResources>
   <semanticResources>model/modelbase.uml</semanticResources>
   <semanticResources>model.uml</semanticResources>
+  <semanticResources>model/ActivityModelResult2.notation</semanticResources>
+  <semanticResources>model/ActivityModelResult2.uml</semanticResources>
 </viewpoint:DAnalysis>

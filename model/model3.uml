@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_rFK6kN5YEeadSsjHkPsdYA" name="RootElement">
+  <packagedElement xmi:type="uml:Activity" xmi:id="_rFlKQN5YEeadSsjHkPsdYA" name="Activity1" node="_xSVAYN5YEeadSsjHkPsdYA _KuFpEN5ZEeadSsjHkPsdYA">
+    <ownedBehavior xmi:type="uml:Activity" xmi:id="_JFabEN5ZEeadSsjHkPsdYA" name="Activity1" node="_KKcwgN5ZEeadSsjHkPsdYA">
+      <node xmi:type="uml:OpaqueAction" xmi:id="_KKcwgN5ZEeadSsjHkPsdYA" name="OpaqueAction1"/>
+    </ownedBehavior>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_xSVAYN5YEeadSsjHkPsdYA" name="OpaqueAction1"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_KuFpEN5ZEeadSsjHkPsdYA" name="OpaqueAction2"/>
+  </packagedElement>
+</uml:Model>

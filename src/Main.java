@@ -21,7 +21,7 @@ public class Main {
 	public static final String projectSourcePath = projectPath + "/src";
 	public static final String jrePath = "/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/rt.jar"; // which java
 
-	//public static final String projectPath = "C:\\Users\\IkbalH\\Desktop\\Composants_Reutilisation\\TP\\HMIN304_TP1";
+	//public static final String projectPath = "C:\\Users\\IkbalH\\Desktop\\Composants_Reutilisation\\TP\\TestWorkflow";
 	//public static final String projectSourcePath = projectPath + "/src";
 	//public static final String jrePath = "C:\\Program Files\\Java\\jre1.8.0_51\\lib\\rt.jar"; // which java
 	
@@ -36,12 +36,20 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException
 	{
+		/*Menu m =new Menu();
+		   javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			      public void run() {
+			        Menu.createAndShowGUI();
+			      }
+			    });*/
+			  
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
 		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
 		//activityDiagramModel.getUmlmodel();
-		//JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
-		
+		/*
+		JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
+		*/
 		try {
 			PapyrusTransformation Ptrans = new PapyrusTransformation();
 		} catch (XPathExpressionException | SAXException | ParserConfigurationException
@@ -51,7 +59,7 @@ public class Main {
 		}
 		//diagramParser.proccesActivityDiagram();
 		//activityDiagram.testClassDiagram();
-		
+		/**/
 	}
 
 }
