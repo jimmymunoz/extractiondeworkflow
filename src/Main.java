@@ -44,8 +44,8 @@ public class Main {
 			    });*/
 			  
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
-		//ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
-		//ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
+		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
+		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
 		//activityDiagramModel.getUmlmodel();
 		/*
 		JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");

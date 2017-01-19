@@ -49,7 +49,7 @@ public class PapyrusTransformation {
     NodeList umlModel;
     Transformer xformer;
 	public PapyrusTransformation() throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, TransformerFactoryConfigurationError, TransformerException {
-		 doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource("model/result.xmi"));
+		 doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource("model/ActivityModelResult.xmi"));
 		 xpath = XPathFactory.newInstance().newXPath();
 		 changeNameNod();
 		 this.hashEdges = new  HashMap<String, String>();
