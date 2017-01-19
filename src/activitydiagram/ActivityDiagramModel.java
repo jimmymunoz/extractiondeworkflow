@@ -381,6 +381,8 @@ public class ActivityDiagramModel {
 				tmpActionOpaque.setName(adInstruction.getDisplayInstruction().trim() );//+ "&#xA;"
 				//http://download.eclipse.org/modeling/mdt/uml2/javadoc/4.1.0/org/eclipse/uml2/uml/OpaqueAction.html
 				InputPin inputValue = (InputPin) tmpActionOpaque.createInputValue(null,null);
+				//adInstruction.get
+				//inputValue.createUpperBound(arg0, arg1, arg2)
 				OutputPin outputValue = (OutputPin) tmpActionOpaque.createOutputValue(null,null);
 				//System.out.println("Label2:" + tmpActionOpaque.eCrossReferences() );
 				actNode = tmpActionOpaque;
