@@ -5,7 +5,9 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 //import org.eclipse.gmf.runtime.diagram.ui.services.layout.LayoutType;
 import org.eclipse.emf.*;
 import org.eclipse.emf.common.util.*;
@@ -18,6 +20,13 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLMapImpl;
+import org.eclipse.papyrus.infra.core.resource.ModelSet;
+import org.eclipse.papyrus.infra.core.resource.ModelsReader;
+import org.eclipse.papyrus.infra.core.services.ExtensionServicesRegistry;
+import org.eclipse.papyrus.infra.core.services.ServiceException;
+import org.eclipse.papyrus.infra.core.services.ServicesRegistry;
+//import org.eclipse.papyrus.infra.ui.extension.commands.IModelCreationCommand;
+//import org.eclipse.papyrus.uml.diagram.common.commands.CreateUMLModelCommand;
 import org.eclipse.uml2.uml.internal.impl.ActivityImpl;
 import org.eclipse.uml2.uml.internal.impl.DirectedRelationshipImpl;
 import org.eclipse.uml2.uml.internal.impl.GeneralizationImpl;
@@ -49,7 +58,7 @@ it will automatically add " and \n" + for all your lines.
 
 public class JwtActivityDiagram implements IDiagramGenerator {
 	
-	
+	private String uniqueID ;
 	private ActivityDiagramAst activityDiagram;
 	private String exportFolder;
 	private String diagramName;
@@ -57,28 +66,45 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	private Model umlmodel;
 	private int idInc = 0;
 	private int idEdgeInc = 0;
-	protected HashMap<String,Integer>idNode;
-	protected HashMap<String,Integer>idEdge;
+	protected HashMap<String,String>idNode;
+	protected HashMap<String, String> idEdge;
+	protected HashMap<String, String> idActivity;
+	private int idActvityInc = 0 ;
+		
 	
 	public JwtActivityDiagram(ActivityDiagramAst activityDiagram, String exportFolder, String diagramName) {
 		this.activityDiagram = activityDiagram;
 		this.diagramName = diagramName;
 		this.exportFolder = exportFolder;
 		createActivityDiagram();
-		idEdge = new HashMap<String,Integer>();
-		idNode = new HashMap<String,Integer>();
+		idActivity = new HashMap<String,String>();
+		idEdge = new HashMap<String,String>();
+		idNode = new HashMap<String,String>();
+		initActivity();
 		initNode();		
 		initEdge();
+		this.uniqueID= UUID.randomUUID().toString();
+		proccesActivityDiagram();
 
 		
 	}
+	public void initActivity()
+	{
+		for(PackageableElement packElement :umlmodel.getPackagedElements()){
+			if( packElement instanceof Activity ){						
+				this.idActivity.put(packElement.getName(),getidActivityInc()+"A");
+				idActivityIncrment();
+			}
+	}
+	}
 	public void initEdge()
 	{
+		
 		for(PackageableElement packElement :umlmodel.getPackagedElements()){
 			if( packElement instanceof Activity ){
 				for (ActivityEdge edge : ((Activity) packElement).getEdges())
 				{								
-					this.idEdge.put(edge.getName(), getidEdgeInc());
+					this.idEdge.put(edge.getName(),getidEdgeInc()+"E");
 					idEdgIncment();
 					
 				}
@@ -87,35 +113,47 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	}
 	public void initNode()
 	{
+		String uniqueID = UUID.randomUUID().toString();
+
 		for(PackageableElement packElement :umlmodel.getPackagedElements()){
 			if( packElement instanceof Activity ){
 				for ( ActivityNode nodeA : ((Activity) packElement).getNodes())
 				{								
-					this.idNode.put(nodeA.getName(), getidInc());
+					this.idNode.put(nodeA.getName(), getidInc()+"A");
 					idIncment();					
 				}
 			}
 		}
 	}
+	public void idActivityIncrment()
+	{
+		this.idActvityInc++;
+	}
 	public void idEdgIncment()
 	{
 		this.idEdgeInc ++;
 	}
-	public int getidEdgeInc()
+	public String getidActivityInc()
 	{
-		return this.idEdgeInc;
+		int id = this.idActvityInc;
+		return String.valueOf(id);
+	}
+	public String  getidEdgeInc()
+	{
+		int id = this.idEdgeInc;
+		return String.valueOf(id);
 	}
 	public void idIncment()
 	{
 		this.idInc ++;
 	}
-	public int getidInc()
-	{
-		return this.idInc;
+	public String getidInc()
+	{		
+		int id = this.idInc;
+		return String.valueOf(id);
 	}
 	public void proccesActivityDiagram()
 	{
-		createActivityDiagram();
 		createModel();
 		System.out.println(strWorkflowModel);
 		writeFiles();
@@ -129,7 +167,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		   Resource resource = null;
 		   try {
 		      URI uriUri = URI.createURI(uri);
-		      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("uml", new XMIResourceFactoryImpl());
+		      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 		      resource = (new ResourceSetImpl()).createResource(uriUri);
 		      XMLResource.XMLMap xmlMap = new XMLMapImpl();
 		      xmlMap.setNoNamespacePackage(pack);
@@ -149,13 +187,13 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	   Resource resource = null;
 	   try {
 	      URI uriUri = URI.createURI(uri);
-	      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("uml", new XMIResourceFactoryImpl());
+	      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 	      resource = (new ResourceSetImpl()).createResource(uriUri);
 	      resource.getContents().add(root);
 	      resource.save(null);
 	      System.err.println("Model saved : " + uri);
 	   } catch (Exception e) {
-	      System.out.println("Error Saving the model : " + e);
+	      System.err.println("Error Saving the model : "+e);
 	      e.printStackTrace();
 	   }
 	}
@@ -167,6 +205,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
         Charset charset = Charset.forName("UTF-8");
         try (BufferedWriter writer = Files.newBufferedWriter(wiki_path, charset, StandardOpenOption.CREATE)) {
             writer.write(text);
+            System.err.println("File wrote : " + exportFolder + "/" + fileName);
         } catch (IOException e) {
             System.err.println(e);
         }
@@ -174,53 +213,35 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	
 	public void writeFiles(){
 		writeFile( diagramName+ ".workflow", strWorkflowModel);
-		
 		writeFile( diagramName+ ".workflow_view",getElementPosition());
 	}
 	
 	private void createModel(){
-		String subpackages = getSubPackages();
-		String elements = getElements();
-		strWorkflowModel = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
-			"<core:Model xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:core=\"org.eclipse.jwt/core\" xmlns:data=\"org.eclipse.jwt/data\" xmlns:processes=\"org.eclipse.jwt/processes\" name=\"Workflow\" author=\"jimmymunoz\" version=\"1\" fileversion=\"1.3.0\">\n" + 
-			"  <!--subpackages-->\n" + 
-			subpackages +
-			"  <!--elements-->\n" + 
-			elements +
-			"  <elements xsi:type=\"processes:Activity\" name=\"" +  diagramName + "\"/>\n" + 
-			"</core:Model>\n" + 
-			"";
+		String subpackages = getPackageableElementEntete();
 		
+		String elements = getElements();
+		strWorkflowModel = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+				"<uml:Model xmi:version=\"20131001\" xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\" "
+				+ "xmlns:uml=\"http://www.eclipse.org/uml2/5.0.0/UML\" "
+				+ "xmi:id=\"_R7CvsNt_EeaaoctTxhWGnA\" name=\"RootElement\">\r\n" 
+				+ subpackages +		
+				"</uml:Model>";
+	//	System.out.println("------------------" + strWorkflowModel);
 	}
 	
-	private String getSubPackages(){
-		String str = "<subpackages name=\"Applications\">\n" + 
-				"    <ownedComment text=\"The standard package for applications\"/>\n" + 
-				"  </subpackages>\n" + 
-				"  <subpackages name=\"Roles\">\n" + 
-				"    <ownedComment text=\"The standard package for roles\"/>\n" + 
-				"  </subpackages>\n" + 
-				"  <subpackages name=\"Data\">\n" + 
-				"    <ownedComment text=\"The standard package for data\"/>\n" + 
-				"    <subpackages name=\"Datatypes\">\n" + 
-				"      <ownedComment text=\"The standard package for datatypes\"/>\n" + 
-				"      <subpackages name=\"Package\">\n" + 
-				"        <ownedComment/>\n" + 
-				"      </subpackages>\n" + 
-				"      <elements xsi:type=\"data:DataType\" name=\"URL\"/>\n" + 
-				"      <elements xsi:type=\"data:DataType\" name=\"dioParameter\"/>\n" + 
-				"      <elements xsi:type=\"data:DataType\" name=\"qualifier\"/>\n" + 
-				"      <elements xsi:type=\"data:DataType\" name=\"searchquery\"/>\n" + 
-				"      <elements xsi:type=\"data:DataType\" name=\"filename\"/>\n" + 
-				"      <elements xsi:type=\"data:Data\" name=\"Directory\" icon=\"\" value=\"DirectoryValue\" dataType=\"//@subpackages.2/@subpackages.0/@elements.4\"/>\n" + 
-				"      <elements xsi:type=\"data:DataType\" name=\"URL2\" icon=\"\"/>\n" + 
-				"    </subpackages>\n" + 
-				"    <elements xsi:type=\"data:Data\" name=\"Test\" icon=\"\" value=\"test\" dataType=\"//@subpackages.2/@subpackages.0/@elements.0\"/>\n" + 
-				"    <elements xsi:type=\"data:Data\" name=\"Browser Data\" icon=\"\" value=\"http://xxxxxx.com\" dataType=\"//@subpackages.2/@subpackages.0/@elements.6\"/>\n" + 
-				"  </subpackages>";
-		return str;
-	}
 	
+	
+	public String getEdgeType(ActivityEdge nodeA){
+		String result = "";
+		if( nodeA instanceof ControlFlow ){
+			result = "ControlFlow";
+		}
+		else if( nodeA instanceof ObjectFlow ){
+			result = "ObjectFlow";
+		}
+	
+		return result;
+	}
 	public String getNodeType(ActivityNode nodeA){
 		String result = "";
 		if( nodeA instanceof DecisionNode ){
@@ -258,12 +279,10 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	public String getOutNode(ActivityNode node)
 	{
 		String result = "";
-		EList<ActivityEdge> outedges = node.getOutgoings();
-		// <nodes xsi:type=\"processes:DecisionNode\" name=\"Condition\" in=\"//@elements.0/@edges.5\" 
-		//out=\"//@elements.0/@edges.3 //@elements.0/@edges.4\"/>
-		
+		EList<ActivityEdge> outedges = node.getOutgoings();		
 		for ( ActivityEdge outedge : outedges)
 		{
+			// <node xmi:type="uml:OpaqueAction" xmi:id="_WgaYUNt_EeaaoctTxhWGnA" name="OpaqueAction1" incoming="_Y9KuoNt_EeaaoctTxhWGnA"/>
 			result = String.valueOf(idEdge.get(outedge.getName()));
 			
 			
@@ -312,6 +331,44 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		
 		return  String.valueOf((idNode.get(name)));
 	}
+	public String getIdNode(String nodeName)
+	{
+		return idNode.get(nodeName);
+	}
+	public String getIdEdge(String edgeName)
+	{
+		return idEdge.get(edgeName);
+	}
+	
+	public String getPackageableElementEntete()
+	{
+		String packageElement =	"";
+		String listnodeEdge = getElements();		
+		for(PackageableElement activity : umlmodel.getPackagedElements()){
+			
+			if(activity instanceof Activity){
+				System.out.println(activity.getName());
+				String id = idActivity.get(activity.getName());
+				String name = activity.getName();
+				String listnodes  = getIdNodOfActivity((Activity)activity);
+				packageElement += "<packagedElement xmi:type=\"uml:Activity\" xmi:id=\""+ id + "\" name=\""+ name + "\" " + "node=\""+listnodes+ "\">\n";
+				packageElement += listnodeEdge + "\n";
+				//packageElement += listEdges + "\n";
+				packageElement += "</packagedElement>\n";
+			}
+		}
+		System.out.println(packageElement);
+		return packageElement;
+		
+	}
+	public String getIdNodOfActivity(Activity activty )
+	{
+		String node ="";
+		for ( ActivityNode nodeA : activty.getNodes() ){
+			node+= getIdNode(nodeA.getName()) + " ";
+		}
+		return node;
+	}
 	
 	private String getElements(){
 		
@@ -325,13 +382,17 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 					String out = " ";					
 					if(! getInNode(nodeA).equals("") )
 					{
-						in = " in=\"//@elements.0/@edges."+getInNode(nodeA) +"\" ";
+//<node xmi:type="uml:OpaqueAction" xmi:id="_WgaYUNt_EeaaoctTxhWGnA"
+//name="OpaqueAction1" incoming="_Y9KuoNt_EeaaoctTxhWGnA"/>						
+						in = " incoming=\"" +getInNode(nodeA) +"\" ";
 					}
 					if(! getOutNode(nodeA).equals("") )
 					{
-						out = "out=\"//@elements.0/@edges."+ getOutNode(nodeA)+ "\" ";
+//outgoing="_Y9KuoNt_EeaaoctTxhWGnA"/>						
+						out = "outgoing=\"" + getOutNode(nodeA)+ "\" ";
 					}
-					nodesStr += "	<nodes xsi:type=\"processes:" + getNodeType(nodeA) + "\" name=\""+ nodeA.getName() +"\""+
+// <node xmi:type="uml:OpaqueAction" xmi:id="_WgaYUNt_EeaaoctTxhWGnA" name="OpaqueAction1" incoming="_Y9KuoNt_EeaaoctTxhWGnA"/>					
+					nodesStr += "	<nodes xmi:type=\"uml:" + getNodeType(nodeA) + "\" xmi:id=\""+ getIdNode(nodeA.getName()) +"\" name=\""+ nodeA.getName() +"\""+
 							 in +  ""+ out + "/>" + "\n";											
 				}
 				for (ActivityEdge edge : ((Activity) packElement).getEdges())
@@ -339,44 +400,26 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 					
 					String source ="";
 					String target = "";
-					if(!getIdNodeEdge(edge.getTarget().getName()).equals(""))
+					if(!getIdNode(edge.getTarget().getName()).equals(""))
 					{
-						target = " target=\"//@element.0/@nodes."+ getIdNodeEdge(edge.getTarget().getName())+"\" ";
+//   <edge xmi:type="uml:ControlFlow" xmi:id="_Y9KuoNt_EeaaoctTxhWGnA" target="_WgaYUNt_EeaaoctTxhWGnA"
+						//source="_TyUaYNt_EeaaoctTxhWGnA"/>					
+						
+						target = "target=\""+ getIdNode(edge.getTarget().getName())+"\" ";
 					}
-					if(!getIdNodeEdge(edge.getSource().getName()).equals(""))
-					{
-						source = " source=\"//@elements.0/@nodes."+ getIdNodeEdge(edge.getSource().getName()) + "\" ";
+					if(!getIdNode(edge.getSource().getName()).equals(""))
+					{ 
+						source = getIdNode(edge.getSource().getName()) + "\" ";
 					}
-					//"    <edges source=\"//@elements.0/@nodes.4\" target=\"//@elements.0/@nodes.5\"/>\n" +
-					nodesStr += "	<edges"+ source + "" + target +"/>"+"\n";
+					 //<edge xmi:type="uml:ControlFlow" xmi:id="_Y9KuoNt_EeaaoctTxhWGnA" target="_WgaYUNt_EeaaoctTxhWGnA"
+					nodesStr += "	<edges xmi:type=\"uml:"+ getEdgeType(edge) + "\" xmi:id=\"" + getIdEdge(edge.getName()) +"\" source=\"" + source + "" + target +"/>"+"\n";
 				}
 			}
 			
 		}
-		String str = "" +
-				" <elements xsi:type=\"processes:Activity\" name=\"VisitorWorkflowDiagram1\">\n" + 
-				"    <ownedComment text=\"This is a basic activity\"/>\n" + 
-				"    <nodes xsi:type=\"processes:InitialNode\" name=\"Test\" out=\"//@elements.0/@edges.0\"/>\n" + 
-				"    <nodes xsi:type=\"processes:FinalNode\" in=\"//@elements.0/@edges.1\"/>\n" + 
-				"    <nodes xsi:type=\"processes:Action\" name=\"Action\" in=\"//@elements.0/@edges.0\" out=\"//@elements.0/@edges.2\"/>\n" + 
-				"    <nodes xsi:type=\"processes:StructuredActivityNode\" in=\"//@elements.0/@edges.2\" out=\"//@elements.0/@edges.5\">\n" + 
-				"      <nodes xsi:type=\"processes:Action\" name=\"Subprocess1\" out=\"//@elements.0/@nodes.3/@edges.0\"/>\n" + 
-				"      <nodes xsi:type=\"processes:Action\" name=\"Subproccess2\" in=\"//@elements.0/@nodes.3/@edges.0\"/>\n" + 
-				"      <edges source=\"//@elements.0/@nodes.3/@nodes.0\" target=\"//@elements.0/@nodes.3/@nodes.1\"/>\n" + 
-				"    </nodes>\n" + 
-				nodesStr + "\n" + 
-				"    <nodes xsi:type=\"processes:DecisionNode\" name=\"Condition\" in=\"//@elements.0/@edges.5\" out=\"//@elements.0/@edges.3 //@elements.0/@edges.4\"/>\n" + 
-				"    <nodes xsi:type=\"processes:Action\" name=\"YesProcess\" in=\"//@elements.0/@edges.3\" out=\"//@elements.0/@edges.1\" inputs=\"//@subpackages.2/@subpackages.0/@elements.5 //@subpackages.2/@elements.1\" outputs=\"//@subpackages.2/@subpackages.0/@elements.5\"/>\n" + 
-				"    <nodes xsi:type=\"processes:Action\" name=\"NoProcess\" in=\"//@elements.0/@edges.4\"/>\n" + 
-				"    <edges source=\"//@elements.0/@nodes.0\" target=\"//@elements.0/@nodes.2\"/>\n" + 
-				"    <edges source=\"//@elements.0/@nodes.5\" target=\"//@elements.0/@nodes.1\"/>\n" + 
-				"    <edges source=\"//@elements.0/@nodes.2\" target=\"//@elements.0/@nodes.3\"/>\n" + 
-				"    <edges source=\"//@elements.0/@nodes.4\" target=\"//@elements.0/@nodes.5\"/>\n" + 
-				"    <edges source=\"//@elements.0/@nodes.4\" target=\"//@elements.0/@nodes.6\"/>\n" + 
-				"    <edges source=\"//@elements.0/@nodes.3\" target=\"//@elements.0/@nodes.4\"/>\n" + 
-				"  </elements>\n"
-				+ "";
-		return str;
+		
+			
+		return nodesStr;
 	}
 	
 	public String getElementPosition()
@@ -396,6 +439,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 			if( packElement instanceof Activity ){
 				for ( ActivityNode nodeA : ((Activity) packElement).getNodes())
 				{								
+					
 					pos += "	    <layoutData viewid=\"Technical\" x=\"210\" y=\""+ valuey + "\" initialized=\"true\">\r\n" + 
 							"	    <describesElement href=\"MyDiagram.workflow#//@elements.0/@nodes."+getIdNode().get(nodeA.getName()) +"\"/>\r\n" + 
 							
@@ -424,34 +468,35 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 	public void setIdEdgeInc(int idEdgeInc) {
 		this.idEdgeInc = idEdgeInc;
 	}
-	public HashMap<String, Integer> getIdNode() {
+	public HashMap<String, String> getIdNode() {
 		return idNode;
 	}
-	public void setIdNode(HashMap<String, Integer> idNode) {
+	public void setIdNode(HashMap<String, String> idNode) {
 		this.idNode = idNode;
 	}
-	public HashMap<String, Integer> getIdEdge() {
+	public HashMap<String, String> getIdEdge() {
 		return idEdge;
 	}
-	public void setIdEdge(HashMap<String, Integer> idEdge) {
+	public void setIdEdge(HashMap<String, String> idEdge) {
 		this.idEdge = idEdge;
 	}
+	
 	private void createActivityDiagram() {
-		Model m = UMLFactory.eINSTANCE.createModel();
+		umlmodel = UMLFactory.eINSTANCE.createModel();
 		
-		Activity parentActivity = (Activity) m.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
+		Activity parentActivity = (Activity) umlmodel.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
 		//ActivityNode a2 = (ActivityNode) parentActivity.createOwnedNode("A2", UMLPackage.eINSTANCE.getActivityNode());
-		Activity a3 = (Activity) m.createPackagedElement("A3", UMLPackage.eINSTANCE.getActivity());	
-		
+		Activity a3 = (Activity) umlmodel.createPackagedElement("A3", UMLPackage.eINSTANCE.getActivity());	
+		//createmodelTest();
 		//	cba2.setName("Activity2");
 		//ForkNode fn = (ForkNode) parentActivity.createOwnedNode("A3", UMLPackage.eINSTANCE.getForkNode());
 		/*--------------------------------*/
-		
+		/*umlmodel.setName("ModeleDiagrammeDactivite");
 		StructuredActivityNode ln =  (StructuredActivityNode) parentActivity.createOwnedNode("A3", UMLPackage.eINSTANCE.getStructuredActivityNode());
 		OpaqueAction cba2 = (OpaqueAction) (ln).createNode("model",UMLPackage.eINSTANCE.getOpaqueAction());				
 		DecisionNode decisionstructurednode = (DecisionNode) parentActivity.createOwnedNode("1<0",UMLPackage.eINSTANCE.getDecisionNode());
 		decisionstructurednode.setName("decisionstructurednode");
-		ln.getNodes().add(decisionstructurednode);
+		ln.getNodes().add(decisionstructurednode);*/
 		
 		
 		
@@ -571,8 +616,7 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		
 	//	printAction.getOutputs().add(outputpin);
 		//printAction.inputParameters().add((Parameter) inputpin);
-		umlmodel = m;
-		//saveModel("model/ActivityModelResult.uml", m);
+		saveModel("model/ActivityModelResult.xmi", umlmodel);
 		
 		/*
 		ActiviInputty parentActivity = (Activity) m.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
@@ -605,5 +649,44 @@ public class JwtActivityDiagram implements IDiagramGenerator {
 		UMLModeler.getUMLDiagramHelper().openDiagramEditor(d);
 		*/
 	}
+	public String getUniqueID() {
+		return uniqueID;
+	}
+	public void setUniqueID(String uniqueID) {
+		this.uniqueID = uniqueID;
+	}
+	
+	 public void createmodelTest()
+	 
+	 {
+		 ModelSet modelSet = new ModelSet();
+
+		 ModelsReader reader = new ModelsReader(); //Standard ModelsReader for Di + UML + Notation
+		 reader.readModel(modelSet);
+
+	      modelSet.createModels(URI.createPlatformResourceURI("model/model.uml", true)); //Use an EMF URI instead of an Eclipse IFile
+		 ServicesRegistry registry = null;
+		try {
+			registry = new ExtensionServicesRegistry(org.eclipse.papyrus.infra.core.Activator.PLUGIN_ID);
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 try {
+		 	registry.add(ModelSet.class, Integer.MAX_VALUE, modelSet);
+		 	registry.startRegistry();
+		 } catch (ServiceException ex) {
+		 	//Ignore
+		 }
+
+		 //IModelCreationCommand creationCommand = new CreateUMLModelCommand();
+		 //creationCommand.createModel(modelSet);
+		 try {
+			modelSet.save(new NullProgressMonitor());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	 }
 	
 }
