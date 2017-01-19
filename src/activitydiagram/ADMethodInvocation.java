@@ -44,6 +44,7 @@ public class ADMethodInvocation extends ADNode {
 		return methodName;
 	}
 	public void setMethodName(String methodName) {
+		this.displayInstruction  = methodName;
 		this.methodName = methodName;
 	}
 	public String getMethodNameWithVars() {

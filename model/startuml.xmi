@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.0" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+	<xmi:Documentation exporter="StarUML" exporterVersion="2.0"/>
+	<uml:Model xmi:id="AAAAAAFZpFPRvMkU5GA=" xmi:type="uml:Model" name="RootModel">
+		<packagedElement xmi:id="AAAAAAFF+qBWK6M3Z8Y=" name="Model" visibility="public" xmi:type="uml:Model">
+			<packagedElement xmi:id="AAAAAAFZpBCE/MYcDEI=" name="Class1" visibility="public" isAbstract="false" isFinalSpecialization="false" isLeaf="false" xmi:type="uml:Class" isActive="false">
+				<ownedMember xmi:id="AAAAAAFZpBRWHsZHCV0=" name="Activity1" visibility="public" isReentrant="true" xmi:type="uml:Activity" isReadOnly="false" isSingleExecution="false">
+					<node xmi:id="AAAAAAFZpBaQFMZMMvM=" name="Action1" visibility="public" xmi:type="uml:OpaqueAction" isLocallyReentrant="false" isSynchronous="true"/>
+					<node xmi:id="AAAAAAFZpBap5sZl8hI=" name="InitialNode1" visibility="public" xmi:type="uml:InitialNode"/>
+				</ownedMember>
+			</packagedElement>
+		</packagedElement>
+		<packagedElement xmi:id="AAAAAAFZpBhwb8ZsJOI=" name="XMIImported" visibility="public" xmi:type="uml:Model">
+			<packagedElement xmi:id="AAAAAAFZpBdcy8Zru2E=" name="RootModel" visibility="public" xmi:type="uml:Model">
+				<packagedElement xmi:id="AAAAAAFF+qBWK6M3Z8Y=" name="Model" visibility="public" xmi:type="uml:Model">
+					<packagedElement xmi:id="AAAAAAFZpBCE/MYcDEI=" name="Class1" visibility="public" isAbstract="false" isFinalSpecialization="false" isLeaf="false" xmi:type="uml:Class" isActive="false">
+						<ownedMember xmi:id="AAAAAAFZpBRWHsZHCV0=" name="Activity1" visibility="public" isReentrant="true" xmi:type="uml:Activity" isReadOnly="false" isSingleExecution="false">
+							<node xmi:id="AAAAAAFZpBaQFMZMMvM=" name="Action1" visibility="public" xmi:type="uml:OpaqueAction" isLocallyReentrant="false" isSynchronous="true"/>
+							<node xmi:id="AAAAAAFZpBap5sZl8hI=" name="InitialNode1" visibility="public" xmi:type="uml:InitialNode"/>
+						</ownedMember>
+					</packagedElement>
+				</packagedElement>
+			</packagedElement>
+			<packagedElement xmi:id="AAAAAAFZpBlwosZ+2xk=" name="Activity1" visibility="public" isReentrant="true" xmi:type="uml:Activity" isReadOnly="false" isSingleExecution="false"/>
+		</packagedElement>
+		<packagedElement xmi:id="AAAAAAFZpBjiEcZ1bj4=" name="XMIImported" visibility="public" xmi:type="uml:Model">
+			<packagedElement xmi:id="AAAAAAFZpBdcy8Zru2E=" name="RootModel" visibility="public" xmi:type="uml:Model">
+				<packagedElement xmi:id="AAAAAAFF+qBWK6M3Z8Y=" name="Model" visibility="public" xmi:type="uml:Model">
+					<packagedElement xmi:id="AAAAAAFZpBCE/MYcDEI=" name="Class1" visibility="public" isAbstract="false" isFinalSpecialization="false" isLeaf="false" xmi:type="uml:Class" isActive="false">
+						<ownedMember xmi:id="AAAAAAFZpBRWHsZHCV0=" name="Activity1" visibility="public" isReentrant="true" xmi:type="uml:Activity" isReadOnly="false" isSingleExecution="false">
+							<node xmi:id="AAAAAAFZpBaQFMZMMvM=" name="Action1" visibility="public" xmi:type="uml:OpaqueAction" isLocallyReentrant="false" isSynchronous="true"/>
+							<node xmi:id="AAAAAAFZpBap5sZl8hI=" name="InitialNode1" visibility="public" xmi:type="uml:InitialNode"/>
+							<edge xmi:id="AAAAAAFZpBpA5caheI8=" visibility="public" source="AAAAAAFZpBap5sZl8hI=" target="AAAAAAFZpBaQFMZMMvM=" xmi:type="uml:ControlFlow"/>
+						</ownedMember>
+					</packagedElement>
+				</packagedElement>
+			</packagedElement>
+		</packagedElement>
+		<packagedElement xmi:id="AAAAAAFZpEgym8dcFcM=" name="XMIImported" visibility="public" xmi:type="uml:Model">
+			<packagedElement xmi:id="AAAAAAFZpBdcy8Zru2E=" name="RootModel" visibility="public" xmi:type="uml:Model">
+				<packagedElement xmi:id="AAAAAAFF+qBWK6M3Z8Y=" name="Model" visibility="public" xmi:type="uml:Model"/>
+			</packagedElement>
+			<packagedElement xmi:id="AAAAAAFZpE3IW8egRvY=" name="Activity1" visibility="public" isReentrant="true" xmi:type="uml:Activity" isReadOnly="false" isSingleExecution="false">
+				<node xmi:id="AAAAAAFZpE3tmselIZU=" name="InitialNode1" visibility="public" xmi:type="uml:InitialNode"/>
+				<node xmi:id="AAAAAAFZpE5wK8eq4Nw=" name="Action1" visibility="public" xmi:type="uml:OpaqueAction" isLocallyReentrant="false" isSynchronous="true"/>
+				<node xmi:id="AAAAAAFZpE6FosfDtZU=" name="DecisionNode1" visibility="public" xmi:type="uml:DecisionNode"/>
+				<node xmi:id="AAAAAAFZpE6aGMfIFkA=" name="Action2" visibility="public" xmi:type="uml:OpaqueAction" isLocallyReentrant="false" isSynchronous="true"/>
+				<node xmi:id="AAAAAAFZpE7S4Mfhr64=" name="Action3" visibility="public" xmi:type="uml:OpaqueAction" isLocallyReentrant="false" isSynchronous="true">
+					<input xmi:id="AAAAAAFZpFAfGMhnRCU=" name="InputPin1" visibility="public" isStatic="false" isLeaf="false" isReadOnly="false" isOrdered="false" isUnique="false" xmi:type="uml:InputPin"/>
+					<output xmi:id="AAAAAAFZpFAsi8h43L8=" name="OutputPin1" visibility="public" isStatic="false" isLeaf="false" isReadOnly="false" isOrdered="false" isUnique="false" xmi:type="uml:OutputPin"/>
+				</node>
+				<node xmi:id="AAAAAAFZpE71F8f6/qk=" name="MergeNode1" visibility="public" xmi:type="uml:MergeNode"/>
+				<node xmi:id="AAAAAAFZpFBNtsiJFKI=" name="FlowFinalNode1" visibility="public" xmi:type="uml:FlowFinalNode"/>
+				<node xmi:id="AAAAAAFZpFLhEsj5+9U=" name="Action4" visibility="public" xmi:type="uml:OpaqueAction" isLocallyReentrant="false" isSynchronous="true"/>
+				<edge xmi:id="AAAAAAFZpE8t28gBLCU=" visibility="public" source="AAAAAAFZpE3tmselIZU=" target="AAAAAAFZpE5wK8eq4Nw=" xmi:type="uml:ControlFlow"/>
+				<edge xmi:id="AAAAAAFZpE8698gS0Jg=" visibility="public" source="AAAAAAFZpE5wK8eq4Nw=" target="AAAAAAFZpE6FosfDtZU=" xmi:type="uml:ControlFlow"/>
+				<edge xmi:id="AAAAAAFZpE9IycgjvYM=" visibility="public" source="AAAAAAFZpE6FosfDtZU=" target="AAAAAAFZpE7S4Mfhr64=" xmi:type="uml:ControlFlow"/>
+				<edge xmi:id="AAAAAAFZpE9XTMg0NUk=" visibility="public" source="AAAAAAFZpE6FosfDtZU=" target="AAAAAAFZpE6aGMfIFkA=" xmi:type="uml:ControlFlow"/>
+				<edge xmi:id="AAAAAAFZpE9m6shFHK4=" visibility="public" source="AAAAAAFZpE7S4Mfhr64=" target="AAAAAAFZpE71F8f6/qk=" xmi:type="uml:ControlFlow"/>
+				<edge xmi:id="AAAAAAFZpE91bshWPRA=" visibility="public" source="AAAAAAFZpE6aGMfIFkA=" target="AAAAAAFZpE71F8f6/qk=" xmi:type="uml:ControlFlow"/>
+				<edge xmi:id="AAAAAAFZpFIt6cjASZE=" visibility="public" source="AAAAAAFZpE71F8f6/qk=" target="AAAAAAFZpFH6Lsin2DA=" xmi:type="uml:ControlFlow"/>
+				<edge xmi:id="AAAAAAFZpFJNHMjSOWs=" visibility="public" source="AAAAAAFZpFH6Lsin2DA=" target="AAAAAAFZpFBNtsiJFKI=" xmi:type="uml:ControlFlow"/>
+			</packagedElement>
+		</packagedElement>
+	</uml:Model>
+</xmi:XMI>

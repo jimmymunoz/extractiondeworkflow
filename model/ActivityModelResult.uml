@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><uml:Model xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0">
+  <packagedElement name="A0" node="N8 N3 N10 N4 N2 N0 N9 N1 N5 N6 N7 " xmi:id="P0" xmi:type="uml:Activity">
+    <edge name="edge.0" source="//A0/z%20%3C%2010" target="//A0/z%20%3C%2010" xmi:id="E0" xmi:type="uml:ControlFlow"/>
+    <edge name="edge.1" target="//A0/sum(int%20z,int%20x):int" xmi:id="E1" xmi:type="uml:ControlFlow"/>
+    <edge name="edge.2" source="//A0/z%20%3C%205" target="//A0/z%20%3C%205" xmi:id="E2" xmi:type="uml:ControlFlow"/>
+    <edge name="edge.1" target="//A0/sum(int%20x,int%20y):int" xmi:id="E3" xmi:type="uml:ControlFlow"/>
+    <edge name="edge.1" target="//A0/sum(int%20z,int%20z):int" xmi:id="E4" xmi:type="uml:ControlFlow"/>
+    <edge name="edge.3" source="//A0/mergeNode%20(z%20%3C%205)" target="//A0/mergeNode%20(z%20%3C%205)" xmi:id="E5" xmi:type="uml:ControlFlow"/>
+    <edge name="edge.4" target="//A0/multiply(int%20x,int%20y):int" xmi:id="E6" xmi:type="uml:ControlFlow"/>
+    <edge name="edge.5" source="//A0/mergeNode%20(z%20%3C%2010)" target="//A0/mergeNode%20(z%20%3C%2010)" xmi:id="E7" xmi:type="uml:ControlFlow"/>
+    <edge source="//A0/@ownedNode.9" target="//A0/@ownedNode.9" xmi:id="E8" xmi:type="uml:ControlFlow"/>
+    <variable name="args"/>
+    <node name="init" xmi:id="N0" xmi:type="uml:InitialNode"/>
+    <node incoming="E0" name="z &lt; 10" outgoing="E0" xmi:id="N1" xmi:type="uml:DecisionNode"/>
+    <node incoming="E4" name="sum(int z,int x):int" xmi:id="N2" xmi:type="uml:OpaqueAction">
+      <inputValue xmi:id="IN0" xmi:type="uml:InputPin"/>
+      <outputValue/>
+    </node>
+    <node incoming="E2" name="z &lt; 5" outgoing="E2" xmi:id="N3" xmi:type="uml:DecisionNode"/>
+    <node incoming="//A0/edge.1.1" name="sum(int x,int y):int" xmi:id="N4" xmi:type="uml:OpaqueAction">
+      <inputValue xmi:id="IN1" xmi:type="uml:InputPin"/>
+      <outputValue/>
+    </node>
+    <node incoming="//A0/edge.1.2" name="sum(int z,int z):int" xmi:id="N5" xmi:type="uml:OpaqueAction">
+      <inputValue xmi:id="IN2" xmi:type="uml:InputPin"/>
+      <outputValue/>
+    </node>
+    <node incoming="E5" name="mergeNode (z &lt; 5)" outgoing="E5" xmi:id="N6" xmi:type="uml:MergeNode"/>
+    <node incoming="E6" name="multiply(int x,int y):int" xmi:id="N7" xmi:type="uml:OpaqueAction">
+      <inputValue xmi:id="IN3" xmi:type="uml:InputPin"/>
+      <outputValue/>
+    </node>
+    <node incoming="E7" name="mergeNode (z &lt; 10)" outgoing="E7" xmi:id="N8" xmi:type="uml:MergeNode"/>
+    <node incoming="//A0/@edge.8" outgoing="//A0/@edge.8" xmi:id="N9" xmi:type="uml:ActivityFinalNode"/>
+  </packagedElement>
+  <packagedElement name="A1" node="N8 N3 N10 N4 N2 N0 N9 N1 N5 N6 N7 " xmi:id="P1" xmi:type="uml:Activity">
+    <variable name="x"/>
+    <variable name="y"/>
+  </packagedElement>
+  <packagedElement name="A2" node="N8 N3 N10 N4 N2 N0 N9 N1 N5 N6 N7 " xmi:id="P2" xmi:type="uml:Activity">
+    <edge name="edge.1" target="//A2/sum(int%20result,int%20num):int" xmi:id="E9" xmi:type="uml:ControlFlow"/>
+    <variable name="num"/>
+    <variable name="factor"/>
+    <node incoming="E9" name="sum(int result,int num):int" xmi:id="N10" xmi:type="uml:OpaqueAction">
+      <inputValue xmi:id="IN4" xmi:type="uml:InputPin"/>
+      <outputValue/>
+    </node>
+  </packagedElement>
+</uml:Model>
