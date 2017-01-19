@@ -32,34 +32,25 @@ public class Main {
 	public static final String entryClass = "Main";
 	public static final String entryMethod = "main";
 	
-
 	
 	public static void main(String[] args) throws IOException
 	{
-		/*Menu m =new Menu();
-		   javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			      public void run() {
-			        Menu.createAndShowGUI();
-			      }
-			    });*/
+		Menu m =new Menu();
+			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					Menu.createAndShowGUI();
+				}
+	    });
 			  
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
-		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
+		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram, "model/ActivityModelResult.xmi");
 		//activityDiagramModel.getUmlmodel();
-		/*
-		JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
-		*/
-		try {
-			PapyrusTransformation Ptrans = new PapyrusTransformation();
-		} catch (XPathExpressionException | SAXException | ParserConfigurationException
-				| TransformerFactoryConfigurationError | TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		PapyrusTransformation Ptrans = new PapyrusTransformation(activityDiagramModel.getFileModelPathSave(),"model/ActivityModelResult.uml");
+		
+		//JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
 		//diagramParser.proccesActivityDiagram();
 		//activityDiagram.testClassDiagram();
-		/**/
 	}
 
 }

@@ -1,18 +1,9 @@
 package activitydiagram;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.emf.*;
-import org.eclipse.emf.common.util.*;
-import org.eclipse.emf.ecore.*;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMLMapImpl;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -47,8 +38,6 @@ public class ActivityDiagramAst
 		this.entryMethodObj = getEntryPoint();
 		this.hashNodes = new HashMap<String, Map<Integer, ADNode>>();
 		mergeInvocationsAndConditions();
-		//this.hashConditions = new HashMap<String, HashMap<Integer, ADCondition>>();
-		//setMethodHashMap();
 	}
 	
 	public Map<String, Map<Integer, ADNode>> getHashNodes() {
@@ -120,10 +109,7 @@ public class ActivityDiagramAst
 		    	
 		    	ADInstruction tmpInstruction = new ADInstruction(methodInvData, methodInvDataVars, "call", pos, -1);
 			    tmphashInsObj.put(pos, tmpInstruction);
-			    //System.out.println("	--  key :" + key + " key2 " + pos + " INstruction -> "  + tmpInstruction.getDisplayInstruction() + " parent:" + tmpInstruction.getPosParent() );
-				
-		    }
-		    
+			}
 		    hashInstructionsList.put(key, tmphashInsObj);
 		    this.hashNodes.put(key, tmphash);
 		}
@@ -138,18 +124,13 @@ public class ActivityDiagramAst
 				tmphashInsObj = new TreeMap<Integer, ADInstruction>();
 			}
 			
-			Integer lastpos = 0;
 			for( Integer keypos : condition.keySet()){
-				lastpos = keypos;
 				ADCondition adCondition = condition.get(keypos);
 				Map<Integer, ADNode> tmphash = hashNodes.get(key);//get Exsisteing Hash
 				
-				//System.out.println("	--  key :" + key + " key2 Condition -> "  + adCondition.getConditionExpression() + " parent:" + adCondition.getStartParentPosition());
 				int posIf = condition.get(keypos).getStartPosition();
 				tmphash.put(posIf, adCondition);
 				
-				//
-				//System.out.println("	- ifcond: (" + adCondition.getConditionExpression() + ") pos:" + keypos);
 				ADInstructionIf tmpInstruction = new ADInstructionIf(adCondition.getConditionExpression(), adCondition.getConditionExpression(), "if", keypos, -1);
 			    
 				int iThen = 0;
@@ -161,7 +142,6 @@ public class ActivityDiagramAst
 					String thenInstruction = adCondition.getThenStatements().get(posThen);
 					ADInstruction tmpInstruction2 = new ADInstruction(thenInstruction, adCondition.getThenStatementsWithVars().get(posThen), "call", posThen, -1);
 					tmpInstruction2.setFlotType("then");
-					//System.out.println("	- varscond: " + thenInstruction + " pos:" + posThen + "	thenInstruction - parentif: " + adCondition.getPosParent() );
 					if(iThen == 1){
 						firstThenPos = posThen;
 						tmpInstruction2.setPosParent(posIf);
@@ -207,14 +187,11 @@ public class ActivityDiagramAst
 				hashInstructionsList.put(key, tmphashInsObj);
 				hashNodes.put(key, tmphash);
 			}
-			
-		    
 		}
+		
 		//Add Init and End
 		addInitAndEndNodes();
-	    
-		addSourcesToHashInstructions();
-		
+	    addSourcesToHashInstructions();
 	}
 
 	private void addInitAndEndNodes() {
@@ -250,17 +227,14 @@ public class ActivityDiagramAst
 	private void addSourcesToHashInstructions() {
 		//Add sources
 		for( String keyclassmethod : this.hashInstructionsList.keySet()){
-			//System.out.println(" * " + keyclassmethod);
 			Map<Integer, ADInstruction> hashInstructionsObjOrdered = new TreeMap<Integer, ADInstruction>(hashInstructionsList.get(keyclassmethod));
 			//get Existing Hash
-			int lastThenPos = 0;
 			int lastElsePos = 0;
 			Integer lastsource = 0;
 			ADInstruction lastInstruction = null;
 			for( Integer pos : hashInstructionsObjOrdered.keySet()){
 				ADInstruction instruction = hashInstructionsObjOrdered.get(pos);
 				instruction.setSource(lastsource);
-				//System.out.println(" 	  instruction :" + instruction.getDisplayInstruction() + " " + instruction.getPosition() + " - " + lastsource);
 				
 				if( lastInstruction != null ){//First then
 					if( lastInstruction.getTypeNode().equals("if") ){
@@ -271,34 +245,16 @@ public class ActivityDiagramAst
 				}
 				if( instruction.isFirstElse ){//First then
 					instruction.setSource(instruction.getPosParent());
-					
-					//ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
-					//ifParent.setFirstPosElse(instruction.getPosition());
-				}
-				if( instruction.isLastThen ){//last then
-					lastThenPos = instruction.getPosition();
-					
-					//ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
-					//ifParent.setLastPosThen(instruction.getPosition());
 				}
 				if( instruction.isLastElse ){//last then
 					lastElsePos = instruction.getPosition();
-					
-					//ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
-					//ifParent.setLastPosElse(instruction.getPosition());
 				}
-				//System.out.println("	- (" + instruction.getFlotType() + ") pos:" + instruction.getPosition());
-				
 				//Important to set last then
 				if( instruction.getFlotType().equals("else") ){
 					ADInstructionIf lastelseParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
-					//System.out.println("		- (" + lastelseParent.getPosition() + " = "+ lastsource);
 					lastelseParent.setLastPosThen(lastsource);
 				}
 				else if( instruction.getTypeNode().equals("merge") ){
-					//ADInstructionIf lastifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(hashInstructionsObjOrdered.get(lastsource).getPosParent());
-					//lastifParent.setFirstPosElse(lastsource);
-					
 					ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
 					instruction.setSource(-1);//Source
 					
@@ -310,40 +266,34 @@ public class ActivityDiagramAst
 						instruction.addListSources(ifParent.getLastPosThen());
 						instruction.addListSources(instruction.getPosParent());
 					}
-					
 					//Restart vars
 					//lastThenPos = 0;
 					lastElsePos = 0;
 				}
-				
 				if(instruction != null)
 					lastsource = instruction.getPosition();
 				
-				
-				
 				lastInstruction = instruction;
-				
 			}
 		}
 	}
 	
 	private void printToHashInstructions() {
-		//Add sources
+		System.out.println("---------- printToHashInstructions() -----------------");
 		for( String keyclassmethod : this.hashInstructionsList.keySet()){
 			Map<Integer, ADInstruction> hashInstructionsObjOrdered = new TreeMap<Integer, ADInstruction>(hashInstructionsList.get(keyclassmethod));
 			//get Existing Hash
-			System.out.println("  + " + keyclassmethod);
+			System.out.println(" + " + keyclassmethod);
 			for( Integer pos : hashInstructionsObjOrdered.keySet()){
 				ADInstruction instruction = hashInstructionsObjOrdered.get(pos);
-				System.out.println("	+ pos:" + pos + " " + instruction.getTypeNode() + " " + instruction.getFlotType() + " - " + instruction.getDisplayInstruction() + " source: " + instruction.getSource() + " parent:" + instruction.getPosParent() );
+				System.out.println("   + pos:" + pos + " " + instruction.getTypeNode() + " " + instruction.getFlotType() + " - " + instruction.getDisplayInstruction() + " source: " + instruction.getSource() + " parent:" + instruction.getPosParent() );
 				if( instruction.getTypeNode().equals("merge") ){
 					System.out.println(" 	  sourceList :" + instruction.getListsources().toString());
 				}
 			}
 		}
-	}
-	
-	
+		System.out.println("---------- end printToHashInstructions() -----------------");
+	}	
 	
 	public void validateClassDiagram()
 	{
@@ -359,9 +309,6 @@ public class ActivityDiagramAst
 	{
 		validateClassDiagram();
 		printToHashInstructions();
-		//printListInvocationMethods(hashInvocationMethods);
-		//MethodDeclaration entryMethod = getEntryPoint(hashClassesMethods);
-		
 	}
 	
 	public String getEntryClass() {
@@ -424,22 +371,20 @@ public class ActivityDiagramAst
 		    String key = entry.getKey();
 		    ADMethodInvocation daMethodInvOb = entry.getValue();
 		    System.out.println("  key: " + key);
-		    //System.out.println("     - params: " +  daMethodInvOb.getMethodNameWithVars());
+		    System.out.println("     - params: " +  daMethodInvOb.getMethodNameWithVars());
 		    
 		    for(String param : daMethodInvOb.getParamList()){
-		    	//System.out.println("   - param: " + param);
+		    	System.out.println("   - param: " + param);
 		    }
 		    
 		    for(String methodInvData : daMethodInvOb.getInvocationMethodList()){
-		    	//System.out.println("	 - " + methodInvData);
+		    	System.out.println("	 - " + methodInvData);
 		    }
 		    for(int i = 0; i< daMethodInvOb.getInvocationMethodListWithVars().size(); i++){
 		    	String methodInvData = daMethodInvOb.getInvocationMethodListWithVars().get(i);
 		    	Integer pos = daMethodInvOb.getInvocationMethodStartPosition().get(i);
 		    	System.out.println("	   - vars: " + methodInvData + " pos: " + pos);
 			}
-		    for(String methodInvData : daMethodInvOb.getInvocationMethodListWithVars()){
-		    }
 		}
 		System.out.println("end printListInvocationMethods ");
 	}
@@ -459,19 +404,9 @@ public class ActivityDiagramAst
 	}
 	
 	public Map<Integer, ADInstruction> getMainHashInstructions(String key){
-		// Map<String, Map<Integer, ADInstruction>> hashInstructionsList
 		return hashInstructionsList.get(key);
 	}
 	
-	private void processEntryMethod()
-	{	
-		String content = entryMethodObj.getBody().toString();
-		System.out.println("Body " + content);
-		//CompilationUnit parse = parse(content.toCharArray());
-		//printMethodInvocationInfo(parse);
-		
-	}
-
 	public Map<String, Map<Integer, ADCondition>> getHashConditions() {
 		return hashConditions;
 	}

@@ -57,9 +57,9 @@ public class ActivityDiagramModel {
 	private HashMap<Integer, StructuredActivityNode> listSubActivities;
 	private HashMap<Integer, ActivityEdge> listEdges;
 	private Map<String, Map<String, ActivityNode>> listNodes;
+	private String fileModelPathSave;
 	
-	
-	public ActivityDiagramModel(ActivityDiagramAst activityDiagram){
+	public ActivityDiagramModel(ActivityDiagramAst activityDiagram, String fileModelPathSave){
 		listIdsActivities = new HashMap<String, Integer>();
 		listIdsNodes = new HashMap<String, Integer>();
 		listIdsEdges = new HashMap<String, Integer>();
@@ -68,7 +68,16 @@ public class ActivityDiagramModel {
 		listEdges = new HashMap<Integer, ActivityEdge>();
 		listNodes = new HashMap<String, Map<String, ActivityNode>>();
 		this.activityDiagram = activityDiagram;
+		this.fileModelPathSave = fileModelPathSave;
 		createActivityDiagram();
+	}
+	
+	public String getFileModelPathSave() {
+		return fileModelPathSave;
+	}
+
+	public void setFileModelPathSave(String fileModelPathSave) {
+		this.fileModelPathSave = fileModelPathSave;
 	}
 	
 	private Integer getIdActivity(String key){
@@ -118,13 +127,6 @@ public class ActivityDiagramModel {
 	private void createActivityDiagram() {
 		System.out.println("---------- createActivityDiagram() -----------------");
 		umlModel = UMLFactory.eINSTANCE.createModel();
-		/*
-		Resource resource = loadModel("model/model_empty.uml", UMLPackage.eINSTANCE);
-		if (resource == null) 
-			System.err.println("Error Loading model");
-		umlModel = (Model) resource.getContents().get(0);
-		*/
-		//Instruction récupérant le modèle sous forme d'arbre à partir de la classe racine "Model"
 		
 		Integer idNode = getIdNode("init");
 		Integer idActivity = getIdActivity("MainActivity");
@@ -137,12 +139,6 @@ public class ActivityDiagramModel {
 		ADMethodInvocation daMethodInvOb = activityDiagram.getActivityInstructions(mainKey);
 		
 		getListVariablesByParams(parentActivity, daMethodInvOb);
-		
-		//InitialNode initialNode = (InitialNode) parentActivity.createOwnedNode("init",UMLPackage.eINSTANCE.getInitialNode());
-		
-		//listNodes.get(idActivity+"").put("init", initialNode);
-		//parentActivity.getNodes().add(initialNode);
-		//listActivities.put(idActivity, parentActivity);
 		
 		NamedElement tmparentActivity = proccessActivityInstructions(mainHashInstructions, idNode, idActivity);
 		if( tmparentActivity instanceof Activity ){
@@ -165,150 +161,8 @@ public class ActivityDiagramModel {
 			System.out.println("i " + i + " -> " + parentActivity.getOwnedNodes().get(i).toString() );
 		}
 		*/
-		saveModel("model/ActivityModelResult.xmi", umlModel);
-		
-		
-		/*
-		//ActivityNode a2 = (ActivityNode) parentActivity.createOwnedNode("A2", UMLPackage.eINSTANCE.getActivityNode());
-		Activity a3 = (Activity) umlModel.createPackagedElement("A3", UMLPackage.eINSTANCE.getActivity());	
-		
-		//	cba2.setName("Activity2");
-		//ForkNode fn = (ForkNode) parentActivity.createOwnedNode("A3", UMLPackage.eINSTANCE.getForkNode());
-		
-		StructuredActivityNode ln =  (StructuredActivityNode) parentActivity.createOwnedNode("A3", UMLPackage.eINSTANCE.getStructuredActivityNode());
-		CallBehaviorAction cba2 = (CallBehaviorAction) (ln).createNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());				
-		DecisionNode decisionstructurednode = (DecisionNode) parentActivity.createOwnedNode("1<0",UMLPackage.eINSTANCE.getDecisionNode());
-		decisionstructurednode.setName("decisionstructurednode");
-		ln.getNodes().add(decisionstructurednode);
-		
-		
-		//parentActivity.getNodes().add(a3);
-		
-		
-		//parentActivity.createOwnedNode("a3",a3);
-		/*CallBehaviorAction actionactivite2 = (CallBehaviorAction) a3.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
-		actionactivite2.setBehavior(a3);
-		
-		
-		ControlFlow init = (ControlFlow) a3.createEdge("edgeinit",UMLPackage.eINSTANCE.getControlFlow());
-		init.setSource(cba2);
-		init.setTarget(actionactivite2);
-		
-		CallBehaviorAction sumActionA3 = (CallBehaviorAction) a3.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
-		
-		//Process p = (Process) m.createPackagedElement("A1", UMLPackage.eINSTANCE.get());
-		
-		
-		
-		//parentActivity.createOwnedNode("A3",UMLPackage.eINSTANCE.getActivity());
-		//Activity parentActivity =  UMLFactory.eINSTANCE.createActivity(); // m.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
-		
-			
-		//CallBehaviorAction sumAction = UMLFactory.eINSTANCE.createCallBehaviorAction();
-		CallBehaviorAction sumAction = (CallBehaviorAction) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
-		//cba1.setBehavior(a2);
-		
-		//sumAction.setName("sum(x,y);");
-		
-		//parentActivity.getNodes().add(sumAction);
-		sumAction.setBehavior(parentActivity);
-		
-		ControlFlow edgeinit = (ControlFlow) parentActivity.createEdge("edgeinit",UMLPackage.eINSTANCE.getControlFlow());
-		edgeinit.setSource(initialNode);
-		edgeinit.setTarget(sumAction);
-		
-		
-		DecisionNode decisionnode = (DecisionNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getDecisionNode());
-		//decisionnode.setName("7>5");
-		parentActivity.getNodes().add(decisionnode);
-		
-		ControlFlow cf = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
-		cf.setSource(sumAction);
-		cf.setTarget(decisionnode);
-		
-		
-		CallBehaviorAction sumAction1 = (CallBehaviorAction) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
-		
-		//CallBehaviorAction sumAction1 = UMLFactory.eINSTANCE.createCallBehaviorAction();
-		//sumAction.setName("sum(x,y);");
-		
-		parentActivity.getNodes().add(sumAction1);
-		
-		ControlFlow edg = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
-		edg.setSource(decisionnode);
-		edg.setTarget(sumAction1);	
-		
-		CallBehaviorAction cbsubactivity = (CallBehaviorAction) (a3).createOwnedNode("Action1subactivity",UMLPackage.eINSTANCE.getCallBehaviorAction());
-		cbsubactivity.setBehavior(a3);
-		
-		CallBehaviorAction cbsubactivity1 = (CallBehaviorAction) (a3).createOwnedNode("Action2subactivity",UMLPackage.eINSTANCE.getCallBehaviorAction());
-		cbsubactivity1.setBehavior(a3);
-		
-		ControlFlow edgeinitsubactivity = (ControlFlow) a3.createEdge("edgeinit",UMLPackage.eINSTANCE.getControlFlow());
-		edgeinitsubactivity.setSource(cbsubactivity);
-		edgeinitsubactivity.setTarget(cbsubactivity1);
-		
-		ControlFlow edg2b = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
-		edg2b.setSource(decisionnode);
-		edg2b.setTarget(cbsubactivity);
-		
-		
-		MergeNode merge = (MergeNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getMergeNode()); 
-		//merge.setName("endif");
-		
-		ControlFlow edg2 = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
-		edg2.setSource(sumAction1);
-		edg2.setTarget(merge);
-		
-		ControlFlow edg3 = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
-		edg3.setSource(cbsubactivity1);
-		cf.setTarget(merge);
-		
-		CallBehaviorAction printAction =  (CallBehaviorAction) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
-		//printAction.setName("print(z);");
-		parentActivity.getNodes().add(printAction);
-		
-		ActivityFinalNode finalNode =  (ActivityFinalNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getActivityFinalNode());
-		//finalNode.setName("final");
-		
-		
-		ControlFlow edg4 = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
-		edg4.setSource(printAction);
-		cf.setTarget(finalNode);
-	
-	
-		//saveModel("model/ActivityModelResult.uml", umlModel);
-		
-		/*
-		Activity parentActivity = (Activity) m.createPackagedElement("A1", UMLPackage.eINSTANCE.getActivity());
-		Activity a2 = (Activity) m.createPackagedElement("A2", UMLPackage.eINSTANCE.getActivity());
-		Activity a3 = (Activity) m.createPackagedElement("A3", UMLPackage.eINSTANCE.getActivity());
-
-		ActivityPartition p1 = parentActivity.createPartition("P1");
-		CallBehaviorAction cba0 = (CallBehaviorAction) parentActivity.createNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
-		cba0.setBehavior(a2);
-		cba0.setName(a2.getName());
-		cba0.getInPartitions().add(p1);
-		
-		// create CallBehaviorActions
-		CallBehaviorAction cba1 = (CallBehaviorAction) parentActivity.createNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
-		cba1.setBehavior(a2);
-		cba1.setName(a2.getName());
-		
-		CallBehaviorAction cba2 = (CallBehaviorAction) parentActivity.createNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
-		cba2.setBehavior(a3);
-		cba2.setName(a3.getName());
-		
-		// connect them with a control flow
-		ControlFlow cf = (ControlFlow) parentActivity.createEdge("cf",UMLPackage.eINSTANCE.getControlFlow());
-		cf.setSource(cba1);
-		cf.setTarget(cba2);
-		
-		// create the diagram		
-		Diagram d = UMLModeler.getUMLDiagramHelper().createDiagram(parentActivity, UMLDiagramKind.ACTIVITY_LITERAL,parentActivity);
-		d.setName("My Activity diagram");
-		UMLModeler.getUMLDiagramHelper().openDiagramEditor(d);
-		*/
+		saveModel(this.fileModelPathSave, umlModel);
+		System.out.println("---------- end createActivityDiagram( " + this.fileModelPathSave +  " ) -----------------");
 	}
 	
 	
@@ -316,35 +170,23 @@ public class ActivityDiagramModel {
 		StructuredActivityNode subActtivity = null;
 		for( Integer position : mainHashInstructions.keySet()){
 			ADInstruction adInstruction = mainHashInstructions.get(position);
-			System.out.println("	 ----- " +  "." + adInstruction.getDisplayInstruction());
 			
 			createSubActivityIfNotExists(indexParentNode, adInstruction);
 			Integer idSubActivity = getIdActivity(adInstruction.getInstructionKey());
 			subActtivity = listSubActivities.get(idSubActivity);
-			System.out.println("- get " + adInstruction.getInstructionKey()+ " idActivity: "+ idSubActivity);
-			
-			System.out.println(subActtivity);
-			
-	    	Integer idNode = getIdNode(adInstruction.getDisplayInstruction());
+			Integer idNode = getIdNode(adInstruction.getDisplayInstruction());
 	    	indexParentNode = idNode - 1;
 	    	
-	    	//CallBehaviorAction tmpAction = (CallBehaviorAction) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
-			//tmpAction.setName(methodInvWithVars.trim() );//+ "&#xA;"
 	    	ActivityNode actNode = createActivityNodes(parentActivity, adInstruction);
 	    	if( subActtivity != null ){
-	    		System.out.println("subActtivity not null");
 	    		Comment comment = parentActivity.createOwnedComment();
 	    		comment.setBody(adInstruction.getInstructionKey());
 	    		comment.getAnnotatedElements().add(subActtivity);
 	    		comment.getAnnotatedElements().add(actNode);
 	    		
 			}
-			//tmpAction.creat
-	    	//tmpAction.setBehavior(activity);
-	    	//listNodes.put(idActivity +"-"+idNode, actNode);
-	    	listNodes.get(idActivity+"").put(adInstruction.getPosition()+"", actNode);
-	    	//activity.getNodes().add(tmpAction);
-			
+			listNodes.get(idActivity+"").put(adInstruction.getPosition()+"", actNode);
+	    	
 			Integer idEdge = getIdEdge(idActivity + "."+adInstruction.getPosition());
 			ControlFlow edgetmp = (ControlFlow) parentActivity.createEdge(null, UMLPackage.eINSTANCE.getControlFlow());
 			edgetmp.setName("edge." + idEdge);
@@ -362,10 +204,7 @@ public class ActivityDiagramModel {
 					edgetmp.setSource(sourceNode);
 				}
 			}
-			
-			//parentNode = (ActivityNode) tmpAction;
-			
-	    }
+		}
 		
 	    /*
 	    for(String param : daMethodInvOb.getParamList()){
@@ -378,7 +217,6 @@ public class ActivityDiagramModel {
 	private ActivityNode getNodeByPosition(String nodeKey, Integer idActivity)
 	{
 		ActivityNode sourceNode = null;
-		//Integer idNode = getIdNode(nodeKey);
 		if( listNodes.containsKey(idActivity+"") ){
 			if( listNodes.get(idActivity+"").containsKey(nodeKey) )
 				sourceNode = listNodes.get(idActivity+"").get(nodeKey);
@@ -450,9 +288,7 @@ public class ActivityDiagramModel {
 		EList<PackageableElement> packageList = packagesrc.getPackagedElements();
 		
 		for(PackageableElement tmpElement : packageList ){
-			//System.out.println("tmpElement: " + tmpElement.getName());
 			if( tmpElement instanceof Class ){
-				//System.out.println("tmpElement is class");
 				if(tmpElement.getName().equals(className) ){
 					System.out.println("Class: " + tmpElement.getName()); 
 					resultClass = (Class) tmpElement;
@@ -463,7 +299,6 @@ public class ActivityDiagramModel {
 				return resultClass;
 			}
 			else if( tmpElement instanceof Package ){
-				//System.out.println("tmpElement is Package");
 				resultClass = getClassByName(className, (Package) tmpElement);
 			}
 		}
@@ -472,15 +307,13 @@ public class ActivityDiagramModel {
 	}
 
 	private void createSubActivityIfNotExists(Integer indexParentNode, ADInstruction adInstruction) {
-		
 		StructuredActivityNode tmpActivity;
+		
 		if( adInstruction.getTypeNode().equals("call") && activityDiagram.getHashInstructionsList().containsKey(adInstruction.getInstructionKey()) ){
-			System.out.println("	 	- exists " + adInstruction.getInstructionKey());
 			if( activityDiagram.getHashInvocationMethods().size() > 0){//Composite Task -> new Activity
 				Integer oldId = _idActivity;
 				Integer idActivity = getIdActivity(adInstruction.getInstructionKey());
 				if( oldId < _idActivity ){ //If did not exists
-					System.out.println("	 	- create " + adInstruction.getInstructionKey()+ " idActivity: "+ idActivity);
 					//Activity tmpActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
 					//tmpActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
 					tmpActivity =  (StructuredActivityNode) parentActivity.createOwnedNode("A3", UMLPackage.eINSTANCE.getStructuredActivityNode());
@@ -497,19 +330,11 @@ public class ActivityDiagramModel {
 					//tmpActivity = proccessActivityInstructions(daMethodInvOb2, tmpActivity, parentNode);
 					StructuredActivityNode tmpActivity2 = proccessActivityInstructions(hashInstructions, indexParentNode, idActivity);
 					//listSubActivities.put(idActivity, tmpActivity2);
-					
 				}
-				/*
-				else{//If already exits
-					System.out.println("	 	- get " + adInstruction.getInstructionKey()+ " idActivity: "+ idActivity);
-					tmpActivity = listSubActivities.get(idActivity);
-				}
-				*/
 			}
 		}
 	}
 	
-
 	private List<Variable> getListVariablesByParams(Activity activity, ADMethodInvocation daMethodInvOb){
 		List<Variable> listVariables = new ArrayList<Variable>();
 		for(String param : daMethodInvOb.getParamList()){
@@ -527,7 +352,8 @@ public class ActivityDiagramModel {
 	}
 	
 	
-	public static Resource loadModel(String uri, EPackage pack) {
+	public static Resource loadModel(String uri, EPackage pack) 
+	{
 	   Resource resource = null;
 	   try {
 	      URI uriUri = URI.createURI(uri);
@@ -536,7 +362,7 @@ public class ActivityDiagramModel {
 	      XMLResource.XMLMap xmlMap = new XMLMapImpl();
 	      xmlMap.setNoNamespacePackage(pack);
 	      HashMap options = new HashMap();
-	      //options.put(XMLResource.OPTION_XML_MAP, xmlMap);
+	      options.put(XMLResource.OPTION_XML_MAP, xmlMap);
 	      resource.load(options);
 	   }
 	   catch(Exception e) {
@@ -547,9 +373,7 @@ public class ActivityDiagramModel {
 	}
 	
 	public static void saveModel_(String uri, Package root) {
-		//URI uriUri = URI.createURI(uri);
 		URI uriUri = URI.createURI("model").appendSegment("ExtendedPO2").appendFileExtension(UMLResource.FILE_EXTENSION);
-		// package_;
 		
 		Resource resource = new ResourceSetImpl().createResource(uriUri);
 		resource.getContents().add(root);
@@ -557,11 +381,10 @@ public class ActivityDiagramModel {
 		try {
 			resource.save(null);
 			System.err.println("Done.");
-		} catch (IOException ioe) {
+		} 
+		catch (IOException ioe) {
 			System.err.println(ioe.getMessage());
 		}
-		//save(root, URI.createURI(args[0]).appendSegment("ExtendedPO2")
-		//.appendFileExtension(UMLResource.FILE_EXTENSION));
 	}
 	public static void saveModel(String uri, EObject root) {
 	   Resource resource = null;
@@ -572,53 +395,19 @@ public class ActivityDiagramModel {
 	      Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
           Map<String, Object> m = reg.getExtensionToFactoryMap();
           m.put("xmi", new XMIResourceFactoryImpl());
-	      
-          //Map<String, DiagramCategoryDescriptor> categories = DiagramCategoryRegistry.getInstance().getDiagramCategoryMap();
 	      Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
-	      
-	     // categories.get("uml").getCommand();
 	      
 	      HashMap options = new HashMap<String, String>();
 	      options.put(XMLResource.OPTION_ENCODING, "UTF-8"); // set encoding to utf-8
 	      options.put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
 	      options.put(XMLResource.OPTION_SAVE_TYPE_INFORMATION, false);
-	      
-	      /*
-	      options.put(XMLResource.OPTION_EXTENDED_META_DATA, true);
-	      options.put(XMLResource.OPTION_SUPPRESS_DOCUMENT_ROOT, true);
-	      options.put(XMLResource.OPTION_SCHEMA_LOCATION, true);
-	      options.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, true);
-	      options.put(XMLResource.OPTION_ELEMENT_HANDLER, new ElementHandlerImpl(true));
-	      options.put(XMLResource.OPTION_USE_LEXICAL_HANDLER, true);
-	      */
-	      
 	      options.put(XMIResource.OPTION_USE_XMI_TYPE, Boolean.TRUE);
 	      options.put(XMIResource.XMI_ID, Boolean.TRUE);
-	      //options.put(XMIResource., Boolean.TRUE);
-	      
-	       
-	      // options.put(XMLResource.OPTION_SCHEMA_LOCATION, xsdUri.toString()); // not working
-	      //options.put(XMLResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, ServerPackage.eINSTANCE.getNsURI()); // not working
-	      // save to file
-	      
-	      //XMLResource.XMLMap xmlMap = new XMLMapImpl();
-	      //xmlMap.setNoNamespacePackage(UMLPackage.eINSTANCE);
-	      //options.put(XMLResource.OPTION_XML_MAP, xmlMap);
 	      
 	      resource = (new ResourceSetImpl()).createResource(uriUri);
 	      resource.getContents().add(root);
 	      
-	      
 	      resource.save(options);
-	      /*
-	      final XMLHelper xmlHelper = new XMIHelperImpl();
-	      XMISaveImpl x = new XMISaveImpl(xmlHelper);
-
-	      StringWriter sw = new StringWriter();
-	      x.save((XMLResource) resource, sw, options);
-	      */
-	    //resource.save(null);
-	      //resource.save(Collections.EMPTY_MAP);
 	      System.err.println("Model saved : " + uri);
 	   } catch (Exception e) {
 	      System.err.println("Error Saving the model : "+e);

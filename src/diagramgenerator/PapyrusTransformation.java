@@ -30,55 +30,68 @@ import org.xml.sax.SAXException;
 
 
 public class PapyrusTransformation {
-	public HashMap<String, String> hashEdges ;
-	public HashMap<String, String> hashNodes;
-	public HashMap<String, String> hashPackageable;
-	public HashMap<String, String> hashInputValue;
-	public HashMap<String, String> hashOutputtValue;
-	public HashMap<String, String> hashUmlModel;
-	public HashMap<String,String> hashParent;
-
+	private HashMap<String, String> hashEdges ;
+	private HashMap<String, String> hashNodes;
+	private HashMap<String, String> hashPackageable;
+	private HashMap<String, String> hashInputValue;
+	private HashMap<String, String> hashOutputtValue;
+	private HashMap<String, String> hashUmlModel;
+	private HashMap<String,String> hashParent;
 	
-	public Document doc; 
-	XPath xpath;
-    NodeList edges ;
-    NodeList nodes;
-    NodeList packageable;
-    NodeList inputValue;
-    NodeList outputtValue;
-    NodeList umlModel;
-    Transformer xformer;
-	public PapyrusTransformation() throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, TransformerFactoryConfigurationError, TransformerException {
-		 doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource("model/ActivityModelResult.xmi"));
-		 xpath = XPathFactory.newInstance().newXPath();
-		 changeNameNod();
-		 this.hashEdges = new  HashMap<String, String>();
-		 this.hashNodes = new  HashMap<String, String>();
-		 this.hashPackageable = new  HashMap<String, String>();
-		 this.hashInputValue = new  HashMap<String, String>();
-		 this.hashOutputtValue = new  HashMap<String, String>();
-		 this.hashParent =  new  HashMap<String, String>();
-		 //this.hashUmlModel = new  HashMap<String, String>();
-		 this.xformer = TransformerFactory.newInstance().newTransformer();
-		 this.edges = (NodeList) xpath.evaluate("//packagedElement/edge", this.doc, XPathConstants.NODESET);		   
-		// this.umlModel = (NodeList) xpath.evaluate("//uml:Model", this.doc,XPathConstants.NODESET);
-		 this.nodes = (NodeList) xpath.evaluate("//packagedElement/node", this.doc,XPathConstants.NODESET);
-		 this.packageable = (NodeList) xpath.evaluate("//packagedElement", this.doc, XPathConstants.NODESET);
-		 this.inputValue = (NodeList) xpath.evaluate("//node/inputValue", this.doc, XPathConstants.NODESET);		     
-		 this.outputtValue = (NodeList) xpath.evaluate("//node/outputValue", this.doc, XPathConstants.NODESET);
-		 this.umlModel = (NodeList) xpath.evaluate("//node/outputValue", this.doc,XPathConstants.NODESET);
-		 //encodEdge();
-		 initialiseEdge();
-	     initialiseNodes();
-	     initialiseEdge();
-	     initialisePackageable();
-	     initialisInputValue();
-	     addNameNodePackageable();
-	     extractNodes();
-	     extractEdges();
-	     	    
-	     this.xformer.transform(new DOMSource(doc), new StreamResult(new File("model/ActivityModelResult.uml")));
-	  //  removeAttributUmlModel();
+	private Document doc; 
+	private XPath xpath;
+	private NodeList edges ;
+	private NodeList nodes;
+	private NodeList packageable;
+	private NodeList inputValue;
+	private NodeList outputtValue;
+	private NodeList umlModel;
+	private Transformer xformer;
+	private String fileModelPathLoad;
+	private String fileModelPathSave;
+    
+	public PapyrusTransformation(String fileModelPathLoad, String fileModelPathSave){
+		try {
+			 doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(fileModelPathLoad));
+			 xpath = XPathFactory.newInstance().newXPath();
+			 changeNameNod();
+			 this.fileModelPathLoad = fileModelPathLoad;
+			 this.fileModelPathSave = fileModelPathSave;
+			 this.hashEdges = new  HashMap<String, String>();
+			 this.hashNodes = new  HashMap<String, String>();
+			 this.hashPackageable = new  HashMap<String, String>();
+			 this.hashInputValue = new  HashMap<String, String>();
+			 this.hashOutputtValue = new  HashMap<String, String>();
+			 this.hashParent =  new  HashMap<String, String>();
+			 //this.hashUmlModel = new  HashMap<String, String>();
+			 this.xformer = TransformerFactory.newInstance().newTransformer();
+			 this.edges = (NodeList) xpath.evaluate("//packagedElement/edge", this.doc, XPathConstants.NODESET);		   
+			// this.umlModel = (NodeList) xpath.evaluate("//uml:Model", this.doc,XPathConstants.NODESET);
+			 this.nodes = (NodeList) xpath.evaluate("//packagedElement/node", this.doc,XPathConstants.NODESET);
+			 this.packageable = (NodeList) xpath.evaluate("//packagedElement", this.doc, XPathConstants.NODESET);
+			 this.inputValue = (NodeList) xpath.evaluate("//node/inputValue", this.doc, XPathConstants.NODESET);		     
+			 this.outputtValue = (NodeList) xpath.evaluate("//node/outputValue", this.doc, XPathConstants.NODESET);
+			 this.umlModel = (NodeList) xpath.evaluate("//node/outputValue", this.doc,XPathConstants.NODESET);
+			 //encodEdge();
+			 initialiseEdge();
+			 initialiseNodes();
+			 initialiseEdge();
+			 initialisePackageable();
+			 initialisInputValue();
+			 addNameNodePackageable();
+			 extractNodes();
+			 extractEdges();
+			 	    
+			 this.xformer.transform(new DOMSource(doc), new StreamResult(new File(fileModelPathSave)));
+			  //  removeAttributUmlModel();
+		} catch (XPathExpressionException | SAXException | ParserConfigurationException
+				| TransformerFactoryConfigurationError | TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    
 	}
 	
