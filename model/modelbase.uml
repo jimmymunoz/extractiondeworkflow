@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_UbDhoN4tEeadSsjHkPsdYA" name="RootElement">
-  <packagedElement xmi:type="uml:Activity" xmi:id="_UcS3wN4tEeadSsjHkPsdYA" name="Activity1"/>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_UcS3wN4tEeadSsjHkPsdYA" name="Activity1" node="_3whZwN6CEeadSsjHkPsdYA _4tNrgN6CEeadSsjHkPsdYA _2tUQUN6CEeadSsjHkPsdYA" group="_3whZwN6CEeadSsjHkPsdYA">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_6WldEN6CEeadSsjHkPsdYA" 
+    annotatedElement="_4tNrgN6CEeadSsjHkPsdYA _3whZwN6CEeadSsjHkPsdYA"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_8KdOcN6CEeadSsjHkPsdYA" target="_4tNrgN6CEeadSsjHkPsdYA" source="_2tUQUN6CEeadSsjHkPsdYA"/>
+    <structuredNode xmi:type="uml:StructuredActivityNode" xmi:id="_3whZwN6CEeadSsjHkPsdYA" name="StructuredActivityNode1"/>
+    <node xmi:type="uml:InitialNode" xmi:id="_2tUQUN6CEeadSsjHkPsdYA" name="InitialNode1" outgoing="_8KdOcN6CEeadSsjHkPsdYA"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_4tNrgN6CEeadSsjHkPsdYA" name="OpaqueAction1" incoming="_8KdOcN6CEeadSsjHkPsdYA"/>
+  </packagedElement>
 </uml:Model>

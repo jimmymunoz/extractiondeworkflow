@@ -1,5 +1,8 @@
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
+import javax.swing.JFrame;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
@@ -36,27 +39,36 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException
 	{
-		/*Menu m =new Menu();
-		   javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			      public void run() {
-			        Menu.createAndShowGUI();
-			      }
-			    });*/
-			  
+		
+	    JFrame frame = new JFrame("");
+	    Menu panel = new Menu();
+	    frame.addWindowListener(
+	      new WindowAdapter() {
+	        public void windowClosing(WindowEvent e) {
+	          System.exit(0);
+	          }
+	        }
+	      );
+	    
+	    frame.getContentPane().add(panel,"Center");
+	    frame.setSize(panel.getPreferredSize());
+	    frame.setVisible(true);
+	    String path = panel.getPath();
+	    System.out.println("Paaaaath :"+path);
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
 		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram);
 		//activityDiagramModel.getUmlmodel();
 		/*
 		JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
-		*/
+	
 		try {
 			PapyrusTransformation Ptrans = new PapyrusTransformation();
 		} catch (XPathExpressionException | SAXException | ParserConfigurationException
 				| TransformerFactoryConfigurationError | TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		//diagramParser.proccesActivityDiagram();
 		//activityDiagram.testClassDiagram();
 		/**/
