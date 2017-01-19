@@ -48,7 +48,8 @@ public class ActivityDiagramModel {
 	private Integer _idEdge = 0;
 	private HashMap<Integer, Activity> listActivities;
 	private HashMap<Integer, ActivityEdge> listEdges;
-	private HashMap<Integer, ActivityNode> listNodes;
+	private Map<String, Map<String, ActivityNode>> listNodes;
+	
 	
 	public ActivityDiagramModel(ActivityDiagramAst activityDiagram){
 		listIdsActivities = new HashMap<String, Integer>();
@@ -56,7 +57,7 @@ public class ActivityDiagramModel {
 		listIdsEdges = new HashMap<String, Integer>();
 		listActivities = new HashMap<Integer, Activity>();
 		listEdges = new HashMap<Integer, ActivityEdge>();
-		listNodes = new HashMap<Integer, ActivityNode>();
+		listNodes = new HashMap<String, Map<String, ActivityNode>>();
 		this.activityDiagram = activityDiagram;
 		createActivityDiagram();
 	}
@@ -119,6 +120,8 @@ public class ActivityDiagramModel {
 		Integer idNode = getIdNode("init");
 		Integer idActivity = getIdActivity("MainActivity");
 		Activity parentActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
+		Map<String, ActivityNode> mapActivity = new HashMap<String, ActivityNode>();
+		listNodes.put(idActivity+"", mapActivity);
 		
 		String mainKey = activityDiagram.getKeyEntryPoint();
 		Map<Integer, ADInstruction> mainHashInstructions = activityDiagram.getMainHashInstructions(mainKey);
@@ -127,23 +130,27 @@ public class ActivityDiagramModel {
 		getListVariablesByParams(parentActivity, daMethodInvOb);
 		
 		InitialNode initialNode = (InitialNode) parentActivity.createOwnedNode("init",UMLPackage.eINSTANCE.getInitialNode());
-		listNodes.put(idNode,initialNode);
+		
+		listNodes.get(idActivity+"").put("init", initialNode);
 		parentActivity.getNodes().add(initialNode);
 		listActivities.put(idActivity, parentActivity);
 		
-		parentActivity = proccessActivityInstructions(mainHashInstructions, parentActivity, idNode);
+		parentActivity = proccessActivityInstructions(mainHashInstructions, parentActivity, idNode, idActivity);
 		listActivities.put(idActivity, parentActivity);
 		
 		ActivityFinalNode finalNode2 =  (ActivityFinalNode) parentActivity.createOwnedNode(null,UMLPackage.eINSTANCE.getActivityFinalNode());
 		//finalNode.setName("final");
 		
 		if( parentActivity.getNodes().size() > 0 ){
-			Integer idEdge = getIdEdge("edgeFinal");
+			Integer idEdge = getIdEdge(idActivity + ".edgeFinal");
 			ControlFlow edgeFinal = (ControlFlow) parentActivity.createEdge(null,UMLPackage.eINSTANCE.getControlFlow());
+			listNodes.get(idActivity+"").put("edgeFinal", initialNode);
 			edgeFinal.setSource(parentActivity.getNodes().get(parentActivity.getNodes().size() - 1));
 			edgeFinal.setTarget(finalNode2);
 		}
-		
+		for(int i = 0; i < parentActivity.getOwnedNodes().size(); i++){
+			System.out.println("i " + i + " -> " + parentActivity.getOwnedNodes().get(i).toString() );
+		}
 		saveModel("model/ActivityModelResult.xmi", umlModel);
 		
 		
@@ -290,7 +297,7 @@ public class ActivityDiagramModel {
 		*/
 	}
 	
-	private Activity proccessActivityInstructions(Map<Integer, ADInstruction> mainHashInstructions, Activity activity, Integer indexParentNode ){
+	private Activity proccessActivityInstructions(Map<Integer, ADInstruction> mainHashInstructions, Activity activity, Integer indexParentNode, Integer idActivity ){
 		
 		for( Integer position : mainHashInstructions.keySet()){
 			ADInstruction adInstruction = mainHashInstructions.get(position);
@@ -304,18 +311,30 @@ public class ActivityDiagramModel {
 	    	//CallBehaviorAction tmpAction = (CallBehaviorAction) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getCallBehaviorAction());
 			//tmpAction.setName(methodInvWithVars.trim() );//+ "&#xA;"
 	    	ActivityNode actNode = createActivityNodes(activity, adInstruction);
-			
-			
 			//tmpAction.creat
 	    	//tmpAction.setBehavior(activity);
-	    	listNodes.put(idNode,actNode);
-			//activity.getNodes().add(tmpAction);
+	    	//listNodes.put(idActivity +"-"+idNode, actNode);
+	    	listNodes.get(idActivity+"").put(adInstruction.getPosition()+"", actNode);
+	    	//activity.getNodes().add(tmpAction);
 			
-			Integer idEdge = getIdEdge(adInstruction.getInstructionKey());
+			Integer idEdge = getIdEdge(idActivity + "."+adInstruction.getPosition());
 			ControlFlow edgetmp = (ControlFlow) activity.createEdge(null, UMLPackage.eINSTANCE.getControlFlow());
 			edgetmp.setName("edge." + idEdge);
-			//edgetmp.setSource(activity.getNodes().get(indexParentNode));
 			edgetmp.setTarget(actNode);
+			
+			ActivityNode sourceNode = getNodeByPosition(adInstruction.getSource()+"", idActivity);
+			if( sourceNode != null ){
+				//ActivityNode sourceNode = listNodes.get(idActivity +"-"+idNode);
+				edgetmp.setSource(sourceNode);
+				//edgetmp.setSource(activity.getNodes().get(indexParentNode));
+			}
+			for(Integer source : adInstruction.getListsources()){
+				ActivityNode sourceNode2 = getNodeByPosition(source+"", idActivity);
+				if( sourceNode != null ){
+					edgetmp.setSource(sourceNode);
+				}
+			}
+			
 			//parentNode = (ActivityNode) tmpAction;
 			
 	    }
@@ -328,10 +347,22 @@ public class ActivityDiagramModel {
 	    return activity;
 	}
 
+	private ActivityNode getNodeByPosition(String nodeKey, Integer idActivity)
+	{
+		ActivityNode sourceNode = null;
+		//Integer idNode = getIdNode(nodeKey);
+		if( listNodes.containsKey(idActivity+"") ){
+			if( listNodes.get(idActivity+"").containsKey(nodeKey) )
+				sourceNode = listNodes.get(idActivity+"").get(nodeKey);
+		}
+		return sourceNode;
+	}
+	
 	private ActivityNode createActivityNodes(Activity activity, ADInstruction adInstruction) {
 		ActivityNode actNode;
 		switch(adInstruction.getTypeNode()){
 			case "if":
+				//activity.getOwnedNode(arg0)
 				DecisionNode tmpDescitionNode = (DecisionNode) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getDecisionNode());
 				tmpDescitionNode.setName(adInstruction.getDisplayInstruction().trim());//+ "&#xA;"
 				//http://download.eclipse.org/modeling/mdt/uml2/javadoc/4.1.0/org/eclipse/uml2/uml/OpaqueAction.html
@@ -351,14 +382,21 @@ public class ActivityDiagramModel {
 				//http://download.eclipse.org/modeling/mdt/uml2/javadoc/4.1.0/org/eclipse/uml2/uml/OpaqueAction.html
 				InputPin inputValue = (InputPin) tmpActionOpaque.createInputValue(null,null);
 				OutputPin outputValue = (OutputPin) tmpActionOpaque.createOutputValue(null,null);
+				//System.out.println("Label2:" + tmpActionOpaque.eCrossReferences() );
 				actNode = tmpActionOpaque;
 				break;
 		}
+		/*
+		System.out.println("Label:" + actNode.getLabel() );
+		System.out.println("Name:" + actNode.getName() );
+		System.out.println("QName:" + actNode.getQualifiedName() );
+		System.out.println("Label:" + actNode.eContainmentFeature() );
+		*/
 		return actNode;
 	}
 
 	private void createSubActivityIfNotExists(Integer indexParentNode, ADInstruction adInstruction) {
-		if( activityDiagram.getHashInstructionsList().containsKey(adInstruction.getInstructionKey()) ){
+		if( adInstruction.getTypeNode().equals("call") && activityDiagram.getHashInstructionsList().containsKey(adInstruction.getInstructionKey()) ){
 			System.out.println("	 	- exists " + adInstruction.getInstructionKey());
 			if( activityDiagram.getHashInvocationMethods().size() > 0){//Composite Task -> new Activity
 				Integer oldId = _idActivity;
@@ -367,12 +405,15 @@ public class ActivityDiagramModel {
 					System.out.println("	 	- create " + adInstruction.getInstructionKey());
 					Activity tmpActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
 					
+					Map<String, ActivityNode> mapActivity = new HashMap<String, ActivityNode>();
+					listNodes.put(idActivity+"", mapActivity);
+					
 					Map<Integer, ADInstruction> hashInstructions = activityDiagram.getMainHashInstructions(adInstruction.getInstructionKey());
 					ADMethodInvocation daMethodInvOb = activityDiagram.getActivityInstructions(adInstruction.getInstructionKey());
 					getListVariablesByParams(tmpActivity, daMethodInvOb);
 					listActivities.put(idActivity, tmpActivity);
 					//tmpActivity = proccessActivityInstructions(daMethodInvOb2, tmpActivity, parentNode);
-					tmpActivity = proccessActivityInstructions(hashInstructions, tmpActivity, indexParentNode);
+					tmpActivity = proccessActivityInstructions(hashInstructions, tmpActivity, indexParentNode, idActivity);
 					listActivities.put(idActivity, tmpActivity);
 				}
 			}
@@ -395,33 +436,6 @@ public class ActivityDiagramModel {
 		return listVariables;
 	}
 	
-	
-	
-	public static Class getClassByName(String className, Package packagesrc){
-		Class resultClass = null;
-		EList<PackageableElement> packageList = packagesrc.getPackagedElements();
-		
-		for(PackageableElement tmpElement : packageList ){
-			//System.out.println("tmpElement: " + tmpElement.getName());
-			if( tmpElement instanceof Class ){
-				//System.out.println("tmpElement is class");
-				if(tmpElement.getName().equals(className) ){
-					System.out.println("Class: " + tmpElement.getName()); 
-					resultClass = (Class) tmpElement;
-					
-				}
-			}
-			if( resultClass != null ){
-				return resultClass;
-			}
-			else if( tmpElement instanceof Package ){
-				//System.out.println("tmpElement is Package");
-				resultClass = getClassByName(className, (Package) tmpElement);
-			}
-		}
-		return resultClass;
-		
-	}
 	
 	public static Resource loadModel(String uri, EPackage pack) {
 	   Resource resource = null;

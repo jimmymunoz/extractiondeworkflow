@@ -55,7 +55,7 @@ public class ActivityDiagramParser
 	{
 		CompilationUnit parse = getCompilationUnitByDir();
 		// print methods info
-		printMethodInfo(parse);
+		//printMethodInfo(parse);
 		//setMethodHashMap(parse);
 		List<TypeDeclaration> listClasses = getClassList(parse);
 		
@@ -176,8 +176,7 @@ public class ActivityDiagramParser
 		parse.accept(visitor);
 
 		for (MethodDeclaration method : visitor.getMethods()) {
-			System.out.println("Method name: " + method.getName()
-					+ " Return type: " + method.getReturnType2());
+			System.out.println("Method name: " + method.getName() + " Return type: " + method.getReturnType2());
 			printIfStatement(method);
 		}
 	}
@@ -436,8 +435,8 @@ public class ActivityDiagramParser
 				objMethInv.setStartposition(method.getStartPosition());
 				objMethInv.setInvocationMethodStartPosition(invocationMethodStartPosition);
 				
-				System.out.println("methodName: " +  methodName);
-				System.out.println("	methodNameWithVars: " +  methodNameWithVars);
+				//System.out.println("methodName: " +  methodName);
+				//System.out.println("	methodNameWithVars: " +  methodNameWithVars);
 				String key = methodName;
 				listInvocationMethods.put(key, objMethInv);
 			}

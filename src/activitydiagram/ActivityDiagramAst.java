@@ -108,8 +108,6 @@ public class ActivityDiagramAst
 			HashMap<Integer, ADNode> tmphash = new HashMap<Integer, ADNode>();
 			tmphash.put(methodinv.getStartposition(), methodinv);
 			
-			//System.out.println(" * " + key);
-		    //impresion
 			Map<Integer, ADInstruction> tmphashInsObj = new TreeMap<Integer, ADInstruction>();
 		    for(int i = 0; i< methodinv.getInvocationMethodListWithVars().size(); i++){
 		    	String methodInvData = methodinv.getInvocationMethodList().get(i);
@@ -121,83 +119,82 @@ public class ActivityDiagramAst
 			}
 		    hashInstructionsList.put(key, tmphashInsObj);
 		    this.hashNodes.put(key, tmphash);
-			
 		}
+		
 		for( String key : hashConditions.keySet()){
 			TreeMap<Integer, ADCondition> condition = new TreeMap<Integer, ADCondition>( hashConditions.get(key) );
 			Map<Integer, ADInstruction> tmphashInsObj = new TreeMap<Integer, ADInstruction>();
 			for( Integer keypos : condition.keySet()){
-				if( condition.get(keypos) != null ){//If not contains the key
-					ADCondition adCondition = condition.get(keypos);
-					Map<Integer, ADNode> tmphash = hashNodes.get(key);//get Exsisteing Hash
-					
-					//System.out.println("	--  key :" + key + " key2:" + key2 + " Condition -> "  + adCondition.getConditionExpression() + " parent:" + adCondition.getStartParentPosition());
-					int posIf = condition.get(keypos).getStartPosition();
-					tmphash.put(posIf, adCondition);
-					
-					//
-					//System.out.println("	- ifcond: (" + adCondition.getConditionExpression() + ") pos:" + keypos);
-					ADInstructionIf tmpInstruction = new ADInstructionIf(adCondition.getConditionExpression(), adCondition.getConditionExpression(), "if", keypos, -1);
-				    
-					int iThen = 0;
-					int lastThenPos = 0;
-					int firstThenPos = 0;
-					TreeMap<Integer, String> colThenStatements = new TreeMap<Integer, String>(adCondition.getThenStatements());//order
-					for(Integer posThen : colThenStatements.keySet()){
-						iThen++;
-						String thenInstruction = adCondition.getThenStatements().get(posThen);
-						ADInstruction tmpInstruction2 = new ADInstruction(thenInstruction, adCondition.getThenStatementsWithVars().get(posThen), "call", posThen, -1);
-						tmpInstruction2.setFlotType("then");
-						//System.out.println("	- varscond: " + thenInstruction + " pos:" + posThen + "	thenInstruction - parentif: " + adCondition.getPosParent() );
-						if(iThen == 1){
-							firstThenPos = posThen;
-							tmpInstruction2.setPosParent(posIf);
-							tmpInstruction2.setFirstThen(true);
-						}
-						if(iThen >= adCondition.getElseStatements().size()){
-							tmpInstruction2.setLastThen(true);
-						}
-						lastThenPos = posThen;
-						tmphashInsObj.put(posThen, tmpInstruction2);
+				ADCondition adCondition = condition.get(keypos);
+				Map<Integer, ADNode> tmphash = hashNodes.get(key);//get Exsisteing Hash
+				
+				//System.out.println("	--  key :" + key + " key2:" + key2 + " Condition -> "  + adCondition.getConditionExpression() + " parent:" + adCondition.getStartParentPosition());
+				int posIf = condition.get(keypos).getStartPosition();
+				tmphash.put(posIf, adCondition);
+				
+				//
+				//System.out.println("	- ifcond: (" + adCondition.getConditionExpression() + ") pos:" + keypos);
+				ADInstructionIf tmpInstruction = new ADInstructionIf(adCondition.getConditionExpression(), adCondition.getConditionExpression(), "if", keypos, -1);
+			    
+				int iThen = 0;
+				int lastThenPos = 0;
+				int firstThenPos = 0;
+				TreeMap<Integer, String> colThenStatements = new TreeMap<Integer, String>(adCondition.getThenStatements());//order
+				for(Integer posThen : colThenStatements.keySet()){
+					iThen++;
+					String thenInstruction = adCondition.getThenStatements().get(posThen);
+					ADInstruction tmpInstruction2 = new ADInstruction(thenInstruction, adCondition.getThenStatementsWithVars().get(posThen), "call", posThen, -1);
+					tmpInstruction2.setFlotType("then");
+					//System.out.println("	- varscond: " + thenInstruction + " pos:" + posThen + "	thenInstruction - parentif: " + adCondition.getPosParent() );
+					if(iThen == 1){
+						firstThenPos = posThen;
+						tmpInstruction2.setPosParent(posIf);
+						tmpInstruction2.setFirstThen(true);
+						tmpInstruction.setLastPosThen(tmpInstruction2.getPosition());
 					}
-					int iElse = 0;
-					int lastElsePos = 0;
-					int firstElsePos = 0;
-					TreeMap<Integer, String> colElseStatements = new TreeMap<Integer, String>(adCondition.getElseStatements());//order
-					for(Integer posElse : colElseStatements.keySet()){
-						iElse++;
-						String elseInstruction = colElseStatements.get(posElse);
-						ADInstruction tmpInstruction2 = new ADInstruction(elseInstruction, adCondition.getElseStatementsWithVars().get(posElse), "call", posElse, -1);
-						tmpInstruction2.setFlotType("else");
-						if(iElse == 1){
-							firstElsePos = posElse;
-							tmpInstruction2.setPosParent(posIf);
-							tmpInstruction2.setFirstElse(true);
-						}
-						if(iElse >= adCondition.getElseStatements().size()){
-							tmpInstruction2.setLastElse(true);
-						}
-						lastElsePos = posElse;
-						tmphashInsObj.put(posElse, tmpInstruction2);
-						//System.out.println("	- varscond: " + elseInstruction + " pos:" + posElse + " elseInstruction");
+					else if(iThen >= adCondition.getElseStatements().size()){
+						tmpInstruction2.setLastThen(true);
 					}
-					tmpInstruction.setFirstPosThen(firstThenPos);
-					tmpInstruction.setLastPosThen(lastThenPos);
-					tmpInstruction.setFirstPosThen(firstElsePos);
-					tmpInstruction.setLastPosElse(lastElsePos);
-					tmpInstruction.setMergePos(adCondition.getEndPosition());
-					
-					ADInstruction tmpInstruction3 = new ADInstruction("mergeNode ("+ adCondition.getConditionExpression() + ") ", "mergeNode ("+ adCondition.getConditionExpression() + ") ", "merge", adCondition.getEndPosition(), adCondition.getStartPosition());
-					tmphashInsObj.put(adCondition.getEndPosition(), tmpInstruction3);
-					tmphashInsObj.put(keypos, tmpInstruction);
-					hashInstructionsList.put(key, tmphashInsObj);
-					hashNodes.put(key, tmphash);
+					lastThenPos = posThen;
+					tmphashInsObj.put(posThen, tmpInstruction2);
 				}
+				int iElse = 0;
+				int lastElsePos = 0;
+				int firstElsePos = 0;
+				TreeMap<Integer, String> colElseStatements = new TreeMap<Integer, String>(adCondition.getElseStatements());//order
+				for(Integer posElse : colElseStatements.keySet()){
+					iElse++;
+					String elseInstruction = colElseStatements.get(posElse);
+					ADInstruction tmpInstruction2 = new ADInstruction(elseInstruction, adCondition.getElseStatementsWithVars().get(posElse), "call", posElse, -1);
+					tmpInstruction2.setFlotType("else");
+					if(iElse == 1){
+						firstElsePos = posElse;
+						tmpInstruction2.setPosParent(posIf);
+						tmpInstruction2.setFirstElse(true);
+						tmpInstruction.setLastPosElse(tmpInstruction2.getPosition());
+					}
+					if(iElse >= adCondition.getElseStatements().size()){
+						tmpInstruction2.setLastElse(true);
+					}
+					lastElsePos = posElse;
+					tmphashInsObj.put(posElse, tmpInstruction2);
+				}
+				tmpInstruction.setFirstPosThen(firstThenPos);
+				tmpInstruction.setLastPosThen(lastThenPos);
+				tmpInstruction.setFirstPosThen(firstElsePos);
+				tmpInstruction.setLastPosElse(lastElsePos);
+				tmpInstruction.setMergePos(adCondition.getEndPosition());
+				
+				ADInstruction tmpInstruction3 = new ADInstruction("mergeNode ("+ adCondition.getConditionExpression() + ") ", "mergeNode ("+ adCondition.getConditionExpression() + ") ", "merge", adCondition.getEndPosition(), adCondition.getStartPosition());
+				tmphashInsObj.put(adCondition.getEndPosition(), tmpInstruction3);
+				tmphashInsObj.put(keypos, tmpInstruction);
+				hashInstructionsList.put(key, tmphashInsObj);
+				hashNodes.put(key, tmphash);
 			}
 		}
 		
 		addSourcesToHashInstructions();
-		printToHashInstructions();
+		
 	}
 	
 	public ADMethodInvocation getMethodInvocationByHashInstruction(ADInstruction hashInstruction){
@@ -212,48 +209,74 @@ public class ActivityDiagramAst
 			//get Existing Hash
 			int lastThenPos = 0;
 			int lastElsePos = 0;
-			Integer lastsource = -1;
+			Integer lastsource = 0;
 			ADInstruction lastInstruction = null;
 			for( Integer pos : hashInstructionsObjOrdered.keySet()){
 				ADInstruction instruction = hashInstructionsObjOrdered.get(pos);
 				instruction.setSource(lastsource);
-				
+				System.out.println(" 	  instruction :" + instruction.getDisplayInstruction() + " " + instruction.getPosition() + " - " + lastsource);
 				
 				if( lastInstruction != null ){//First then
 					if( lastInstruction.getTypeNode().equals("if") ){
 						ADInstructionIf ifParent = (ADInstructionIf) lastInstruction;
 						instruction.setFirstThen(true);
-						ifParent.setFirstPosThen(instruction.getPosParent());;
+						ifParent.setFirstPosThen(instruction.getPosParent());
 					}
 				}
 				if( instruction.isFirstElse ){//First then
 					instruction.setSource(instruction.getPosParent());
+					
+					//ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
+					//ifParent.setFirstPosElse(instruction.getPosition());
 				}
 				if( instruction.isLastThen ){//last then
 					lastThenPos = instruction.getPosition();
+					
+					//ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
+					//ifParent.setLastPosThen(instruction.getPosition());
 				}
 				if( instruction.isLastElse ){//last then
 					lastElsePos = instruction.getPosition();
-				}
-				if( instruction.getTypeNode().equals("merge") ){
-					ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
 					
-					instruction.addListSources(ifParent.getLastPosThen());
+					//ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
+					//ifParent.setLastPosElse(instruction.getPosition());
+				}
+				System.out.println("	- (" + instruction.getFlotType() + ") pos:" + instruction.getPosition());
+				
+				//Important to set last then
+				if( instruction.getFlotType().equals("else") ){
+					ADInstructionIf lastelseParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
+					System.out.println("		- (" + lastelseParent.getPosition() + " = "+ lastsource);
+					lastelseParent.setLastPosThen(lastsource);
+				}
+				else if( instruction.getTypeNode().equals("merge") ){
+					//ADInstructionIf lastifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(hashInstructionsObjOrdered.get(lastsource).getPosParent());
+					//lastifParent.setFirstPosElse(lastsource);
+					
+					ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
+					instruction.setSource(0);//Source
+					
 					if(lastElsePos != 0){// Else
+						instruction.addListSources(ifParent.getLastPosThen());
 						instruction.addListSources(ifParent.getLastPosElse());
 					}
 					else{//Not Else
-						instruction.addListSources(ifParent.getPosition());
+						instruction.addListSources(ifParent.getLastPosThen());
+						instruction.addListSources(instruction.getPosParent());
 					}
+					
 					//Restart vars
 					//lastThenPos = 0;
 					lastElsePos = 0;
 				}
-				if(! instruction.getFlotType().equals("else") ){ //Increment position if it isn't an else
+				
+				if(instruction != null)
 					lastsource = instruction.getPosition();
-				}
+				
+				
 				
 				lastInstruction = instruction;
+				
 			}
 		}
 	}
@@ -288,7 +311,8 @@ public class ActivityDiagramAst
 	public void testClassDiagram()
 	{
 		validateClassDiagram();
-		printListInvocationMethods(hashInvocationMethods);
+		printToHashInstructions();
+		//printListInvocationMethods(hashInvocationMethods);
 		//MethodDeclaration entryMethod = getEntryPoint(hashClassesMethods);
 		
 	}
