@@ -171,7 +171,7 @@ public class ActivityDiagramModel {
 		for( Integer position : mainHashInstructions.keySet()){
 			ADInstruction adInstruction = mainHashInstructions.get(position);
 			
-			createSubActivityIfNotExists(indexParentNode, adInstruction);
+			//createSubActivityIfNotExists(indexParentNode, adInstruction);
 			Integer idSubActivity = getIdActivity(adInstruction.getInstructionKey());
 			subActtivity = listSubActivities.get(idSubActivity);
 			Integer idNode = getIdNode(adInstruction.getDisplayInstruction());
@@ -393,7 +393,7 @@ public class ActivityDiagramModel {
 					//listSubActivities.put(idActivity, tmpActivity);
 					//tmpActivity = proccessActivityInstructions(daMethodInvOb2, tmpActivity, parentNode);
 					StructuredActivityNode tmpActivity2 = proccessActivityInstructions(hashInstructions, indexParentNode, idActivity);
-					//listSubActivities.put(idActivity, tmpActivity2);
+					listSubActivities.put(idActivity, tmpActivity2);
 				}
 			}
 		}
