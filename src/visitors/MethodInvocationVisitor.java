@@ -25,11 +25,6 @@ public class MethodInvocationVisitor extends ASTVisitor {
 		return super.visit(node);
 	}
 	
-	private Type getReturnType(){
-		return returnType;
-	}
-
-	
 	public List<MethodInvocation> getMethods() {
 		return methods;
 	}
