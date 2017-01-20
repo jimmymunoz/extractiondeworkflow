@@ -40,8 +40,11 @@ public class PapyrusTransformation {
 	public HashMap<String,String> hashOwnedComment;
 
 	
-	public Document doc; 
-	XPath xpath;
+	private Document doc; 
+	private XPath xpath;
+	private NodeList edges ;
+	private NodeList nodes;
+	private NodeList packageable;
 	private NodeList inputValue;
 	private NodeList outputtValue;
 	private NodeList umlModel;
@@ -62,7 +65,7 @@ public class PapyrusTransformation {
 			 this.hashInputValue = new  HashMap<String, String>();
 			 this.hashOutputtValue = new  HashMap<String, String>();
 			 this.hashParent =  new  HashMap<String, String>();
-		 this.hashOwnedComment =  new  HashMap<String, String>();
+		     this.hashOwnedComment =  new  HashMap<String, String>();
 			 //this.hashUmlModel = new  HashMap<String, String>();
 			 this.xformer = TransformerFactory.newInstance().newTransformer();
 			 this.edges = (NodeList) xpath.evaluate("//packagedElement/edge", this.doc, XPathConstants.NODESET);		   
@@ -71,7 +74,7 @@ public class PapyrusTransformation {
 			 this.packageable = (NodeList) xpath.evaluate("//packagedElement", this.doc, XPathConstants.NODESET);
 			 this.inputValue = (NodeList) xpath.evaluate("//node/inputValue", this.doc, XPathConstants.NODESET);		     
 			 this.outputtValue = (NodeList) xpath.evaluate("//node/outputValue", this.doc, XPathConstants.NODESET);
-		 this.ownedComment = (NodeList) xpath.evaluate("//packagedElement/ownedComment", this.doc,XPathConstants.NODESET);		 
+		     this.ownedComment = (NodeList) xpath.evaluate("//packagedElement/ownedComment", this.doc,XPathConstants.NODESET);		 
 			 this.umlModel = (NodeList) xpath.evaluate("//node/outputValue", this.doc,XPathConstants.NODESET);
 			 //encodEdge();
 			 initialiseEdge();
@@ -79,9 +82,9 @@ public class PapyrusTransformation {
 			 initialiseEdge();
 			 initialisePackageable();
 			 initialisInputValue();
-	     initialiseOnwedComment();
-	     initialisInputValue();
-	     annotatedEelemenOwnedComment();
+	         initialiseOnwedComment();
+	         initialisInputValue();
+	         annotatedEelemenOwnedComment();
 			 addNameNodePackageable();
 			 extractNodes();
 			 extractEdges();
