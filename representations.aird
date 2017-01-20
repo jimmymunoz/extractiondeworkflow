@@ -17,5 +17,10 @@
   <semanticResources>model/modelbase.notation</semanticResources>
   <semanticResources>model/modelbase.uml</semanticResources>
   <semanticResources>model.uml</semanticResources>
+  <semanticResources>model/model.notation</semanticResources>
+  <semanticResources>model/model3.notation</semanticResources>
+  <semanticResources>model/model3.uml</semanticResources>
+  <semanticResources>model/model.uml</semanticResources>
   <semanticResources>model/ActivityModelResult.uml</semanticResources>
+  <semanticResources>model/ActivityModelResult.notation</semanticResources>
 </viewpoint:DAnalysis>

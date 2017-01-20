@@ -302,6 +302,7 @@ public class ActivityDiagramAst
 		}
 		else{
 			System.out.println("Sorry, Entry point (" + entryClass + ":" + entryMethod + "()" +  ")  not found!");
+			System.exit(0);
 		}
 	}
 	
