@@ -297,7 +297,7 @@ public class PapyrusTransformation {
 					e.printStackTrace();
 				}
 			    getHashNodes().put(key, "N"+idx);
-			    getHashParent().put("N"+idx,actname);
+			    getHashParent().put("N"+idx, actname);
 			    
 			    //
 		    }
