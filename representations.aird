@@ -13,6 +13,8 @@
   <semanticResources>model/model_empty.uml</semanticResources>
   <semanticResources>model/model2.notation</semanticResources>
   <semanticResources>model.uml</semanticResources>
+  <semanticResources>model/model.notation</semanticResources>
+  <semanticResources>model/model.uml</semanticResources>
   <semanticResources>model/ActivityModelResult.uml</semanticResources>
   <semanticResources>model/ActivityModelResult.notation</semanticResources>
 </viewpoint:DAnalysis>

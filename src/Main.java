@@ -97,7 +97,7 @@ public class Main {
 	    frame.getContentPane().add(panel,"Center");
 	    frame.setSize(panel.getPreferredSize());
 	    frame.setVisible(true);
-	    System.out.println(path);
+	    //System.out.println(path);
 	}
 
 	public static void initDiagram() throws IOException {
