@@ -55,7 +55,7 @@ public class PapyrusTransformation {
     
 	public PapyrusTransformation(String fileModelPathLoad, String fileModelPathSave){
 		try {
-			 doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource("model/xmiresult.xmi"));
+			 doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(fileModelPathLoad));
 			 xpath = XPathFactory.newInstance().newXPath();
 			 changeNameNod();
 			 this.fileModelPathLoad = fileModelPathLoad;
@@ -203,20 +203,27 @@ public class PapyrusTransformation {
 	}
 	public void changeNodetoStructureNode()
 	{
-		for (int idx = 0; idx < getNodes().getLength(); idx++) {
-	    	Element element = (Element) getNodes().item(idx);		    
-		    String nodename = element.getAttribute("xmi:type");
-		    if(nodename.equals("uml:StructuredActivityNode"))
-		    {
-		    	NodeList nodesachanger = (NodeList) doc.getElementsByTagName("node");
-			    for (int i = 0; i < nodesachanger.getLength(); i++) {  			    
-			      doc.renameNode(nodesachanger.item(i), null, "structuredNode");
+		NodeList nodesachanger;
+		try {
+			nodesachanger = (NodeList) xpath.evaluate("//packagedElement/node[@type='uml:StructuredActivityNode']", this.doc,XPathConstants.NODESET);
+			for (int i = 0; i < nodesachanger.getLength(); i++) {
+				Element element = (Element) getNodes().item(i);	
+				
+			    String nodename = element.getAttribute("xmi:type");
+			    if(nodename.equals("uml:StructuredActivityNode"))
+			    {
+			    	doc.renameNode(nodesachanger.item(i), null, "structuredNode");
 			    }
 		    }
-		    
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
+	    
 	}
+		
+	
 
 	public void changeNameNod() {
 		NodeList nodesachanger = (NodeList) doc.getElementsByTagName("ownedNode");
@@ -276,9 +283,9 @@ public class PapyrusTransformation {
 			    String nodename = element.getAttribute("name");
 			 
 			    //getNamePackageParent(Element n)
-			   //String actname = ((Element) element.getParentNode()).getAttribute("name");
-			    String actname =  getNamePackageParent(element, "");
-			    System.out.println("actname: " + actname + " element: " + element.getAttribute("name"));
+			    String actname = ((Element) element.getParentNode()).getAttribute("name");
+			    //String actname =  getNamePackageParent(element, "");
+			    //System.out.println("actname: " + actname + " element: " + element.getAttribute("name"));
 			    //String key1 = "//"+ actname +"/" + nodename;
 			    
 			    key1 = "//"+ actname +"/" + nodename;

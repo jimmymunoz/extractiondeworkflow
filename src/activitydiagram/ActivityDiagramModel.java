@@ -171,7 +171,7 @@ public class ActivityDiagramModel {
 		for( Integer position : mainHashInstructions.keySet()){
 			ADInstruction adInstruction = mainHashInstructions.get(position);
 			
-			createSubActivityIfNotExists(indexParentNode, adInstruction);
+			//createSubActivityIfNotExists(indexParentNode, adInstruction);
 			Integer idSubActivity = getIdActivity(adInstruction.getInstructionKey());
 			subActtivity = listSubActivities.get(idSubActivity);
 			Integer idNode = getIdNode(adInstruction.getDisplayInstruction());
@@ -179,14 +179,14 @@ public class ActivityDiagramModel {
 	    	
 	    	ActivityNode actNode = null;
 	    	if( subActtivity != null ){
-	    		actNode = createActivityNodes(subActtivity, adInstruction);
+	    		actNode = createActivityNodes(subActtivity, adInstruction, idActivity);
 	    		Comment comment = parentActivity.createOwnedComment();
 	    		comment.setBody(adInstruction.getInstructionKey());
 	    		comment.getAnnotatedElements().add(subActtivity);
 	    		comment.getAnnotatedElements().add(actNode);
 			}
 	    	else{
-	    		actNode = createActivityNodes(parentActivity, adInstruction);
+	    		actNode = createActivityNodes(parentActivity, adInstruction, idActivity);
 	    	}
 	    	
 			listNodes.get(idActivity+"").put(adInstruction.getPosition()+"", actNode);
@@ -197,17 +197,19 @@ public class ActivityDiagramModel {
 			edgetmp.setTarget(actNode);
 			
 			ActivityNode sourceNode = getNodeByPosition(adInstruction.getSource()+"", idActivity);
-			if( sourceNode != null ){
+			if( sourceNode != null && adInstruction.getTypeNode() != "merge" ){
 				//ActivityNode sourceNode = listNodes.get(idActivity +"-"+idNode);
 				edgetmp.setSource(sourceNode);
 				//edgetmp.setSource(activity.getNodes().get(indexParentNode));
 			}
+			/*
 			for(Integer source : adInstruction.getListsources()){
 				ActivityNode sourceNode2 = getNodeByPosition(source+"", idActivity);
 				if( sourceNode != null ){
 					edgetmp.setSource(sourceNode);
 				}
 			}
+			*/
 		}
 		
 	    /*
@@ -228,7 +230,7 @@ public class ActivityDiagramModel {
 		return sourceNode;
 	}
 	
-	private ActivityNode createActivityNodes(Activity activity, ADInstruction adInstruction) {
+	private ActivityNode createActivityNodes(Activity activity, ADInstruction adInstruction, Integer idActivity) {
 		ActivityNode actNode;
 		switch(adInstruction.getTypeNode()){
 			case "init":
@@ -254,6 +256,19 @@ public class ActivityDiagramModel {
 				MergeNode tmpMergeNode = (MergeNode) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getMergeNode());
 				tmpMergeNode.setName(adInstruction.getDisplayInstruction().trim() );//+ "&#xA;"
 				actNode = tmpMergeNode;
+				
+			    ArrayList<Integer> sourcelist = adInstruction.getListsources();
+			    for( Integer sourcetmp : sourcelist ){
+			    	ActivityNode sourceNode2 = getNodeByPosition(sourcetmp+"", idActivity);
+					if( sourceNode2 != null ){
+						Integer idEdge = getIdEdge(idActivity + "."+adInstruction.getPosition());
+						ControlFlow edgetmp = (ControlFlow) activity.createEdge(null, UMLPackage.eINSTANCE.getControlFlow());
+						edgetmp.setName("edge." + idEdge);
+						edgetmp.setTarget(actNode);
+						edgetmp.setSource(sourceNode2);
+					}
+					//edgetmp.setSource(actNode);
+				}
 				break;
 			case "call":
 			default:
@@ -261,7 +276,7 @@ public class ActivityDiagramModel {
 				OpaqueAction tmpActionOpaque = (OpaqueAction) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getOpaqueAction());
 				tmpActionOpaque.setName(adInstruction.getDisplayInstruction().trim() );//+ "&#xA;"
 				//http://download.eclipse.org/modeling/mdt/uml2/javadoc/4.1.0/org/eclipse/uml2/uml/OpaqueAction.html
-				InputPin inputValue = (InputPin) tmpActionOpaque.createInputValue(null,null);
+				//InputPin inputValue = (InputPin) tmpActionOpaque.createInputValue(null,null);
 				//ValueSpecification arg0 = (ValueSpecification) UMLPackage.eINSTANCE.getValueSpecification();
 				//arg0.setName("input");
 				//inputValue.setUpperValue(arg0);
@@ -273,7 +288,7 @@ public class ActivityDiagramModel {
 				tmpClass.setName("Person");
 				inputValue.createUpperBound("x", type, tmpClass);
 				*/
-				OutputPin outputValue = (OutputPin) tmpActionOpaque.createOutputValue(null,null);
+				//OutputPin outputValue = (OutputPin) tmpActionOpaque.createOutputValue(null,null);
 				//System.out.println("Label2:" + tmpActionOpaque.eCrossReferences() );
 				actNode = tmpActionOpaque;
 				break;
@@ -287,7 +302,7 @@ public class ActivityDiagramModel {
 		return actNode;
 	}
 	
-	private ActivityNode createActivityNodes(StructuredActivityNode activity, ADInstruction adInstruction) {
+	private ActivityNode createActivityNodes(StructuredActivityNode activity, ADInstruction adInstruction, Integer idActivity) {
 		ActivityNode actNode;
 		switch(adInstruction.getTypeNode()){
 			case "init":
@@ -313,6 +328,19 @@ public class ActivityDiagramModel {
 				MergeNode tmpMergeNode = (MergeNode) activity.createNode(null,UMLPackage.eINSTANCE.getMergeNode());
 				tmpMergeNode.setName(adInstruction.getDisplayInstruction().trim() );//+ "&#xA;"
 				actNode = tmpMergeNode;
+				
+			    ArrayList<Integer> sourcelist = adInstruction.getListsources();
+			    for( Integer sourcetmp : sourcelist ){
+			    	ActivityNode sourceNode2 = getNodeByPosition(sourcetmp+"", idActivity);
+					if( sourceNode2 != null ){
+						Integer idEdge = getIdEdge(idActivity + "."+adInstruction.getPosition());
+						ControlFlow edgetmp = (ControlFlow) activity.createEdge(null, UMLPackage.eINSTANCE.getControlFlow());
+						edgetmp.setName("edge." + idEdge);
+						edgetmp.setTarget(actNode);
+						edgetmp.setSource(sourceNode2);
+					}
+					//edgetmp.setSource(actNode);
+				}
 				break;
 			case "call":
 			default:
@@ -320,7 +348,7 @@ public class ActivityDiagramModel {
 				OpaqueAction tmpActionOpaque = (OpaqueAction) activity.createNode(null,UMLPackage.eINSTANCE.getOpaqueAction());
 				tmpActionOpaque.setName(adInstruction.getDisplayInstruction().trim() );//+ "&#xA;"
 				//http://download.eclipse.org/modeling/mdt/uml2/javadoc/4.1.0/org/eclipse/uml2/uml/OpaqueAction.html
-				InputPin inputValue = (InputPin) tmpActionOpaque.createInputValue(null,null);
+				//InputPin inputValue = (InputPin) tmpActionOpaque.createInputValue(null,null);
 				//ValueSpecification arg0 = (ValueSpecification) UMLPackage.eINSTANCE.getValueSpecification();
 				//arg0.setName("input");
 				//inputValue.setUpperValue(arg0);
@@ -332,7 +360,7 @@ public class ActivityDiagramModel {
 				tmpClass.setName("Person");
 				inputValue.createUpperBound("x", type, tmpClass);
 				*/
-				OutputPin outputValue = (OutputPin) tmpActionOpaque.createOutputValue(null,null);
+				//OutputPin outputValue = (OutputPin) tmpActionOpaque.createOutputValue(null,null);
 				//System.out.println("Label2:" + tmpActionOpaque.eCrossReferences() );
 				actNode = tmpActionOpaque;
 				break;
@@ -393,7 +421,7 @@ public class ActivityDiagramModel {
 					//listSubActivities.put(idActivity, tmpActivity);
 					//tmpActivity = proccessActivityInstructions(daMethodInvOb2, tmpActivity, parentNode);
 					StructuredActivityNode tmpActivity2 = proccessActivityInstructions(hashInstructions, indexParentNode, idActivity);
-					//listSubActivities.put(idActivity, tmpActivity2);
+					listSubActivities.put(idActivity, tmpActivity2);
 				}
 			}
 		}

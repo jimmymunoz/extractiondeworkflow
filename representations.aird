@@ -12,9 +12,6 @@
   <semanticResources>http://www.eclipse.org/uml2/5.0.0/Types</semanticResources>
   <semanticResources>model/model_empty.uml</semanticResources>
   <semanticResources>model/model2.notation</semanticResources>
-  <semanticResources>model/model2.uml</semanticResources>
-  <semanticResources>model/ExtendedPO2.uml</semanticResources>
-  <semanticResources>model/modelbase.notation</semanticResources>
-  <semanticResources>model/modelbase.uml</semanticResources>
   <semanticResources>model.uml</semanticResources>
+  <semanticResources>model/ActivityModelResult.uml</semanticResources>
 </viewpoint:DAnalysis>
