@@ -80,11 +80,11 @@ public class Main {
 
 	public static void main(String[] args) throws IOException
 	{
-		setEnviromenTestMac();
+		//setEnviromenTestMac();
+		setEnviromenTestWindows();
 		initDiagram();
 		System.exit(0);
 		
-		//setEnviromenTestWindows();
 		JFrame frame = new JFrame("");
 	    Menu panel = new Menu();
 	    frame.addWindowListener(
@@ -97,7 +97,6 @@ public class Main {
 	    frame.getContentPane().add(panel,"Center");
 	    frame.setSize(panel.getPreferredSize());
 	    frame.setVisible(true);
-	    String path = panel.getPath();
 	    System.out.println(path);
 	}
 
@@ -123,9 +122,10 @@ public class Main {
 	}
 	
 	public static void setEnviromenTestWindows(){
-		projectPath = "/Users/jimmymunoz/Documents/workspace-neon/workFlowTest";
+		 projectPath = "C:\\Users\\IkbalH\\Desktop\\Composants_Reutilisation\\TP\\TestWorkflow";
 		projectSourcePath = projectPath + "/src";
 		jrePath = "C:\\Program Files\\Java\\jre1.8.0_51\\lib\\rt.jar"; // which java
+		
 		entryClass = "Main";
 		entryMethod = "main";
 	}
