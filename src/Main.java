@@ -85,7 +85,7 @@ public class Main {
 		initDiagram();
 		System.exit(0);
 		
-		/*		JFrame frame = new JFrame("");
+		JFrame frame = new JFrame("");
 	    Menu panel = new Menu();
 	    frame.addWindowListener(
 	      new WindowAdapter() {
@@ -97,8 +97,7 @@ public class Main {
 	    frame.getContentPane().add(panel,"Center");
 	    frame.setSize(panel.getPreferredSize());
 	    frame.setVisible(true);
-	    String path = panel.getPath();
-	    System.out.println(path);*/
+	    System.out.println(path);
 	}
 
 	public static void initDiagram() throws IOException {
