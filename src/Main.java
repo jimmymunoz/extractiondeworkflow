@@ -106,7 +106,7 @@ public class Main {
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
 		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram, fileModelResultEmf);
 		//activityDiagramModel.getUmlmodel();
-		PapyrusTransformation Ptrans = new PapyrusTransformation(fileModelResultEmf,fileModelResultPapyrus);
+		PapyrusTransformation Ptrans = new PapyrusTransformation(activityDiagramModel.getFileModelPathSave(),fileModelResultPapyrus);
 		
 		//JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
 		//diagramParser.proccesActivityDiagram();

@@ -76,7 +76,7 @@ public class PapyrusTransformation {
 			 this.inputValue = (NodeList) xpath.evaluate("//node/inputValue", this.doc, XPathConstants.NODESET);		     
 			 this.outputtValue = (NodeList) xpath.evaluate("//node/outputValue", this.doc, XPathConstants.NODESET);
 		     this.ownedComment = (NodeList) xpath.evaluate("//packagedElement/ownedComment", this.doc,XPathConstants.NODESET);		 
-			 this.umlModel = (NodeList) xpath.evaluate("//node/outputValue", this.doc,XPathConstants.NODESET);
+			// this.umlModel = (NodeList) xpath.evaluate("//node/outputValue", this.doc,XPathConstants.NODESET);
 			 //encodEdge();
 			 initialiseEdge();
 			 initialiseNodes();
