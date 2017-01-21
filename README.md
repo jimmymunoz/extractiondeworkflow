@@ -89,7 +89,6 @@ public class MethodInvocationVisitor extends ASTVisitor
 	
 	public boolean visit(MethodInvocation node) {
 		methods.add(node);
-		//returnType = this.; //.getReturnType2();
 		return super.visit(node);
 	}
 	
@@ -165,9 +164,9 @@ public void  initialiseOnwedComment()
 ![interface](images/01-interface.png?raw=true "01-interface.png")
 ###Choisir un fichier
 ![selectfile](images/02-selectfile.png?raw=true "02-selectfile.png")
-###Nomer le fichier de resultat
+###Nomage le fichier de resultat
 ![name-model](images/03-name-model.png?raw=true "03-name-model.png")
-###Message de sucess
+###Modèle enregistré
 ![model-saved](images/04-model-saved.png?raw=true "04-model-saved.png")
 ###Console
 ![console](images/05-console.png?raw=true "05-console.png")
@@ -176,7 +175,7 @@ public void  initialiseOnwedComment()
 ###Visualiser le modèle
 ![view-model](images/07-view-model.png?raw=true "07-view-model.png")
 ###Papyrus
-Show Perspective -> Papyrus
+Show Perspective -> Papyrus ->
 ![open-papyrus-perspective](images/08-open-papyrus-perspective.png?raw=true "08-open-papyrus-perspective.png")
 ###Papyrus perspective
 ![papyrus-perspective](images/09-papyrus-perspective.png?raw=true "09-papyrus-perspective.png")
@@ -185,16 +184,14 @@ Model Explorer
 New -> Papyrus Model ->
 UML Next -> 
 ![new-papyrus-model](images/10-new-papyrus-model.png?raw=true "10-new-papyrus-model.png")
-###Choisir diagram d'activité
-Choose
-Activity Diagram
-Finish
+Selectioner le diagram d'activité
+Cliquer en Finish
 ![select-activity-diagram](images/11-select-activity-diagram.png?raw=true "11-select-activity-diagram.png")
 ###Nouveau Diagrama à partir du modèle
-Click Right -> Main Activity -> New Diagram
+Click droit sur l'activity -> New Diagram -> Activity Diagram
 ![new-activity-diagram](images/12-new-activity-diagram.png?raw=true "12-new-activity-diagram.png")
-###Drag and drop les elements à visualiser
-Drag and drop the elements into the activity
+###Drag and drop
+Selectionner tous les elements et ajouter sur le diagrame d'activité
 ![drag-and-drop](images/13-drag-and-drop.png?raw=true "13-drag-and-drop.png")
 ###Click - Select All
 Select All (ctrl + A)
@@ -204,7 +201,8 @@ Arrange All
 ![arrange-all](images/15-arrange-all.png?raw=true "15-arrange-all.png")
 ###Voir le resultat
 ![view-result](images/16-view-result.png?raw=true "16-view-result.png")
-###Enregistrer le fichier
+###Enregistrer un image
+Click droit -> File -> Save As Image File...
 ![save-file](images/17-save-file.png?raw=true "17-save-file.png")
 ###Resultat
 ![WorkFlowTest](images/18-WorkFlowTest.png?raw=true "18-WorkFlowTest.png")
@@ -255,6 +253,7 @@ public class Main {
 À Ameliorer
 - [ ] Analyse de supertypes
 - [ ] Extraction des autres structures de control (switch)
+- [ ] Extraction des tâches asynchrones (Fork - Join)
 - [ ] Representation des variables
 - [ ] Detection automatique des points d'entré
 - [ ] Autres
