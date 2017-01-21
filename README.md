@@ -1,18 +1,27 @@
 #Extraction de workflow
 =======
+@jimmymunoz @ekebal - 2017
 
-Creation de diagrame d'activité à partir d'un code source Java.
-Construction des appels en utilisant RTA et ajoute des instructions de flux de control (IF) pour representer d'une manière plus claire
-Genere des modèles standard UML manipulables avec plusiurs outils.
+* Analyse statique - https://fr.wikipedia.org/wiki/Analyse_statique_de_programmes
+* AST (Abstract Syntax Tree)
+* Rapid Type Analysis (RTA)
+* EMF - Eclipse Modeling Framework
+* MDE 
+
+Creation de diagrame d'activité à partir du code source Java.
+
+Construction des appels en utilisant RTA (Rapit Type Analysys) et aussi on ajoute des instructions de flux de control (IF Statements) pour representer d'une manière plus claire le diagramme d'activité.
+
+L'outil genere des modèles standard UML manipulables avec plusiurs outils (example Papyrus).
 
 ##Processus:
 	
-- Seleccion de code source java
-- Selection du point d'entré 
-- Recuperation des information avec AST (Abstract Syntax Tree) de Java
-- Generation du modèle UML avec EMF (Eclipse Modeling Framework) 
-- Transformation du modèle UML au format de Papyrus
-- Visualiser le diagramme avec Papyrus
+- Seleccion de code source java.
+- Selection du point d'entré.
+- Recuperation des information avec AST (Abstract Syntax Tree) de Java.
+- Generation du modèle UML avec EMF (Eclipse Modeling Framework) .
+- Transformation du modèle UML au format de Papyrus.
+- Visualiser le diagramme avec Papyrus.
 
 ###Processus:
 ![Processus](images/processus.png?raw=true "Processus")
@@ -57,7 +66,7 @@ cd extractiondeworkflow
 ###Configurer JRE
 
 Modifier l'attribute de la class main dans le package par defaut:
-```
+```java
 private static String jrePath = "C:\\Program Files\\Java\\jre1.8.0_51\\lib\\rt.jar"; //Windows
 private static String jrePath = "/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/rt.jar"; // OS / Linux
 ```
@@ -71,7 +80,7 @@ https://www.eclipse.org/papyrus/download.html
 
 ###AST
 Example recuperation des invocations des methodes:
-```
+```java
 public class MethodInvocationVisitor extends ASTVisitor 
 {
 	List<MethodInvocation> methods = new ArrayList<MethodInvocation>();
@@ -102,7 +111,7 @@ public class MethodInvocationVisitor extends ASTVisitor
 
 ###EMF
 Methode de creation de diagrame d'activité avec EMF:
-```
+```java
 private void createActivityDiagram() {
 	resultModel += "\n---------- createActivityDiagram() -----------------";
 	System.out.println("---------- createActivityDiagram() -----------------");
@@ -134,7 +143,7 @@ private void createActivityDiagram() {
 
 ###Xpath
 Methode de transformation des Commentaires:
-```
+```java
 public void  initialiseOnwedComment()
 {		
 		
@@ -199,3 +208,53 @@ Arrange All
 ![save-file](images/17-save-file.png?raw=true "17-save-file.png")
 ###Resultat
 ![WorkFlowTest](images/18-WorkFlowTest.png?raw=true "18-WorkFlowTest.png")
+###Code Source
+```java
+package workFlowTest;
+
+public class Main {
+
+	public static void main(String[] args) {
+		int x = 5;
+		int y = 10;
+		int z = sum(x, y);
+		if( z < 10){
+			z = sum(z, x);
+			if( z < 5){
+				y = sum(x, y);
+				x = sum(z, z);
+			}
+		}
+		else{
+			z = multiply(x, y);
+			if( z < 5){
+				y = sum(x, y);
+				x = sum(z, z);
+			}
+			else{
+				y = sum(x, y);
+			}
+		}
+		System.out.println(z);
+	}
+	
+	public static int sum(int x, int y){
+		return x + y;
+	}
+	
+	public static int multiply(int num, int factor){
+		int result = 0;
+		for(int i = 0; i < factor; i++){
+			result = sum(result, num);
+		}
+		return result;
+	}
+}
+```
+-----
+À Ameliorer
+- [ ] Analyse de supertypes
+- [ ] Extraction des autres structures de control (switch)
+- [ ] Representation des variables
+- [ ] Detection automatique des points d'entré
+- [ ] Autres
