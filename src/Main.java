@@ -22,6 +22,7 @@ public class Main {
 	private static String fileModelResultEmf = "model/ActivityModelResult.xmi";
 	private static String fileModelResultPapyrus = "model/ActivityModelResult.uml";
 	private static Map<String, String> configurationList;
+	private static String responseInstructions = "";
 	
 	public static void main(String[] args) throws IOException
 	{
@@ -31,8 +32,8 @@ public class Main {
 		
 		setEnviromenTestMac();
 		//setEnviromenTestWindows();
-		initDiagram();
-		System.exit(0);
+		//initDiagram();
+		//System.exit(0);
 		
 		JFrame frame = new JFrame("Workflow Extractor");
 	    Menu panel = new Menu();
@@ -112,9 +113,18 @@ public class Main {
 		String messageResult = "";
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
-		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram, fileModelResultEmf, configurationList);
-		//activityDiagramModel.getUmlmodel();
-		PapyrusTransformation Ptrans = new PapyrusTransformation(activityDiagramModel.getFileModelPathSave(),fileModelResultPapyrus);
+		setResponseInstructions(activityDiagram.getResponseInstructions());
+		if( activityDiagram.isEntryValidated() ){
+			ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram, fileModelResultEmf, configurationList);
+			setResponseInstructions(getResponseInstructions() + activityDiagramModel.getResultModel());
+			//activityDiagramModel.getUmlmodel();
+			PapyrusTransformation Ptrans = new PapyrusTransformation(activityDiagramModel.getFileModelPathSave(),fileModelResultPapyrus);
+			setResponseInstructions(getResponseInstructions() + Ptrans.getResultTransformation());
+			messageResult = Ptrans.getResultTransformation();
+		}
+		else{
+			messageResult = activityDiagram.getResponseValidate();
+		}
 		
 		//JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
 		//diagramParser.proccesActivityDiagram();
@@ -139,6 +149,16 @@ public class Main {
 		
 		entryClass = "Main";
 		entryMethod = "main";
+	}
+
+
+	public static String getResponseInstructions() {
+		return responseInstructions;
+	}
+
+
+	public static void setResponseInstructions(String responseInstructions) {
+		Main.responseInstructions = responseInstructions;
 	}
 
 }

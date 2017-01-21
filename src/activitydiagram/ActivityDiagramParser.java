@@ -117,6 +117,7 @@ public class ActivityDiagramParser
 		return parse;
 	}
 	
+	
 
 	// read all java files from specific folder
 	public static ArrayList<File> listJavaFilesForFolder(final File folder)
@@ -127,6 +128,7 @@ public class ActivityDiagramParser
 				javaFiles.addAll(listJavaFilesForFolder(fileEntry));
 			} 
 			else if (fileEntry.getName().contains(".java")) {
+				System.out.println("		File added: " + fileEntry.getName());
 				javaFiles.add(fileEntry);
 			}
 		}
@@ -318,7 +320,11 @@ public class ActivityDiagramParser
 		    	typeName = "" + type.getName();
 		    }
 		}
-		String methodNameWithVars = getActMethodName(node, typeName, node.getName().toString(), returnType.getName());//expression -> s.xxxx()
+		String returnTypeStr= "";
+		if(returnType != null){
+			returnTypeStr = returnType.getName();
+		}
+		String methodNameWithVars = getActMethodName(node, typeName, node.getName().toString(), returnTypeStr);//expression -> s.xxxx()
 		return methodNameWithVars;
 	}
 	
@@ -373,8 +379,13 @@ public class ActivityDiagramParser
 		    	typeName = "" + type.getName();
 		    }
 		}
+		String returnTypeStr= "";
+		if(returnType != null){
+			returnTypeStr = returnType.getName();
+		}
 		
-		String methodNameWithVars = getActMethodNameWithVars(node, expresion, node.getName().toString(), returnType);//expression -> s.xxxx()
+		
+		String methodNameWithVars = getActMethodNameWithVars(node, expresion, node.getName().toString(), returnTypeStr);//expression -> s.xxxx()
 		return methodNameWithVars;
 	}
 	
@@ -452,12 +463,12 @@ public class ActivityDiagramParser
 		return methodName;
 	}
 	
-	public static String getActMethodNameWithVars(MethodInvocation node, String className, String methodName, ITypeBinding returnType )
+	public static String getActMethodNameWithVars(MethodInvocation node, String className, String methodName, String returnType )
 	{
 		List<String> argsList = getArgumentsByMethodInvocation(node);
 		
 		String resultmethodName = (className.isEmpty())? "" : "" + className + "." ;
-		resultmethodName +=  methodName + "(" + String.join(",",argsList) + ")" + ":" + returnType.getName();
+		resultmethodName +=  methodName + "(" + String.join(",",argsList) + ")" + ":" + returnType;
 		return resultmethodName;
 	}
 	

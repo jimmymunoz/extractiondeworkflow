@@ -59,6 +59,7 @@ public class ActivityDiagramModel {
 	private Map<String, Map<String, ActivityNode>> listNodes;
 	private String fileModelPathSave;
 	private Map<String, String> configurationList;
+	private String resultModel = "";
 	
 	public ActivityDiagramModel(ActivityDiagramAst activityDiagram, String fileModelPathSave, Map<String, String> configurationList){
 		listIdsActivities = new HashMap<String, Integer>();
@@ -127,6 +128,7 @@ public class ActivityDiagramModel {
 	}
 	
 	private void createActivityDiagram() {
+		resultModel += "\n---------- createActivityDiagram() -----------------";
 		System.out.println("---------- createActivityDiagram() -----------------");
 		umlModel = UMLFactory.eINSTANCE.createModel();
 		
@@ -150,6 +152,7 @@ public class ActivityDiagramModel {
 		
 		saveModel(this.fileModelPathSave, umlModel);
 		System.out.println("---------- end createActivityDiagram( " + this.fileModelPathSave +  " ) -----------------\n");
+		resultModel += "\n---------- end createActivityDiagram( \" + this.fileModelPathSave +  \" ) -----------------\\n";
 	}
 	
 	
@@ -158,7 +161,7 @@ public class ActivityDiagramModel {
 		for( Integer position : mainHashInstructions.keySet()){
 			ADInstruction adInstruction = mainHashInstructions.get(position);
 			
-			System.out.println("      proccessActivityInstructions " + adInstruction.getInstructionKey() + " : Total:  idActivity: " + idActivity);
+			//System.out.println("      proccessActivityInstructions " + adInstruction.getInstructionKey() + " : Total:  idActivity: " + idActivity);
 			
 			ActivityNode actNode = null;
 			ActivityNode sourceNode = getNodeByPosition(adInstruction.getSource()+"", idActivity);
@@ -171,6 +174,7 @@ public class ActivityDiagramModel {
 	    	}
 			
 			if( configurationList.get("create_subactivities").equals("1") ){
+				
 				createSubActivityIfNotExists(indexParentNode, adInstruction, adInstruction.getInstructionKey());
 				
 				Integer idSubActivity = getIdActivity(adInstruction.getInstructionKey());
@@ -243,12 +247,12 @@ public class ActivityDiagramModel {
 		switch(adInstruction.getTypeNode()){
 			case "init":
 				InitialNode initialNode = (InitialNode) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getInitialNode());
-				initialNode.setName(adInstruction.getDisplayInstruction().trim());
+				initialNode.setName(adInstruction.getInstructionKey().trim());
 				actNode = initialNode;
 				break;
 			case "final":	
 				ActivityFinalNode finalNode2 =  (ActivityFinalNode) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getActivityFinalNode());
-				finalNode2.setName(adInstruction.getDisplayInstruction().trim());
+				finalNode2.setName(adInstruction.getInstructionKey().trim());
 				actNode = finalNode2;
 				break;
 			case "if":
@@ -304,11 +308,13 @@ public class ActivityDiagramModel {
 		ActivityNode actNode;
 		switch(adInstruction.getTypeNode()){
 			case "init":
-				InitialNode initialNode = (InitialNode) activity.createNode("init",UMLPackage.eINSTANCE.getInitialNode());
+				InitialNode initialNode = (InitialNode) activity.createNode(null,UMLPackage.eINSTANCE.getInitialNode());
+				initialNode.setName(adInstruction.getInstructionKey().trim());
 				actNode = initialNode;
 				break;
 			case "final":	
-				ActivityFinalNode finalNode2 =  (ActivityFinalNode) activity.createNode("final",UMLPackage.eINSTANCE.getActivityFinalNode());
+				ActivityFinalNode finalNode2 =  (ActivityFinalNode) activity.createNode(null,UMLPackage.eINSTANCE.getActivityFinalNode());
+				finalNode2.setName(adInstruction.getInstructionKey().trim());
 				actNode = finalNode2;
 				break;
 			case "if":
@@ -388,7 +394,7 @@ public class ActivityDiagramModel {
 		Map<Integer, ADInstruction> hashInstructions = activityDiagram.getMainHashInstructions(adInstruction.getInstructionKey());
 		
 		if( adInstruction.getTypeNode().equals("call") && activityDiagram.getHashInstructionsList().containsKey(adInstruction.getInstructionKey()) ){
-			if( hashInstructions.size() > 0){//Composite Task -> new Activity
+			//if( hashInstructions.size() > 0){//Composite Task -> new Activity
 				Integer oldId = _idActivity;
 				Integer idActivity = getIdActivity(subactStringKey);
 				if( oldId < _idActivity ){ //If did not exists
@@ -405,12 +411,9 @@ public class ActivityDiagramModel {
 					//listSubActivities.put(idActivity, tmpActivity);
 					//tmpActivity = proccessActivityInstructions(daMethodInvOb2, tmpActivity, parentNode);
 					StructuredActivityNode tmpActivity2 = proccessActivityInstructions(tmpActivity, hashInstructions, indexParentNode, idActivity);
-					
-					System.out.println("    createSubActivityIfNotExists " + adInstruction.getInstructionKey() + ": Total:  idActivity: " + idActivity);
-					
 					listSubActivities.put(idActivity, tmpActivity2);
 				}
-			}
+			//}
 		}
 	}
 	
@@ -492,5 +495,13 @@ public class ActivityDiagramModel {
 	      System.err.println("Error Saving the model : "+e);
 	      e.printStackTrace();
 	   }
+	}
+
+	public String getResultModel() {
+		return resultModel;
+	}
+
+	public void setResultModel(String resultModel) {
+		this.resultModel = resultModel;
 	}
 }

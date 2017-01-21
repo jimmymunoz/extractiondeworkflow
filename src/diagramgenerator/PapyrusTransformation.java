@@ -37,8 +37,8 @@ public class PapyrusTransformation {
 	private HashMap<String, String> hashOutputtValue;
 	private HashMap<String, String> hashUmlModel;
 	private HashMap<String,String> hashParent;
-	public HashMap<String,String> hashOwnedComment;
-
+	private HashMap<String,String> hashOwnedComment;
+	private String resultTransformation = "";
 	
 	private Document doc; 
 	private XPath xpath;
@@ -55,6 +55,8 @@ public class PapyrusTransformation {
     
 	public PapyrusTransformation(String fileModelPathLoad, String fileModelPathSave){
 		try {
+			 //resultTransformation += "\n---------------PapyrusTransformation()-----------------"; 
+			 //resultTransformation += "\n load(" + fileModelPathLoad + ")";
 			 doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(fileModelPathLoad));
 			 xpath = XPathFactory.newInstance().newXPath();
 			 changeNameNod();
@@ -91,13 +93,15 @@ public class PapyrusTransformation {
 			 extractEdges();
 			 changeNodetoStructureNode();
 			 this.xformer.transform(new DOMSource(doc), new StreamResult(new File(fileModelPathSave)));
+			 //resultTransformation += "\n save(" + fileModelPathSave + ")";
+			 resultTransformation += " Model Saved in:  (" + fileModelPathSave + ")\n";
 			  //  removeAttributUmlModel();
 		} catch (XPathExpressionException | SAXException | ParserConfigurationException
 				| TransformerFactoryConfigurationError | TransformerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			resultTransformation += "Error: " + e.toString() + "\n";
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			resultTransformation += "Error: " + e.toString() + "\n";
 			e.printStackTrace();
 		}
 	    
@@ -113,7 +117,7 @@ public class PapyrusTransformation {
 		    try {
 				newtarget = java.net.URLDecoder.decode(target, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
+				resultTransformation += "Error: " + e.toString() + "\n";
 				e.printStackTrace();
 			}
 		    element.setAttribute("target", newtarget);
@@ -192,6 +196,7 @@ public class PapyrusTransformation {
 				doc.renameNode(nodesachanger.item(i), null, "structuredNode");
 			}
 		} catch (XPathExpressionException e) {
+			resultTransformation += "Error: " + e.toString() + "\n";
 			e.printStackTrace();
 		}
 	}
@@ -298,6 +303,7 @@ public class PapyrusTransformation {
 			try {
 				key = java.net.URLDecoder.decode(key1, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
+				resultTransformation += "Error: " + e.toString() + "\n";
 				e.printStackTrace();
 			}
 		    getHashNodes().put(key, "N"+idx);
@@ -444,6 +450,10 @@ public class PapyrusTransformation {
 	}
 	public NodeList getPackageable() {
 		return packageable;
+	}
+
+	public String getResultTransformation() {
+		return resultTransformation;
 	}
 	
 }

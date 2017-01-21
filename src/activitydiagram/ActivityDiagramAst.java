@@ -24,6 +24,10 @@ public class ActivityDiagramAst
 	private MethodDeclaration entryMethodObj;
 	private String keyEntryPoint = "";
 	
+	private StringBuilder responseInstructions = new StringBuilder( "" );
+	private StringBuilder responseValidate = new StringBuilder( "" );
+
+	
 	public ActivityDiagramAst(HashMap<String, ADMethodInvocation> listInvocationMethods, 
 			Map<String, Map<Integer, ADCondition>> hashConditions, 
 			List<TypeDeclaration> listClasses, 
@@ -210,7 +214,7 @@ public class ActivityDiagramAst
 			    }
 			    
 			    ADInstruction lastInstruction = hashInstructionsList.get(key).get(lastpos);
-			    ADInstruction tmpInstructionFinal = new ADInstruction("final" + key, "final" + key, "final", lastpos + 1, -1);
+			    ADInstruction tmpInstructionFinal = new ADInstruction("final-" + key, "final" + key, "final", lastpos + 1, -1);
 			    tmpInstructionFinal.setSource(lastInstruction.getPosition());
 			    tmphashInsObj.put(lastpos + 1, tmpInstructionFinal);//Final Node
 			    
@@ -258,7 +262,9 @@ public class ActivityDiagramAst
 				//Important to set last then
 				if( instruction.getFlotType().equals("else") ){
 					ADInstructionIf lastelseParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
-					lastelseParent.setLastPosThen(lastsource);
+					if( lastelseParent != null){
+						lastelseParent.setLastPosThen(lastsource);
+					}
 				}
 				else if( instruction.getTypeNode().equals("merge") ){
 					ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
@@ -291,37 +297,49 @@ public class ActivityDiagramAst
 	}
 	
 	private void printToHashInstructions() {
+		responseInstructions.append("---------- printToHashInstructions() -----------------\n");
 		System.out.println("---------- printToHashInstructions() -----------------");
 		for( String keyclassmethod : this.hashInstructionsList.keySet()){
 			Map<Integer, ADInstruction> hashInstructionsObjOrdered = new TreeMap<Integer, ADInstruction>(hashInstructionsList.get(keyclassmethod));
 			//get Existing Hash
 			System.out.println(" - " + keyclassmethod);
+			responseInstructions.append(" - " + keyclassmethod + "\n");
 			for( Integer pos : hashInstructionsObjOrdered.keySet()){
 				ADInstruction instruction = hashInstructionsObjOrdered.get(pos);
 				System.out.println("   - [" + pos + "] " + instruction.getTypeNode() + " " + instruction.getFlotType() + " - " + instruction.getDisplayInstruction() + " source: " + instruction.getSource() + " parent:" + instruction.getPosParent() );
+				responseInstructions.append("   - [" + pos + "] " + instruction.getTypeNode() + " " + instruction.getFlotType() + " - " + instruction.getDisplayInstruction() + " source: " + instruction.getSource() + " parent:" + instruction.getPosParent() + "\n");
 				if( instruction.getTypeNode().equals("merge") ){
-					System.out.println(" 	  sourceList :" + instruction.getListsources().toString());
+					System.out.print(" 	  sourceList :" + instruction.getListsources().toString());
+					responseInstructions.append(" 	  sourceList :" + instruction.getListsources().toString() + "\n");
 				}
 			}
 		}
-		System.out.println("---------- end printToHashInstructions() -----------------");
+		System.out.println("---------- end printToHashInstructions() -----------------"+ "\n");
+		responseInstructions.append("---------- end printToHashInstructions() -----------------"+ "\n");
 	}	
 	
-	public void validateClassDiagram()
+	public boolean validateClassDiagram()
 	{
+		boolean diagramok = false;
 		if(entryValidated){
+			diagramok = true;
 			System.out.println("Activity Diagram Validated");
+			responseValidate.append("Activity Diagram Validated"+ "\n");
 		}
 		else{
 			System.out.println("Sorry, Entry point (" + entryClass + ":" + entryMethod + "()" +  ")  not found!");
-			System.exit(0);
+			responseValidate.append("Sorry, Entry point (" + entryClass + ":" + entryMethod + "()" +  ")  not found!");
+			//System.exit(0);
 		}
+		return diagramok;
 	}
 	
 	public void testClassDiagram()
 	{
 		validateClassDiagram();
-		printToHashInstructions();
+		if(entryValidated){
+			printToHashInstructions();
+		}
 	}
 	
 	public String getEntryClass() {
@@ -426,6 +444,22 @@ public class ActivityDiagramAst
 
 	public void setHashConditions(Map<String, Map<Integer, ADCondition>> hashConditions) {
 		this.hashConditions = hashConditions;
+	}
+
+	public String getResponseInstructions() {
+		return this.responseInstructions.toString();
+	}
+
+	public void setResponseInstructions(StringBuilder responseInstructions) {
+		this.responseInstructions = responseInstructions;
+	}
+
+	public String getResponseValidate() {
+		return responseValidate.toString();
+	}
+
+	public void setResponseValidate(StringBuilder responseValidate) {
+		this.responseValidate = responseValidate;
 	}
 	
 }

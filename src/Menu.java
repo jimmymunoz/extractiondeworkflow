@@ -1,19 +1,13 @@
-import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -25,8 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
 
 /*
  * SwingFileChooserDemo.java is a 1.4 application that uses these files:
@@ -44,20 +36,28 @@ public class Menu extends JPanel implements ActionListener {
    private JLabel labelClass;
    private JTextField textFieldClass;
    private JTextField textFieldMethod;
+   private JLabel labelSource;
+	private JLabel labelMethod;
+	private JTextField textFieldModel;
+	private JLabel labelUmlModel;
+	private JTextField textFieldModelUml;
+	private JTextArea textArea;
+   
+   
    
   public Menu() {
 	this.path = "";
 	
 	
 	Panel psc = new Panel();
-	labelClass = new JLabel();
-	labelClass.setText("Source Code:");
+	labelSource = new JLabel();
+	labelSource.setText("Source Code:");
 	//add(labelClass);
     
     textFieldPath = new JTextField(40);
 	textFieldPath.setEnabled(false);
 	//add(textFieldPath);
-	psc.add(labelClass);
+	psc.add(labelSource);
 	psc.add(textFieldPath);
 	
 	go = new JButton("...");
@@ -88,23 +88,23 @@ public class Menu extends JPanel implements ActionListener {
 	pep.add(prow);
 	
 	prow = new JPanel(new GridLayout(1,2));
-	labelClass = new JLabel();
-	labelClass.setText("Model Name:");
-	prow.add(labelClass);
+	labelMethod = new JLabel();
+	labelMethod.setText("Model Name:");
+	prow.add(labelMethod);
 	
-	textFieldClass = new JTextField(20);
-	textFieldClass.setText("ActivityModel.xmi");
-	prow.add(textFieldClass);
+	textFieldModel = new JTextField(20);
+	textFieldModel.setText("ActivityModel.xmi");
+	prow.add(textFieldModel);
 	pep.add(prow);
 	
 	prow = new JPanel(new GridLayout(1,2));
-	labelClass = new JLabel();
-	labelClass.setText("Uml Model Name:");
-	prow.add(labelClass);
+	labelUmlModel = new JLabel();
+	labelUmlModel.setText("Uml Model Name:");
+	prow.add(labelUmlModel);
 	
-	textFieldClass = new JTextField(15);
-	textFieldClass.setText("ActivityModel.uml");
-	prow.add(textFieldClass);
+	textFieldModelUml = new JTextField(15);
+	textFieldModelUml.setText("ActivityModel.uml");
+	prow.add(textFieldModelUml);
 	pep.add(prow);
     
 	prow = new JPanel(new GridLayout(1,1));
@@ -115,7 +115,7 @@ public class Menu extends JPanel implements ActionListener {
     pep.add(prow);
     
     prow = new JPanel(new GridLayout(1,1));
-    JTextArea textArea = new JTextArea(
+    textArea = new JTextArea(
 	    ""
 	);
     textArea.setEditable(false);
@@ -144,9 +144,14 @@ public class Menu extends JPanel implements ActionListener {
 	  public void actionPerformed(ActionEvent e)
       {
 		try {
+			Main.setEntryClass(textFieldClass.getText());
+			Main.setEntryMethod(textFieldMethod.getText());
+			Main.setFileModelResultEmf(textFieldModel.getText());
+			Main.setFileModelResultPapyrus(textFieldModelUml.getText());
 			String messageResult = Main.initDiagram();
 			startDiagramAnalysis(path);
-		    JOptionPane.showMessageDialog(null, messageResult);
+			textArea.setText(Main.getResponseInstructions());
+			JOptionPane.showMessageDialog(null, messageResult);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -192,12 +197,14 @@ public class Menu extends JPanel implements ActionListener {
   }
 
  private void startDiagramAnalysis(String path) {
+	 
 	  Main.setProjectPath(path);
 	  Main.setProjectSourcePath(path);
 	  btnAnalyse.setEnabled(true);
 	  textFieldPath.setText(path);
 	  Main.setEntryClass(textFieldClass.getText());
 	  Main.setEntryMethod(textFieldMethod.getText());
+	  System.out.println("Entry Point: (" + textFieldClass.getText() + "." + textFieldMethod.getText() + ")");
  }
    
   public Dimension getPreferredSize(){
