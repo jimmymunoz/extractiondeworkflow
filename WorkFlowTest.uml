@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_tkPlUOAqEeafBNZ-6ofF7w" name="RootElement">
+  <packagedElement xmi:type="uml:Activity" xmi:id="P0" name="Main.main(String[]):void" node="N0 N1 N2 N3 N4 N5 N6 N7 N8 N9 N13 N14 N15 N16 N17 N18 N19 N20" group="N9">
+    <ownedComment xmi:type="uml:Comment" xmi:id="OW0" annotatedElement="N8 N10">
+      <body>Subactivity: Main.multiply(int,int):int</body>
+    </ownedComment>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E0" target="N1" source="N0"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E1" target="N2" source="N1"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E2" target="N3" source="N2"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E3" target="N4" source="N3"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E4" target="N5" source="N4"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E5" target="N6" source="N5"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E6" target="N7" source="N6"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E7" target="N7" source="N4"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E8" target="N11" source="N10"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E9" target="N12" source="N11"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E10" target="N8" source="N2"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E11" target="N13" source="N8"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E12" target="N14" source="N13"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E13" target="N15" source="N14"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E14" target="N16" source="N13"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E15" target="N17" source="N15"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E16" target="N17" source="N16"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E17" target="N18" source="N7"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E18" target="N18" source="N17"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E19" target="N19" source="N18"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="E20" target="N20" source="N19"/>
+    <structuredNode xmi:type="uml:StructuredActivityNode" xmi:id="N9" name="Main.multiply(int,int):int">
+      <node xmi:type="uml:InitialNode" xmi:id="N10" name="init-Main.multiply(int,int):int" outgoing="E8"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="N11" name="sum(int result,int num):int" incoming="E8" outgoing="E9"/>
+      <node xmi:type="uml:ActivityFinalNode" xmi:id="N12" name="final-Main.multiply(int,int):int" incoming="E9"/>
+    </structuredNode>
+    <node xmi:type="uml:InitialNode" xmi:id="N0" name="init-Main.main(String[]):void" outgoing="E0"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="N1" name="sum(int x,int y):int" incoming="E0" outgoing="E1"/>
+    <node xmi:type="uml:DecisionNode" xmi:id="N2" name="z &lt; 10" incoming="E1" outgoing="E2 E10"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="N3" name="sum(int z,int x):int" incoming="E2" outgoing="E3"/>
+    <node xmi:type="uml:DecisionNode" xmi:id="N4" name="z &lt; 5" incoming="E3" outgoing="E4 E7"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="N5" name="sum(int x,int y):int" incoming="E4" outgoing="E5"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="N6" name="sum(int z,int z):int" incoming="E5" outgoing="E6"/>
+    <node xmi:type="uml:MergeNode" xmi:id="N7" name="mergeNode (z &lt; 5)" incoming="E6 E7" outgoing="E17"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="N8" name="multiply(int x,int y):int" incoming="E10" outgoing="E11"/>
+    <node xmi:type="uml:DecisionNode" xmi:id="N13" name="z &lt; 5" incoming="E11" outgoing="E12 E14"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="N14" name="sum(int x,int y):int" incoming="E12" outgoing="E13"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="N15" name="sum(int z,int z):int" incoming="E13" outgoing="E15"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="N16" name="sum(int x,int y):int" incoming="E14" outgoing="E16"/>
+    <node xmi:type="uml:MergeNode" xmi:id="N17" name="mergeNode (z &lt; 5)" incoming="E15 E16" outgoing="E18"/>
+    <node xmi:type="uml:MergeNode" xmi:id="N18" name="mergeNode (z &lt; 10)" incoming="E17 E18" outgoing="E19"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="N19" name="System.out.println(int z):void" incoming="E19" outgoing="E20"/>
+    <node xmi:type="uml:ActivityFinalNode" xmi:id="N20" name="final-Main.main(String[]):void" incoming="E20"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_tkfc8OAqEeafBNZ-6ofF7w" name="Activity1"/>
+</uml:Model>

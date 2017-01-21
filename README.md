@@ -103,31 +103,32 @@ public class MethodInvocationVisitor extends ASTVisitor
 ###EMF
 Methode de creation de diagrame d'activité avec EMF:
 ```
-private void createActivityDiagram() 
-{
+private void createActivityDiagram() {
+	resultModel += "\n---------- createActivityDiagram() -----------------";
 	System.out.println("---------- createActivityDiagram() -----------------");
-	umlModel = UMLFactory.eINSTANCE.createModel();
 	
-	Integer idNode = getIdNode("init");
-	Integer idActivity = getIdActivity("MainActivity");
-	parentActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
+	umlModel = UMLFactory.eINSTANCE.createModel();
+	String mainKey = activityDiagram.getKeyEntryPoint();
+	Map<Integer, ADInstruction> mainHashInstructions = activityDiagram.getHashInstructions(mainKey);
+	
+	ADMethodInvocation daMethodInvOb = activityDiagram.getActivityInstructions(mainKey);
+	
+	Integer idNode = getIdNode("init2");
+	Integer idActivity = getAndIncrementIdActivity(daMethodInvOb.getInstructionKey());
+	parentActivity = (Activity) umlModel.createPackagedElement(daMethodInvOb.getDisplayInstruction(), UMLPackage.eINSTANCE.getActivity());
 	Map<String, ActivityNode> mapActivity = new HashMap<String, ActivityNode>();
 	listNodes.put(idActivity+"", mapActivity);
 	
-	String mainKey = activityDiagram.getKeyEntryPoint();
-	Map<Integer, ADInstruction> mainHashInstructions = activityDiagram.getMainHashInstructions(mainKey);
-	ADMethodInvocation daMethodInvOb = activityDiagram.getActivityInstructions(mainKey);
-	
-	getListVariablesByParams(parentActivity, daMethodInvOb);
-	
-	NamedElement tmparentActivity = proccessActivityInstructions(mainHashInstructions, idNode, idActivity);
+	StructuredActivityNode subActtivity = null;
+	NamedElement tmparentActivity = proccessActivityInstructions(subActtivity, mainHashInstructions, idNode, idActivity);
 	if( tmparentActivity instanceof Activity ){
 		parentActivity = (Activity) tmparentActivity;
 	}
 	listActivities.put(idActivity, parentActivity);
 	
 	saveModel(this.fileModelPathSave, umlModel);
-	System.out.println("---------- end createActivityDiagram( " + this.fileModelPathSave +  " ) -----------------");
+	System.out.println("---------- end createActivityDiagram( " + this.fileModelPathSave +  " ) -----------------\n");
+	resultModel += "\n---------- end createActivityDiagram( \" + this.fileModelPathSave +  \" ) -----------------\\n";
 }
 ```
 
@@ -149,11 +150,52 @@ public void  initialiseOnwedComment()
 }
 ```
 
-##Screenshots
+##Manual
 
-###Interface:
-![Index Action](src/Jimmy/BlogBundle/Resources/public/screentshots/home.png?raw=true "Home")
-###Modèle:
-![Index Action](src/Jimmy/BlogBundle/Resources/public/screentshots/responsive.png?raw=true "Home Responsive")
-###Diagrame:
-![Edit Action](src/Jimmy/BlogBundle/Resources/public/screentshots/pagination.png?raw=true "Pagination")
+###Interface
+![interface](images/01-interface.png?raw=true "01-interface.png")
+###Choisir un fichier
+![selectfile](images/02-selectfile.png?raw=true "02-selectfile.png")
+###Nomer le fichier de resultat
+![name-model](images/03-name-model.png?raw=true "03-name-model.png")
+###Message de sucess
+![model-saved](images/04-model-saved.png?raw=true "04-model-saved.png")
+###Console
+![console](images/05-console.png?raw=true "05-console.png")
+###Modèle resultat
+![model-result](images/06-model-result.png?raw=true "06-model-result.png")
+###Visualiser le modèle
+![view-model](images/07-view-model.png?raw=true "07-view-model.png")
+###Papyrus
+Show Perspective -> Papyrus
+![open-papyrus-perspective](images/08-open-papyrus-perspective.png?raw=true "08-open-papyrus-perspective.png")
+###Papyrus perspective
+![papyrus-perspective](images/09-papyrus-perspective.png?raw=true "09-papyrus-perspective.png")
+###Creation du modèle papyrus
+Model Explorer 
+New -> Papyrus Model ->
+UML Next -> 
+![new-papyrus-model](images/10-new-papyrus-model.png?raw=true "10-new-papyrus-model.png")
+###Choisir diagram d'activité
+Choose
+Activity Diagram
+Finish
+![select-activity-diagram](images/11-select-activity-diagram.png?raw=true "11-select-activity-diagram.png")
+###Nouveau Diagrama à partir du modèle
+Click Right -> Main Activity -> New Diagram
+![new-activity-diagram](images/12-new-activity-diagram.png?raw=true "12-new-activity-diagram.png")
+###Drag and drop les elements à visualiser
+Drag and drop the elements into the activity
+![drag-and-drop](images/13-drag-and-drop.png?raw=true "13-drag-and-drop.png")
+###Click - Select All
+Select All (ctrl + A)
+![select-all](images/14-select-all.png?raw=true "14-select-all.png")
+###Click - Arrange-all
+Arrange All
+![arrange-all](images/15-arrange-all.png?raw=true "15-arrange-all.png")
+###Voir le resultat
+![view-result](images/16-view-result.png?raw=true "16-view-result.png")
+###Enregistrer le fichier
+![save-file](images/17-save-file.png?raw=true "17-save-file.png")
+###Resultat
+![WorkFlowTest](images/18-WorkFlowTest.png?raw=true "18-WorkFlowTest.png")

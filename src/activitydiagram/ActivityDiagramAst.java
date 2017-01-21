@@ -429,12 +429,7 @@ public class ActivityDiagramAst
 		return hashInvocationMethods.get(key);
 	}
 	
-	public Map<Integer, ADInstruction> getMainHashActivityInstructions(){
-		//keyEntryPoint
-		return getMainHashInstructions(keyEntryPoint);
-	}
-	
-	public Map<Integer, ADInstruction> getMainHashInstructions(String key){
+	public Map<Integer, ADInstruction> getHashInstructions(String key){
 		return hashInstructionsList.get(key);
 	}
 	

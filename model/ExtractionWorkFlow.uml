@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><uml:Model xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0">
+  <packagedElement group="N4 N6 N24 N32 N37 N38 N45 N54 N55 N59 N60 N61 N62 N63 N64 N74" name="Main.main(String[],WindowEvent):void" node="N0 N1 N2 N3 N4 N5 N6 N24 N32 N37 N38 N45 N54 N55 N59 N60 N61 N62 N63 N64 N68 N69 N70 N71 N72 N73 N74 N75 N76" xmi:id="P0" xmi:type="uml:Activity">
+    <ownedComment annotatedElement="N27 N33" xmi:id="OW0" xmi:type="uml:Comment">
+      <body>ActivityDiagramParser.getClassList(CompilationUnit):List&lt;TypeDeclaration&gt;</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N40 N46" xmi:id="OW1" xmi:type="uml:Comment">
+      <body>ActivityDiagramAst.validateClassDiagram():boolean</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N30 N39" xmi:id="OW2" xmi:type="uml:Comment">
+      <body>ActivityDiagramAst.testClassDiagram():void</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N8 N25" xmi:id="OW3" xmi:type="uml:Comment">
+      <body>ActivityDiagramParser.parseActivityDiagram():ActivityDiagramAst</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N10 N56" xmi:id="OW4" xmi:type="uml:Comment">
+      <body>ActivityDiagramAst.getResponseInstructions():String</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N13" xmi:id="OW5" xmi:type="uml:Comment">
+      <body>Main.setResponseInstructions(String):void</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N17" xmi:id="OW6" xmi:type="uml:Comment">
+      <body>Main.setResponseInstructions(String):void</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N18" xmi:id="OW7" xmi:type="uml:Comment">
+      <body>Main.getResponseInstructions():String</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N20" xmi:id="OW8" xmi:type="uml:Comment">
+      <body>PapyrusTransformation.getResultTransformation():String</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N21 N65" xmi:id="OW9" xmi:type="uml:Comment">
+      <body>ActivityDiagramAst.getResponseValidate():String</body>
+    </ownedComment>
+    <ownedComment annotatedElement="N5 N10" xmi:id="OW10" xmi:type="uml:Comment">
+      <body>Main.initDiagram():String</body>
+    </ownedComment>
+    <edge source="N0" target="N1" xmi:id="E0" xmi:type="uml:ControlFlow"/>
+    <edge source="N1" target="N2" xmi:id="E1" xmi:type="uml:ControlFlow"/>
+    <edge source="N2" target="N3" xmi:id="E2" xmi:type="uml:ControlFlow"/>
+    <edge source="N25" target="N26" xmi:id="E3" xmi:type="uml:ControlFlow"/>
+    <edge source="N33" target="N34" xmi:id="E4" xmi:type="uml:ControlFlow"/>
+    <edge source="N34" target="N35" xmi:id="E5" xmi:type="uml:ControlFlow"/>
+    <edge source="N35" target="N36" xmi:id="E6" xmi:type="uml:ControlFlow"/>
+    <edge source="N26" target="N27" xmi:id="E7" xmi:type="uml:ControlFlow"/>
+    <edge source="N27" target="N28" xmi:id="E8" xmi:type="uml:ControlFlow"/>
+    <edge source="N28" target="N29" xmi:id="E9" xmi:type="uml:ControlFlow"/>
+    <edge source="N46" target="//Main.main(String%5B%5D,WindowEvent):void/ActivityDiagramAst.validateClassDiagram():boolean/entryValidated" xmi:id="E10" xmi:type="uml:ControlFlow"/>
+    <edge source="//Main.main(String%5B%5D,WindowEvent):void/ActivityDiagramAst.validateClassDiagram():boolean/entryValidated" target="N48" xmi:id="E11" xmi:type="uml:ControlFlow"/>
+    <edge source="N48" target="N49" xmi:id="E12" xmi:type="uml:ControlFlow"/>
+    <edge source="//Main.main(String%5B%5D,WindowEvent):void/ActivityDiagramAst.validateClassDiagram():boolean/entryValidated" target="N50" xmi:id="E13" xmi:type="uml:ControlFlow"/>
+    <edge source="N50" target="N51" xmi:id="E14" xmi:type="uml:ControlFlow"/>
+    <edge source="N49" target="//Main.main(String%5B%5D,WindowEvent):void/ActivityDiagramAst.validateClassDiagram():boolean/mergeNode%20(entryValidated)" xmi:id="E15" xmi:type="uml:ControlFlow"/>
+    <edge source="N51" target="//Main.main(String%5B%5D,WindowEvent):void/ActivityDiagramAst.validateClassDiagram():boolean/mergeNode%20(entryValidated)" xmi:id="E16" xmi:type="uml:ControlFlow"/>
+    <edge source="//Main.main(String%5B%5D,WindowEvent):void/ActivityDiagramAst.validateClassDiagram():boolean/mergeNode%20(entryValidated)" target="N53" xmi:id="E17" xmi:type="uml:ControlFlow"/>
+    <edge source="N39" target="N40" xmi:id="E18" xmi:type="uml:ControlFlow"/>
+    <edge source="N40" target="N41" xmi:id="E19" xmi:type="uml:ControlFlow"/>
+    <edge source="N41" target="N42" xmi:id="E20" xmi:type="uml:ControlFlow"/>
+    <edge source="N42" target="N43" xmi:id="E21" xmi:type="uml:ControlFlow"/>
+    <edge source="N41" target="N43" xmi:id="E22" xmi:type="uml:ControlFlow"/>
+    <edge source="N43" target="N44" xmi:id="E23" xmi:type="uml:ControlFlow"/>
+    <edge source="N29" target="N30" xmi:id="E24" xmi:type="uml:ControlFlow"/>
+    <edge source="N30" target="N31" xmi:id="E25" xmi:type="uml:ControlFlow"/>
+    <edge source="N7" target="N8" xmi:id="E26" xmi:type="uml:ControlFlow"/>
+    <edge source="N8" target="N9" xmi:id="E27" xmi:type="uml:ControlFlow"/>
+    <edge source="N56" target="N57" xmi:id="E28" xmi:type="uml:ControlFlow"/>
+    <edge source="N57" target="N58" xmi:id="E29" xmi:type="uml:ControlFlow"/>
+    <edge source="N9" target="N10" xmi:id="E30" xmi:type="uml:ControlFlow"/>
+    <edge source="N10" target="N11" xmi:id="E31" xmi:type="uml:ControlFlow"/>
+    <edge source="N11" target="N12" xmi:id="E32" xmi:type="uml:ControlFlow"/>
+    <edge source="N12" target="N13" xmi:id="E33" xmi:type="uml:ControlFlow"/>
+    <edge source="N14" target="N15" xmi:id="E34" xmi:type="uml:ControlFlow"/>
+    <edge source="N15" target="N16" xmi:id="E35" xmi:type="uml:ControlFlow"/>
+    <edge source="N16" target="N17" xmi:id="E36" xmi:type="uml:ControlFlow"/>
+    <edge source="N19" target="N20" xmi:id="E37" xmi:type="uml:ControlFlow"/>
+    <edge source="N65" target="N66" xmi:id="E38" xmi:type="uml:ControlFlow"/>
+    <edge source="N66" target="N67" xmi:id="E39" xmi:type="uml:ControlFlow"/>
+    <edge source="N11" target="N21" xmi:id="E40" xmi:type="uml:ControlFlow"/>
+    <edge source="N21" target="N22" xmi:id="E41" xmi:type="uml:ControlFlow"/>
+    <edge source="N22" target="N23" xmi:id="E42" xmi:type="uml:ControlFlow"/>
+    <edge source="N3" target="N5" xmi:id="E43" xmi:type="uml:ControlFlow"/>
+    <edge source="N5" target="N68" xmi:id="E44" xmi:type="uml:ControlFlow"/>
+    <edge source="N68" target="N69" xmi:id="E45" xmi:type="uml:ControlFlow"/>
+    <edge source="N69" target="N70" xmi:id="E46" xmi:type="uml:ControlFlow"/>
+    <edge source="N70" target="N71" xmi:id="E47" xmi:type="uml:ControlFlow"/>
+    <edge source="N71" target="N72" xmi:id="E48" xmi:type="uml:ControlFlow"/>
+    <edge source="N72" target="N73" xmi:id="E49" xmi:type="uml:ControlFlow"/>
+    <edge source="N73" target="N75" xmi:id="E50" xmi:type="uml:ControlFlow"/>
+    <edge source="N75" target="N76" xmi:id="E51" xmi:type="uml:ControlFlow"/>
+    <node name="init-Main.main(String[],WindowEvent):void" outgoing="E0" xmi:id="N0" xmi:type="uml:InitialNode"/>
+    <node incoming="E0" name="configurationList.put(String &quot;create_subactivities&quot;,String &quot;1&quot;):String" outgoing="E1" xmi:id="N1" xmi:type="uml:OpaqueAction"/>
+    <node incoming="E1" name="configurationList.put(String &quot;show_flot_variables&quot;,String &quot;1&quot;):String" outgoing="E2" xmi:id="N2" xmi:type="uml:OpaqueAction"/>
+    <node incoming="E2" name="setEnviromenTestMac():void" outgoing="E43" xmi:id="N3" xmi:type="uml:OpaqueAction"/>
+    <structuredNode name="Main.setEnviromenTestMac():void" xmi:id="N4" xmi:type="uml:StructuredActivityNode"/>
+    <node incoming="E43" name="initDiagram():String" outgoing="E44" xmi:id="N5" xmi:type="uml:OpaqueAction"/>
+    <structuredNode name="Main.initDiagram():String" xmi:id="N6" xmi:type="uml:StructuredActivityNode">
+      <node name="init-Main.initDiagram():String" outgoing="E26" xmi:id="N7" xmi:type="uml:InitialNode"/>
+      <node incoming="E26" name="adParser.parseActivityDiagram():ActivityDiagramAst" outgoing="E27" xmi:id="N8" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E27" name="setResponseInstructions(String activityDiagram.getResponseInstructions()):void" outgoing="E30" xmi:id="N9" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E30" name="activityDiagram.getResponseInstructions():String" outgoing="E31" xmi:id="N10" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E31" name="activityDiagram.isEntryValidated()" outgoing="E32 E40" xmi:id="N11" xmi:type="uml:DecisionNode"/>
+      <node incoming="E32" name="activityDiagram.isEntryValidated():boolean" outgoing="E33" xmi:id="N12" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E33" name="setResponseInstructions(String getResponseInstructions() + activityDiagramModel.getResultModel()):void" xmi:id="N13" xmi:type="uml:OpaqueAction"/>
+      <node name="getResponseInstructions():String" outgoing="E34" xmi:id="N14" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E34" name="activityDiagramModel.getResultModel():String" outgoing="E35" xmi:id="N15" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E35" name="activityDiagramModel.getFileModelPathSave():String" outgoing="E36" xmi:id="N16" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E36" name="setResponseInstructions(String getResponseInstructions() + Ptrans.getResultTransformation()):void" xmi:id="N17" xmi:type="uml:OpaqueAction"/>
+      <node name="getResponseInstructions():String" xmi:id="N18" xmi:type="uml:OpaqueAction"/>
+      <node name="Ptrans.getResultTransformation():String" outgoing="E37" xmi:id="N19" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E37" name="Ptrans.getResultTransformation():String" xmi:id="N20" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E40" name="activityDiagram.getResponseValidate():String" outgoing="E41" xmi:id="N21" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E41" name="mergeNode (activityDiagram.isEntryValidated())" outgoing="E42" xmi:id="N22" xmi:type="uml:MergeNode"/>
+      <node incoming="E42" name="final-Main.initDiagram():String" xmi:id="N23" xmi:type="uml:ActivityFinalNode"/>
+    </structuredNode>
+    <structuredNode name="ActivityDiagramParser.parseActivityDiagram():ActivityDiagramAst" xmi:id="N24" xmi:type="uml:StructuredActivityNode">
+      <node name="init-ActivityDiagramParser.parseActivityDiagram():ActivityDiagramAst" outgoing="E3" xmi:id="N25" xmi:type="uml:InitialNode"/>
+      <node incoming="E3" name="getCompilationUnitByDir():CompilationUnit" outgoing="E7" xmi:id="N26" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E7" name="getClassList(CompilationUnit parse):List&lt;TypeDeclaration&gt;" outgoing="E8" xmi:id="N27" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E8" name="getListInvocationMethods(CompilationUnit parse):HashMap&lt;String,ADMethodInvocation&gt;" outgoing="E9" xmi:id="N28" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E9" name="getHashConditions(CompilationUnit parse):Map&lt;String,Map&lt;Integer,ADCondition&gt;&gt;" outgoing="E24" xmi:id="N29" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E24" name="activityDiagram.testClassDiagram():void" outgoing="E25" xmi:id="N30" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E25" name="final-ActivityDiagramParser.parseActivityDiagram():ActivityDiagramAst" xmi:id="N31" xmi:type="uml:ActivityFinalNode"/>
+    </structuredNode>
+    <structuredNode name="ActivityDiagramParser.getClassList(CompilationUnit):List&lt;TypeDeclaration&gt;" xmi:id="N32" xmi:type="uml:StructuredActivityNode">
+      <node name="init-ActivityDiagramParser.getClassList(CompilationUnit):List&lt;TypeDeclaration&gt;" outgoing="E4" xmi:id="N33" xmi:type="uml:InitialNode"/>
+      <node incoming="E4" name="parse.accept(TypeDeclarationVisitor visitor):" outgoing="E5" xmi:id="N34" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E5" name="visitor.getListTypeDeclaration():List&lt;TypeDeclaration&gt;" outgoing="E6" xmi:id="N35" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E6" name="final-ActivityDiagramParser.getClassList(CompilationUnit):List&lt;TypeDeclaration&gt;" xmi:id="N36" xmi:type="uml:ActivityFinalNode"/>
+    </structuredNode>
+    <structuredNode name="TypeDeclarationVisitor.getListTypeDeclaration():List&lt;TypeDeclaration&gt;" xmi:id="N37" xmi:type="uml:StructuredActivityNode"/>
+    <structuredNode name="ActivityDiagramAst.testClassDiagram():void" xmi:id="N38" xmi:type="uml:StructuredActivityNode">
+      <node name="init-ActivityDiagramAst.testClassDiagram():void" outgoing="E18" xmi:id="N39" xmi:type="uml:InitialNode"/>
+      <node incoming="E18" name="validateClassDiagram():boolean" outgoing="E19" xmi:id="N40" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E19" name="entryValidated" outgoing="E20 E22" xmi:id="N41" xmi:type="uml:DecisionNode"/>
+      <node incoming="E20" name="printToHashInstructions():void" outgoing="E21" xmi:id="N42" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E21 E22" name="mergeNode (entryValidated)" outgoing="E23" xmi:id="N43" xmi:type="uml:MergeNode"/>
+      <node incoming="E23" name="final-ActivityDiagramAst.testClassDiagram():void" xmi:id="N44" xmi:type="uml:ActivityFinalNode"/>
+    </structuredNode>
+    <structuredNode name="ActivityDiagramAst.validateClassDiagram():boolean" xmi:id="N45" xmi:type="uml:StructuredActivityNode">
+      <node name="init-ActivityDiagramAst.validateClassDiagram():boolean" outgoing="E10" xmi:id="N46" xmi:type="uml:InitialNode"/>
+      <node incoming="E10" name="entryValidated" outgoing="E11 E13" xmi:id="N47" xmi:type="uml:DecisionNode"/>
+      <node incoming="E11" name="System.out.println(String &quot;Activity Diagram Validated&quot;):void" outgoing="E12" xmi:id="N48" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E12" name="responseValidate.append(String &quot;Activity Diagram Validated&quot; + &quot;\n&quot;):StringBuilder" outgoing="E15" xmi:id="N49" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E13" name="System.out.println(String &quot;Sorry, Entry point (&quot; + entryClass + &quot;:&quot;+ entryMethod+ &quot;()&quot;+ &quot;)  not found!&quot;):void" outgoing="E14" xmi:id="N50" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E14" name="responseValidate.append(String &quot;Sorry, Entry point (&quot; + entryClass + &quot;:&quot;+ entryMethod+ &quot;()&quot;+ &quot;)  not found!&quot;):StringBuilder" outgoing="E16" xmi:id="N51" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E15 E16" name="mergeNode (entryValidated)" outgoing="E17" xmi:id="N52" xmi:type="uml:MergeNode"/>
+      <node incoming="E17" name="final-ActivityDiagramAst.validateClassDiagram():boolean" xmi:id="N53" xmi:type="uml:ActivityFinalNode"/>
+    </structuredNode>
+    <structuredNode name="Main.setResponseInstructions(String):void" xmi:id="N54" xmi:type="uml:StructuredActivityNode"/>
+    <structuredNode name="ActivityDiagramAst.getResponseInstructions():String" xmi:id="N55" xmi:type="uml:StructuredActivityNode">
+      <node name="init-ActivityDiagramAst.getResponseInstructions():String" outgoing="E28" xmi:id="N56" xmi:type="uml:InitialNode"/>
+      <node incoming="E28" name="this.responseInstructions.toString():String" outgoing="E29" xmi:id="N57" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E29" name="final-ActivityDiagramAst.getResponseInstructions():String" xmi:id="N58" xmi:type="uml:ActivityFinalNode"/>
+    </structuredNode>
+    <structuredNode name="ActivityDiagramAst.isEntryValidated():boolean" xmi:id="N59" xmi:type="uml:StructuredActivityNode"/>
+    <structuredNode name="Main.getResponseInstructions():String" xmi:id="N60" xmi:type="uml:StructuredActivityNode"/>
+    <structuredNode name="ActivityDiagramModel.getResultModel():String" xmi:id="N61" xmi:type="uml:StructuredActivityNode"/>
+    <structuredNode name="ActivityDiagramModel.getFileModelPathSave():String" xmi:id="N62" xmi:type="uml:StructuredActivityNode"/>
+    <structuredNode name="PapyrusTransformation.getResultTransformation():String" xmi:id="N63" xmi:type="uml:StructuredActivityNode"/>
+    <structuredNode name="ActivityDiagramAst.getResponseValidate():String" xmi:id="N64" xmi:type="uml:StructuredActivityNode">
+      <node name="init-ActivityDiagramAst.getResponseValidate():String" outgoing="E38" xmi:id="N65" xmi:type="uml:InitialNode"/>
+      <node incoming="E38" name="responseValidate.toString():String" outgoing="E39" xmi:id="N66" xmi:type="uml:OpaqueAction"/>
+      <node incoming="E39" name="final-ActivityDiagramAst.getResponseValidate():String" xmi:id="N67" xmi:type="uml:ActivityFinalNode"/>
+    </structuredNode>
+    <node incoming="E44" name="System.exit(int 0):void" outgoing="E45" xmi:id="N68" xmi:type="uml:OpaqueAction"/>
+    <node incoming="E45" name="frame.addWindowListener( new WindowAdapter(){&#10;  public void windowClosing(  WindowEvent e){&#10;    System.exit(0);&#10;  }&#10;}&#10;):void" outgoing="E46" xmi:id="N69" xmi:type="uml:OpaqueAction"/>
+    <node incoming="E46" name="System.exit(int 0):void" outgoing="E47" xmi:id="N70" xmi:type="uml:OpaqueAction"/>
+    <node incoming="E47" name="frame.getContentPane():Container" outgoing="E48" xmi:id="N71" xmi:type="uml:OpaqueAction"/>
+    <node incoming="E48" name="frame.setSize(Dimension panel.getPreferredSize()):void" outgoing="E49" xmi:id="N72" xmi:type="uml:OpaqueAction"/>
+    <node incoming="E49" name="panel.getPreferredSize():Dimension" outgoing="E50" xmi:id="N73" xmi:type="uml:OpaqueAction"/>
+    <structuredNode name="Menu.getPreferredSize():Dimension" xmi:id="N74" xmi:type="uml:StructuredActivityNode"/>
+    <node incoming="E50" name="frame.setVisible(boolean true):void" outgoing="E51" xmi:id="N75" xmi:type="uml:OpaqueAction"/>
+    <node incoming="E51" name="final-Main.main(String[],WindowEvent):void" xmi:id="N76" xmi:type="uml:ActivityFinalNode"/>
+  </packagedElement>
+</uml:Model>

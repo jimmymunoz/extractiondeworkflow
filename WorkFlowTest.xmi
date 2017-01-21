@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <packagedElement xmi:type="uml:Activity" name="Main.main(String[]):void">
+    <ownedComment annotatedElement="//Main.main(String%5B%5D):void/multiply(int%20x,int%20y):int //Main.main(String%5B%5D):void/Main.multiply(int,int):int/init-Main.multiply(int,int):int">
+      <body>Subactivity: Main.multiply(int,int):int</body>
+    </ownedComment>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/sum(int%20x,int%20y):int" source="//Main.main(String%5B%5D):void/init-Main.main(String%5B%5D):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/z%20%3C%2010" source="//Main.main(String%5B%5D):void/sum(int%20x,int%20y):int"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/sum(int%20z,int%20x):int" source="//Main.main(String%5B%5D):void/z%20%3C%2010"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/z%20%3C%205" source="//Main.main(String%5B%5D):void/sum(int%20z,int%20x):int"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/sum(int%20x,int%20y):int.1" source="//Main.main(String%5B%5D):void/z%20%3C%205"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/sum(int%20z,int%20z):int" source="//Main.main(String%5B%5D):void/sum(int%20x,int%20y):int.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/mergeNode%20(z%20%3C%205)" source="//Main.main(String%5B%5D):void/sum(int%20z,int%20z):int"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/mergeNode%20(z%20%3C%205)" source="//Main.main(String%5B%5D):void/z%20%3C%205"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/Main.multiply(int,int):int/sum(int%20result,int%20num):int" source="//Main.main(String%5B%5D):void/Main.multiply(int,int):int/init-Main.multiply(int,int):int"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/Main.multiply(int,int):int/final-Main.multiply(int,int):int" source="//Main.main(String%5B%5D):void/Main.multiply(int,int):int/sum(int%20result,int%20num):int"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/multiply(int%20x,int%20y):int" source="//Main.main(String%5B%5D):void/z%20%3C%2010"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/z%20%3C%205.1" source="//Main.main(String%5B%5D):void/multiply(int%20x,int%20y):int"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/sum(int%20x,int%20y):int.2" source="//Main.main(String%5B%5D):void/z%20%3C%205.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/sum(int%20z,int%20z):int.1" source="//Main.main(String%5B%5D):void/sum(int%20x,int%20y):int.2"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/sum(int%20x,int%20y):int.3" source="//Main.main(String%5B%5D):void/z%20%3C%205.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/mergeNode%20(z%20%3C%205).1" source="//Main.main(String%5B%5D):void/sum(int%20z,int%20z):int.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/mergeNode%20(z%20%3C%205).1" source="//Main.main(String%5B%5D):void/sum(int%20x,int%20y):int.3"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/mergeNode%20(z%20%3C%2010)" source="//Main.main(String%5B%5D):void/mergeNode%20(z%20%3C%205)"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/mergeNode%20(z%20%3C%2010)" source="//Main.main(String%5B%5D):void/mergeNode%20(z%20%3C%205).1"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/System.out.println(int%20z):void" source="//Main.main(String%5B%5D):void/mergeNode%20(z%20%3C%2010)"/>
+    <edge xmi:type="uml:ControlFlow" target="//Main.main(String%5B%5D):void/final-Main.main(String%5B%5D):void" source="//Main.main(String%5B%5D):void/System.out.println(int%20z):void"/>
+    <node xmi:type="uml:InitialNode" name="init-Main.main(String[]):void" outgoing="//Main.main(String%5B%5D):void/@edge.0"/>
+    <node xmi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//Main.main(String%5B%5D):void/@edge.0" outgoing="//Main.main(String%5B%5D):void/@edge.1"/>
+    <node xmi:type="uml:DecisionNode" name="z &lt; 10" incoming="//Main.main(String%5B%5D):void/@edge.1" outgoing="//Main.main(String%5B%5D):void/@edge.2 //Main.main(String%5B%5D):void/@edge.10"/>
+    <node xmi:type="uml:OpaqueAction" name="sum(int z,int x):int" incoming="//Main.main(String%5B%5D):void/@edge.2" outgoing="//Main.main(String%5B%5D):void/@edge.3"/>
+    <node xmi:type="uml:DecisionNode" name="z &lt; 5" incoming="//Main.main(String%5B%5D):void/@edge.3" outgoing="//Main.main(String%5B%5D):void/@edge.4 //Main.main(String%5B%5D):void/@edge.7"/>
+    <node xmi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//Main.main(String%5B%5D):void/@edge.4" outgoing="//Main.main(String%5B%5D):void/@edge.5"/>
+    <node xmi:type="uml:OpaqueAction" name="sum(int z,int z):int" incoming="//Main.main(String%5B%5D):void/@edge.5" outgoing="//Main.main(String%5B%5D):void/@edge.6"/>
+    <node xmi:type="uml:MergeNode" name="mergeNode (z &lt; 5)" incoming="//Main.main(String%5B%5D):void/@edge.6 //Main.main(String%5B%5D):void/@edge.7" outgoing="//Main.main(String%5B%5D):void/@edge.17"/>
+    <node xmi:type="uml:OpaqueAction" name="multiply(int x,int y):int" incoming="//Main.main(String%5B%5D):void/@edge.10" outgoing="//Main.main(String%5B%5D):void/@edge.11"/>
+    <node xmi:type="uml:StructuredActivityNode" name="Main.multiply(int,int):int">
+      <node xmi:type="uml:InitialNode" name="init-Main.multiply(int,int):int" outgoing="//Main.main(String%5B%5D):void/@edge.8"/>
+      <node xmi:type="uml:OpaqueAction" name="sum(int result,int num):int" incoming="//Main.main(String%5B%5D):void/@edge.8" outgoing="//Main.main(String%5B%5D):void/@edge.9"/>
+      <node xmi:type="uml:ActivityFinalNode" name="final-Main.multiply(int,int):int" incoming="//Main.main(String%5B%5D):void/@edge.9"/>
+    </node>
+    <node xmi:type="uml:DecisionNode" name="z &lt; 5" incoming="//Main.main(String%5B%5D):void/@edge.11" outgoing="//Main.main(String%5B%5D):void/@edge.12 //Main.main(String%5B%5D):void/@edge.14"/>
+    <node xmi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//Main.main(String%5B%5D):void/@edge.12" outgoing="//Main.main(String%5B%5D):void/@edge.13"/>
+    <node xmi:type="uml:OpaqueAction" name="sum(int z,int z):int" incoming="//Main.main(String%5B%5D):void/@edge.13" outgoing="//Main.main(String%5B%5D):void/@edge.15"/>
+    <node xmi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//Main.main(String%5B%5D):void/@edge.14" outgoing="//Main.main(String%5B%5D):void/@edge.16"/>
+    <node xmi:type="uml:MergeNode" name="mergeNode (z &lt; 5)" incoming="//Main.main(String%5B%5D):void/@edge.15 //Main.main(String%5B%5D):void/@edge.16" outgoing="//Main.main(String%5B%5D):void/@edge.18"/>
+    <node xmi:type="uml:MergeNode" name="mergeNode (z &lt; 10)" incoming="//Main.main(String%5B%5D):void/@edge.17 //Main.main(String%5B%5D):void/@edge.18" outgoing="//Main.main(String%5B%5D):void/@edge.19"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(int z):void" incoming="//Main.main(String%5B%5D):void/@edge.19" outgoing="//Main.main(String%5B%5D):void/@edge.20"/>
+    <node xmi:type="uml:ActivityFinalNode" name="final-Main.main(String[]):void" incoming="//Main.main(String%5B%5D):void/@edge.20"/>
+  </packagedElement>
+</uml:Model>

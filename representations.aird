@@ -12,4 +12,10 @@
   <semanticResources>http://www.eclipse.org/uml2/5.0.0/Types</semanticResources>
   <semanticResources>model/model2.notation</semanticResources>
   <semanticResources>model.uml</semanticResources>
+  <semanticResources>model/ExtractionWorkFlow.uml</semanticResources>
+  <semanticResources>model/ExtractionWorkFlow.xmi</semanticResources>
+  <semanticResources>model/ExtractionWorkFlow.notation</semanticResources>
+  <semanticResources>WorkFlowTest.uml</semanticResources>
+  <semanticResources>WorkFlowTest.xmi</semanticResources>
+  <semanticResources>WorkFlowTest.notation</semanticResources>
 </viewpoint:DAnalysis>
