@@ -31,8 +31,8 @@ public class Main {
 		
 		setEnviromenTestMac();
 		//setEnviromenTestWindows();
-		//initDiagram();
-		//System.exit(0);
+		initDiagram();
+		System.exit(0);
 		
 		JFrame frame = new JFrame("Workflow Extractor");
 	    Menu panel = new Menu();

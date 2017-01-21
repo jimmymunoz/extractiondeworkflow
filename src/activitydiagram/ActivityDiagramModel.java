@@ -130,71 +130,71 @@ public class ActivityDiagramModel {
 		System.out.println("---------- createActivityDiagram() -----------------");
 		umlModel = UMLFactory.eINSTANCE.createModel();
 		
-		Integer idNode = getIdNode("init2");
-		Integer idActivity = getIdActivity("MainActivity");
-		parentActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
-		Map<String, ActivityNode> mapActivity = new HashMap<String, ActivityNode>();
-		listNodes.put(idActivity+"", mapActivity);
-		
 		String mainKey = activityDiagram.getKeyEntryPoint();
 		Map<Integer, ADInstruction> mainHashInstructions = activityDiagram.getMainHashInstructions(mainKey);
 		ADMethodInvocation daMethodInvOb = activityDiagram.getActivityInstructions(mainKey);
 		
-		getListVariablesByParams(parentActivity, daMethodInvOb);
+		Integer idNode = getIdNode("init2");
+		Integer idActivity = getIdActivity(daMethodInvOb.getInstructionKey());
+		parentActivity = (Activity) umlModel.createPackagedElement(daMethodInvOb.getDisplayInstruction(), UMLPackage.eINSTANCE.getActivity());
+		Map<String, ActivityNode> mapActivity = new HashMap<String, ActivityNode>();
+		listNodes.put(idActivity+"", mapActivity);
 		
-		NamedElement tmparentActivity = proccessActivityInstructions(mainHashInstructions, idNode, idActivity);
+		//getListVariablesByParams(parentActivity, daMethodInvOb);
+		StructuredActivityNode subActtivity = null;
+		NamedElement tmparentActivity = proccessActivityInstructions(subActtivity, mainHashInstructions, idNode, idActivity);
 		if( tmparentActivity instanceof Activity ){
 			parentActivity = (Activity) tmparentActivity;
 		}
 		listActivities.put(idActivity, parentActivity);
 		
-		/*
-		ActivityFinalNode finalNode2 =  (ActivityFinalNode) parentActivity.createOwnedNode("final",UMLPackage.eINSTANCE.getActivityFinalNode());
-		//finalNode2.setName("final");
-		
-		if( parentActivity.getNodes().size() > 0 ){
-			Integer idEdge = getIdEdge(idActivity + ".edgeFinal");
-			ControlFlow edgeFinal = (ControlFlow) parentActivity.createEdge(null,UMLPackage.eINSTANCE.getControlFlow());
-			//listNodes.get(idActivity+"").put("edgeFinal", initialNode);
-			edgeFinal.setSource(parentActivity.getNodes().get(parentActivity.getNodes().size() - 1));
-			edgeFinal.setTarget(finalNode2);
-		}
-		for(int i = 0; i < parentActivity.getOwnedNodes().size(); i++){
-			System.out.println("i " + i + " -> " + parentActivity.getOwnedNodes().get(i).toString() );
-		}
-		*/
 		saveModel(this.fileModelPathSave, umlModel);
-		System.out.println("---------- end createActivityDiagram( " + this.fileModelPathSave +  " ) -----------------");
+		System.out.println("---------- end createActivityDiagram( " + this.fileModelPathSave +  " ) -----------------\n");
 	}
 	
 	
-	private StructuredActivityNode proccessActivityInstructions(Map<Integer, ADInstruction> mainHashInstructions, Integer indexParentNode, Integer idActivity ){
-		StructuredActivityNode subActtivity = null;
+	private StructuredActivityNode proccessActivityInstructions(StructuredActivityNode subActtivity, Map<Integer, ADInstruction> mainHashInstructions, Integer indexParentNode, Integer idActivity ){
+		
 		for( Integer position : mainHashInstructions.keySet()){
 			ADInstruction adInstruction = mainHashInstructions.get(position);
 			
-			if( configurationList.get("create_subactivities").equals("1") ){
-				createSubActivityIfNotExists(indexParentNode, adInstruction);
-			}
+			System.out.println("      proccessActivityInstructions " + adInstruction.getInstructionKey() + " : Total:  idActivity: " + idActivity);
 			
-			Integer idSubActivity = getIdActivity(adInstruction.getInstructionKey());
-			subActtivity = listSubActivities.get(idSubActivity);
-			//Integer idNode = getIdNode(adInstruction.getDisplayInstruction());
-	    	//indexParentNode = idNode - 1;
-	    	
-	    	ActivityNode sourceNode = getNodeByPosition(adInstruction.getSource()+"", idActivity);
-	    	ActivityNode actNode = null;
-	    	if( subActtivity != null ){
-	    		actNode = createActivityNode(subActtivity, adInstruction, idActivity);
-	    		Comment comment = parentActivity.createOwnedComment();
-	    		comment.setBody(adInstruction.getInstructionKey());
-	    		comment.getAnnotatedElements().add(subActtivity);
-	    		comment.getAnnotatedElements().add(actNode);
+			ActivityNode actNode = null;
+			ActivityNode sourceNode = getNodeByPosition(adInstruction.getSource()+"", idActivity);
+			
+			if( subActtivity != null ){
+				actNode = createActivityNode(subActtivity, adInstruction, idActivity);
 			}
 	    	else{
 	    		actNode = createActivityNode(parentActivity, adInstruction, idActivity);
-	    		//System.out.println("  Node From Act " + adInstruction.getSource() + ": " + actNode.getLabel() + " idActivity: " + idActivity);
+	    	}
+			
+			if( configurationList.get("create_subactivities").equals("1") ){
+				createSubActivityIfNotExists(indexParentNode, adInstruction, adInstruction.getInstructionKey());
+				
+				Integer idSubActivity = getIdActivity(adInstruction.getInstructionKey());
+				StructuredActivityNode subActtivity2 = listSubActivities.get(idSubActivity);
+				
+		    	sourceNode = getNodeByPosition(adInstruction.getSource()+"", idActivity);
+		    	if( subActtivity2 != null ){
+		    		Map<String, ActivityNode> mapSubActivity = listNodes.get(idSubActivity+"");
+		    		ActivityNode firstSubActNode = null;
+		    		for(String keySubAct  : mapSubActivity.keySet()){
+		    			firstSubActNode = mapSubActivity.get(keySubAct);
+		    			break;
+		    		}
+		    		
+		    		if(firstSubActNode != null){
+		    			Comment comment = parentActivity.createOwnedComment();
+			    		comment.setBody(adInstruction.getInstructionKey());
+			    		comment.getAnnotatedElements().add(actNode);
+			    		comment.getAnnotatedElements().add(firstSubActNode);
+		    		}
+				}
 			}
+			
+			
 	    	
 			
 			if( sourceNode != null && adInstruction.getTypeNode() != "merge" ){
@@ -242,15 +242,16 @@ public class ActivityDiagramModel {
 		ActivityNode actNode;
 		switch(adInstruction.getTypeNode()){
 			case "init":
-				InitialNode initialNode = (InitialNode) activity.createOwnedNode("init",UMLPackage.eINSTANCE.getInitialNode());
+				InitialNode initialNode = (InitialNode) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getInitialNode());
+				initialNode.setName(adInstruction.getDisplayInstruction().trim());
 				actNode = initialNode;
 				break;
 			case "final":	
-				ActivityFinalNode finalNode2 =  (ActivityFinalNode) activity.createOwnedNode("final",UMLPackage.eINSTANCE.getActivityFinalNode());
+				ActivityFinalNode finalNode2 =  (ActivityFinalNode) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getActivityFinalNode());
+				finalNode2.setName(adInstruction.getDisplayInstruction().trim());
 				actNode = finalNode2;
 				break;
 			case "if":
-				//activity.getOwnedNode(arg0)
 				DecisionNode tmpDescitionNode = (DecisionNode) activity.createOwnedNode(null,UMLPackage.eINSTANCE.getDecisionNode());
 				tmpDescitionNode.setName(adInstruction.getDisplayInstruction().trim());//+ "&#xA;"
 				//http://download.eclipse.org/modeling/mdt/uml2/javadoc/4.1.0/org/eclipse/uml2/uml/OpaqueAction.html
@@ -382,29 +383,31 @@ public class ActivityDiagramModel {
 		
 	}
 
-	private void createSubActivityIfNotExists(Integer indexParentNode, ADInstruction adInstruction) {
+	private void createSubActivityIfNotExists(Integer indexParentNode, ADInstruction adInstruction, String subactStringKey) {
 		StructuredActivityNode tmpActivity;
+		Map<Integer, ADInstruction> hashInstructions = activityDiagram.getMainHashInstructions(adInstruction.getInstructionKey());
 		
 		if( adInstruction.getTypeNode().equals("call") && activityDiagram.getHashInstructionsList().containsKey(adInstruction.getInstructionKey()) ){
-			if( activityDiagram.getHashInvocationMethods().size() > 0){//Composite Task -> new Activity
+			if( hashInstructions.size() > 0){//Composite Task -> new Activity
 				Integer oldId = _idActivity;
-				Integer idActivity = getIdActivity(adInstruction.getInstructionKey());
+				Integer idActivity = getIdActivity(subactStringKey);
 				if( oldId < _idActivity ){ //If did not exists
 					//Activity tmpActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
 					//tmpActivity = (Activity) umlModel.createPackagedElement("A" + idActivity, UMLPackage.eINSTANCE.getActivity());
-					tmpActivity =  (StructuredActivityNode) parentActivity.createOwnedNode("A3", UMLPackage.eINSTANCE.getStructuredActivityNode());
+					tmpActivity =  (StructuredActivityNode) parentActivity.createOwnedNode(adInstruction.getInstructionKey(), UMLPackage.eINSTANCE.getStructuredActivityNode());
 					listSubActivities.put(idActivity, tmpActivity);
-					
 					
 					Map<String, ActivityNode> mapActivity = new HashMap<String, ActivityNode>();
 					listNodes.put(idActivity+"", mapActivity);
 					
-					Map<Integer, ADInstruction> hashInstructions = activityDiagram.getMainHashInstructions(adInstruction.getInstructionKey());
 					//ADMethodInvocation daMethodInvOb = activityDiagram.getActivityInstructions(adInstruction.getInstructionKey());
 					//getListVariablesByParams(tmpActivity, daMethodInvOb);
 					//listSubActivities.put(idActivity, tmpActivity);
 					//tmpActivity = proccessActivityInstructions(daMethodInvOb2, tmpActivity, parentNode);
-					StructuredActivityNode tmpActivity2 = proccessActivityInstructions(hashInstructions, indexParentNode, idActivity);
+					StructuredActivityNode tmpActivity2 = proccessActivityInstructions(tmpActivity, hashInstructions, indexParentNode, idActivity);
+					
+					System.out.println("    createSubActivityIfNotExists " + adInstruction.getInstructionKey() + ": Total:  idActivity: " + idActivity);
+					
 					listSubActivities.put(idActivity, tmpActivity2);
 				}
 			}

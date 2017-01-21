@@ -199,7 +199,7 @@ public class ActivityDiagramAst
 			TreeMap<Integer, ADInstruction> tmphashInsObj = new TreeMap<Integer, ADInstruction>( hashInstructionsList.get(key) );
 			Integer lastpos = 0;
 			if( tmphashInsObj.size() > 0 ){
-				ADInstruction tmpInstructionInit = new ADInstruction("init", "init", "init", 1, -1);
+				ADInstruction tmpInstructionInit = new ADInstruction("init-"+ key, "init-"+ key, "init", 1, -1);
 				tmphashInsObj.put(1, tmpInstructionInit);//Init Node
 			    hashNodes.get(key).put(1, tmpInstructionInit);
 			    hashInstructionsList.put(key, tmphashInsObj);
@@ -210,7 +210,7 @@ public class ActivityDiagramAst
 			    }
 			    
 			    ADInstruction lastInstruction = hashInstructionsList.get(key).get(lastpos);
-			    ADInstruction tmpInstructionFinal = new ADInstruction("final", "final", "final", lastpos + 1, -1);
+			    ADInstruction tmpInstructionFinal = new ADInstruction("final" + key, "final" + key, "final", lastpos + 1, -1);
 			    tmpInstructionFinal.setSource(lastInstruction.getPosition());
 			    tmphashInsObj.put(lastpos + 1, tmpInstructionFinal);//Final Node
 			    
