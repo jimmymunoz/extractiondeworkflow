@@ -114,11 +114,12 @@ public class Main {
 	}
 	
 	public static void setEnviromenTestMac(){
-		//projectPath = "/Users/jimmymunoz/Documents/workspace-neon/visitor";
-		projectPath = "/Users/jimmymunoz/Documents/workspace-neon/workFlowTest";
+		projectPath = "/Users/jimmymunoz/Documents/workspace-neon/visitor";
+		//projectPath = "/Users/jimmymunoz/Documents/workspace-neon/workFlowTest";
 		projectSourcePath = projectPath + "/src";
 		jrePath = "/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/rt.jar"; // which java
-		entryClass = "Main";
+		entryClass = "Principale";
+		//entryClass = "Main";
 		entryMethod = "main";
 	}
 	

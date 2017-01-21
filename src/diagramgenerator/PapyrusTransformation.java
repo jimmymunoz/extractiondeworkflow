@@ -151,15 +151,11 @@ public class PapyrusTransformation {
 			    	String item = items.get(i);
 			    	//S(this.hashNodes.values());
 			    	//S(item);
-			    	
 			    	if( getHashNodes().containsKey(java.net.URLDecoder.decode(item, "UTF-8"))){			    	
-			    		items.set(i, getHashNodes().get(java.net.URLDecoder.decode(item)));
+			    		items.set(i, getHashNodes().get(java.net.URLDecoder.decode(item, "UTF-8")));
 			    	}
 			    }
-			    
 			    element.setAttribute("target", String.join(" ", items));
-			   
-			    
 			    
 		    }
 		    //element.setAttribute("id","N"+idx);
@@ -179,7 +175,6 @@ public class PapyrusTransformation {
 			    	if( hashEdges.containsKey(item) ){
 			    		//S(item);
 			    		//S(hashEdges.get(item));
-			    		
 			    		items.set(i, hashEdges.get(item));
 			    	}
 			    }
@@ -248,13 +243,13 @@ public class PapyrusTransformation {
 	public void initialisePackageable()
 	{
 		 for (int idx = 0; idx < this.packageable.getLength(); idx++) {
-		    	Element element = (Element) this.packageable.item(idx);
-			    element.setAttributeNS("http://www.omg.org/XMI", "xmi:id", "P"+idx);
-			    String edgename = element.getAttribute("name");
-			    String actname = ((Element) element.getParentNode()).getAttribute("name");
-			    
-			    String key = "//"+ actname +"/" + edgename;
-			    this.hashPackageable.put(key, "P"+idx);
+	    	Element element = (Element) this.packageable.item(idx);
+		    element.setAttributeNS("http://www.omg.org/XMI", "xmi:id", "P"+idx);
+		    String edgename = element.getAttribute("name");
+		    String actname = ((Element) element.getParentNode()).getAttribute("name");
+		    
+		    String key = "//"+ actname +"/" + edgename;
+		    this.hashPackageable.put(key, "P"+idx);
 		 }
 	}
 	public void initialiseEdge()
@@ -273,10 +268,11 @@ public class PapyrusTransformation {
 	//  System.out.print(getHashNodes().values());
 	   // System.out.print(getHashEdges().values());
 	}
+	/*
 	public void initialiseNodes()
 	{
-			String key1 ="";
-			String key= "";
+		   String key1 ="";
+		   String key= "";
 		   for (int idx = 0; idx < getNodes().getLength(); idx++) {
 		    	Element element = (Element) getNodes().item(idx);
 			    element.setAttributeNS("http://www.omg.org/XMI", "xmi:id", "N"+idx);
@@ -291,7 +287,10 @@ public class PapyrusTransformation {
 			    key1 = "//"+ actname +"/" + nodename;
 			    
 				try {
+					System.out.println("	key unecoded -->" +key);
 					key = java.net.URLDecoder.decode(key1, "UTF-8");
+					//key = java.net.URLEncoder.encode(key1, "UTF-8");
+					System.out.println("	key -->" +key);
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -299,8 +298,50 @@ public class PapyrusTransformation {
 			    getHashNodes().put(key, "N"+idx);
 			    getHashParent().put("N"+idx, actname);
 			    
-			    //
 		    }
+		   
+	}
+	*/
+	public void initialiseNodes()
+	{
+		String key1 ="";
+		String key= "";
+		HashMap<String, Integer> hashNameNodes = new HashMap<String, Integer>();
+		HashMap<Integer, Integer> hashNodesTmp = new HashMap<Integer, Integer>(); 
+		for (int i = 0; i < getNodes().getLength(); i++) {
+			Element element = (Element) getNodes().item(i);
+			String nodename = element.getAttribute("name");
+			int j = 0;
+			if( hashNameNodes.containsKey(nodename) ){
+				j = hashNameNodes.get(nodename);
+				j++;
+			}
+			hashNameNodes.put(nodename, j);
+			hashNodesTmp.put(i, j);
+			
+		}
+	    for (int idx = 0; idx < getNodes().getLength(); idx++) {
+	    	Element element = (Element) getNodes().item(idx);
+		    element.setAttributeNS("http://www.omg.org/XMI", "xmi:id", "N"+idx);
+		    String nodename = element.getAttribute("name");
+		    //System.out.println( nodename+ "." + hashNodesTmp.get(idx) );
+		    String actname = ((Element) element.getParentNode()).getAttribute("name");
+		    //String key1 = "//"+ actname +"/" + nodename;
+		    
+		    String tmp = (String) (( hashNodesTmp.get(idx) == 0 )? "" : "." + hashNodesTmp.get(idx));
+		    key1 = "//"+ actname +"/" + nodename + tmp;
+		    
+			try {
+				key = java.net.URLDecoder.decode(key1, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    getHashNodes().put(key, "N"+idx);
+		    getHashParent().put("N"+idx,actname);
+		    
+		    //
+	    }
 		   
 	}
 	
@@ -321,12 +362,12 @@ public class PapyrusTransformation {
 	{		
 		for (int idx = 0; idx < getOwnedComment().getLength(); idx++) {
 			Element element = (Element) getOwnedComment().item(idx);		
-	    String annotatedElement = element.getAttribute("annotatedElement");	    
+	        String annotatedElement = element.getAttribute("annotatedElement");	    
 	    	List<String> items = Arrays.asList(annotatedElement.split("\\s* \\s*"));
 	    	for(int i =0; i < items.size(); i++){
 		    	String item = items.get(i);		    	
 		    	if( getHashNodes().containsKey(java.net.URLDecoder.decode(item, "UTF-8"))){			    	
-		    		items.set(i, getHashNodes().get(java.net.URLDecoder.decode(item)));
+		    		items.set(i, getHashNodes().get(java.net.URLDecoder.decode(item, "UTF-8")));
 		    	}
 		    }
 		    
@@ -352,50 +393,48 @@ public class PapyrusTransformation {
 
 	public void initialisInputValue()
 	{
-		
-		   for (int idx = 0; idx < this.inputValue.getLength(); idx++) {
-		    	Element element = (Element) this.inputValue.item(idx);		    	 
-			    element.setAttributeNS("http://www.omg.org/XMI", "xmi:id", "IN"+idx);
-			    element.setAttributeNS("http://www.omg.org/XMI", "xmi:type", "uml:InputPin");
-			    String nodename = element.getAttribute("name");
-			    String actname = ((Element) element.getParentNode()).getAttribute("name");
-			    String key = "//"+ actname +"/" + nodename;
-			    this.hashInputValue.put(key, "IN"+idx);
-			   // System.out.print();
-		    }
+	   for (int idx = 0; idx < this.inputValue.getLength(); idx++) {
+	    	Element element = (Element) this.inputValue.item(idx);		    	 
+		    element.setAttributeNS("http://www.omg.org/XMI", "xmi:id", "IN"+idx);
+		    element.setAttributeNS("http://www.omg.org/XMI", "xmi:type", "uml:InputPin");
+		    String nodename = element.getAttribute("name");
+		    String actname = ((Element) element.getParentNode()).getAttribute("name");
+		    String key = "//"+ actname +"/" + nodename;
+		    this.hashInputValue.put(key, "IN"+idx);
+		   // System.out.print();
+	    }
 	}
 
 	public void initialisOutputtValue()
 	{
-
-		   for (int idx = 0; idx < this.outputtValue.getLength(); idx++) {
-		    	Element element = (Element) this.outputtValue.item(idx);		    	 
-			    element.setAttributeNS("http://www.omg.org/XMI", "xmi:id", "OU"+idx);
-			    element.setAttributeNS("http://www.omg.org/XMI", "xmi:type", "uml:OutputPin");
-			    String nodename = element.getAttribute("name");
-			    String actname = ((Element) element.getParentNode()).getAttribute("name");
-			    String key = "//"+ actname +"/" + nodename;
-			    this.hashOutputtValue.put(key, "OU"+idx);
-			   // System.out.print();
-		    }
+	   for (int idx = 0; idx < this.outputtValue.getLength(); idx++) {
+	    	Element element = (Element) this.outputtValue.item(idx);		    	 
+		    element.setAttributeNS("http://www.omg.org/XMI", "xmi:id", "OU"+idx);
+		    element.setAttributeNS("http://www.omg.org/XMI", "xmi:type", "uml:OutputPin");
+		    String nodename = element.getAttribute("name");
+		    String actname = ((Element) element.getParentNode()).getAttribute("name");
+		    String key = "//"+ actname +"/" + nodename;
+		    this.hashOutputtValue.put(key, "OU"+idx);
+		   // System.out.print();
+	    }
 	}
 	public void addNameNodePackageable(){
-			 for (int idx = 0; idx < this.packageable.getLength(); idx++) {
-				 String key ="";
-				 String value ="";
-				 	List <String> listNode = new ArrayList<String>();
-			    	Element element = (Element) this.packageable.item(idx);
-			    	Collection<String> hashnodeparent = getHashParent().keySet();			    	
-			    	String namepackage = element.getAttribute("name");			    										
-						for (Entry<String, String> e : getHashParent().entrySet()) {
-						    key = e.getKey();
-						    value = e.getValue();
-						    if (value.equals(namepackage))
-						    {
-						    	listNode.add(key);
-						    }
-						}
-				    element.setAttribute( "node", String.join(" ", listNode));	    	
+		 for (int idx = 0; idx < this.packageable.getLength(); idx++) {
+			 String key ="";
+			 String value ="";
+		 	List <String> listNode = new ArrayList<String>();
+	    	Element element = (Element) this.packageable.item(idx);
+	    	Collection<String> hashnodeparent = getHashParent().keySet();			    	
+	    	String namepackage = element.getAttribute("name");			    										
+			for (Entry<String, String> e : getHashParent().entrySet()) {
+			    key = e.getKey();
+			    value = e.getValue();
+			    if (value.equals(namepackage))
+			    {
+			    	listNode.add(key);
+			    }
+			}
+		    element.setAttribute( "node", String.join(" ", listNode));	    	
 		}
 	}
 
