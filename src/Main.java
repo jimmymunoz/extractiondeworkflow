@@ -1,6 +1,8 @@
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JFrame;
 
@@ -19,15 +21,20 @@ public class Main {
 	private static String entryMethod = "main";
 	private static String fileModelResultEmf = "model/ActivityModelResult.xmi";
 	private static String fileModelResultPapyrus = "model/ActivityModelResult.uml";
+	private static Map<String, String> configurationList;
 	
 	public static void main(String[] args) throws IOException
 	{
+		configurationList = new HashMap<String, String>();
+		configurationList.put("create_subactivities", "1");
+		configurationList.put("show_flot_variables", "1");
+		
 		setEnviromenTestMac();
 		//setEnviromenTestWindows();
-		initDiagram();
-		System.exit(0);
+		//initDiagram();
+		//System.exit(0);
 		
-		JFrame frame = new JFrame("");
+		JFrame frame = new JFrame("Workflow Extractor");
 	    Menu panel = new Menu();
 	    frame.addWindowListener(
 	      new WindowAdapter() {
@@ -101,25 +108,27 @@ public class Main {
 
 	
 
-	public static void initDiagram() throws IOException {
+	public static String initDiagram() throws IOException {
+		String messageResult = "";
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
 		ActivityDiagramAst activityDiagram = adParser.parseActivityDiagram();
-		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram, fileModelResultEmf);
+		ActivityDiagramModel activityDiagramModel = new ActivityDiagramModel(activityDiagram, fileModelResultEmf, configurationList);
 		//activityDiagramModel.getUmlmodel();
 		PapyrusTransformation Ptrans = new PapyrusTransformation(activityDiagramModel.getFileModelPathSave(),fileModelResultPapyrus);
 		
 		//JwtActivityDiagram diagramParser = new JwtActivityDiagram(activityDiagram, projectPath, "MyDiagram");
 		//diagramParser.proccesActivityDiagram();
 		//activityDiagram.testClassDiagram();
+		return messageResult;
 	}
 	
 	public static void setEnviromenTestMac(){
-		projectPath = "/Users/jimmymunoz/Documents/workspace-neon/visitor";
-		//projectPath = "/Users/jimmymunoz/Documents/workspace-neon/workFlowTest";
+		//projectPath = "/Users/jimmymunoz/Documents/workspace-neon/visitor";
+		projectPath = "/Users/jimmymunoz/Documents/workspace-neon/workFlowTest";
 		projectSourcePath = projectPath + "/src";
 		jrePath = "/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/rt.jar"; // which java
-		entryClass = "Principale";
-		//entryClass = "Main";
+		//entryClass = "Principale";
+		entryClass = "Main";
 		entryMethod = "main";
 	}
 	

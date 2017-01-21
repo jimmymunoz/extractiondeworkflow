@@ -12,6 +12,4 @@
   <semanticResources>http://www.eclipse.org/uml2/5.0.0/Types</semanticResources>
   <semanticResources>model/model2.notation</semanticResources>
   <semanticResources>model.uml</semanticResources>
-  <semanticResources>model/ActivityModelResult.uml</semanticResources>
-  <semanticResources>model/ActivityModelResult.xmi</semanticResources>
 </viewpoint:DAnalysis>

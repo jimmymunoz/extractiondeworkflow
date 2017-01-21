@@ -58,8 +58,9 @@ public class ActivityDiagramModel {
 	private HashMap<Integer, ActivityEdge> listEdges;
 	private Map<String, Map<String, ActivityNode>> listNodes;
 	private String fileModelPathSave;
+	private Map<String, String> configurationList;
 	
-	public ActivityDiagramModel(ActivityDiagramAst activityDiagram, String fileModelPathSave){
+	public ActivityDiagramModel(ActivityDiagramAst activityDiagram, String fileModelPathSave, Map<String, String> configurationList){
 		listIdsActivities = new HashMap<String, Integer>();
 		listIdsNodes = new HashMap<String, Integer>();
 		listIdsEdges = new HashMap<String, Integer>();
@@ -69,6 +70,7 @@ public class ActivityDiagramModel {
 		listNodes = new HashMap<String, Map<String, ActivityNode>>();
 		this.activityDiagram = activityDiagram;
 		this.fileModelPathSave = fileModelPathSave;
+		this.configurationList = configurationList;
 		createActivityDiagram();
 	}
 	
@@ -171,7 +173,10 @@ public class ActivityDiagramModel {
 		for( Integer position : mainHashInstructions.keySet()){
 			ADInstruction adInstruction = mainHashInstructions.get(position);
 			
-			//createSubActivityIfNotExists(indexParentNode, adInstruction);
+			if( configurationList.get("create_subactivities").equals("1") ){
+				createSubActivityIfNotExists(indexParentNode, adInstruction);
+			}
+			
 			Integer idSubActivity = getIdActivity(adInstruction.getInstructionKey());
 			subActtivity = listSubActivities.get(idSubActivity);
 			//Integer idNode = getIdNode(adInstruction.getDisplayInstruction());
