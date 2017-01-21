@@ -1,80 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
   <packagedElement xmi:type="uml:Activity" name="A0">
-    <edge xmi:type="uml:ControlFlow" name="edge.0" target="//A0/init" source="//A0/init"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.1" target="//A0/A3/sum(int%20x,int%20y):int" source="//A0/init"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.2" target="//A0/z%20%3C%2010" source="//A0/A3/sum(int%20x,int%20y):int"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.3" target="//A0/A3/sum(int%20z,int%20x):int" source="//A0/z%20%3C%2010"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.4" target="//A0/z%20%3C%205" source="//A0/A3/sum(int%20z,int%20x):int"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.5" target="//A0/A3/sum(int%20x,int%20y):int.1" source="//A0/z%20%3C%205"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.6" target="//A0/A3/sum(int%20z,int%20z):int" source="//A0/A3/sum(int%20x,int%20y):int.1"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.7" target="//A0/mergeNode%20(z%20%3C%205)"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.8" target="//A0/init.1" source="//A0/init.1"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.9" target="//A0/A3/sum(int%20result,int%20num):int" source="//A0/init.1"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.10" target="//A0/final" source="//A0/A3/sum(int%20result,int%20num):int"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.11" target="//A0/A3.1/multiply(int%20x,int%20y):int" source="//A0/z%20%3C%2010"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.12" target="//A0/z%20%3C%205.1" source="//A0/A3.1/multiply(int%20x,int%20y):int"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.13" target="//A0/A3/sum(int%20x,int%20y):int.2" source="//A0/z%20%3C%205.1"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.14" target="//A0/A3/sum(int%20z,int%20z):int.1" source="//A0/A3/sum(int%20x,int%20y):int.2"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.15" target="//A0/A3/sum(int%20x,int%20y):int.3" source="//A0/z%20%3C%205.1"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.16" target="//A0/mergeNode%20(z%20%3C%205).1"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.17" target="//A0/mergeNode%20(z%20%3C%2010)"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.18" target="//A0/System.out.println(int%20z):void" source="//A0/mergeNode%20(z%20%3C%2010)"/>
-    <edge xmi:type="uml:ControlFlow" name="edge.19" target="//A0/final.1" source="//A0/System.out.println(int%20z):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.add(File%20f):boolean" source="//A0/init"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.add(File%20f2):boolean" source="//A0/d.add(File%20f):boolean"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d2.add(File%20f3):boolean" source="//A0/d.add(File%20f2):boolean"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.add(Directory%20d2):boolean" source="//A0/d2.add(File%20f3):boolean"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22AVANT%22%20+%20%22%5Cn%22):void" source="//A0/d.add(Directory%20d2):boolean"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20d.name%20+%20%22%20:%20%22+%20d.size()):void" source="//A0/System.out.println(String%20%22AVANT%22%20+%20%22%5Cn%22):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.size():int" source="//A0/System.out.println(String%20%22taille%20%22%20+%20d.name%20+%20%22%20:%20%22+%20d.size()):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20d2.name%20+%20%22%20:%20%22+%20d2.size()):void" source="//A0/d.size():int"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d2.size():int" source="//A0/System.out.println(String%20%22taille%20%22%20+%20d2.name%20+%20%22%20:%20%22+%20d2.size()):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20f.name%20+%20%22%20:%20%22+%20f.size()):void" source="//A0/d2.size():int"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/f.size():int" source="//A0/System.out.println(String%20%22taille%20%22%20+%20f.name%20+%20%22%20:%20%22+%20f.size()):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20f2.name%20+%20%22%20:%20%22+%20f2.size()):void" source="//A0/f.size():int"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/f2.size():int" source="//A0/System.out.println(String%20%22taille%20%22%20+%20f2.name%20+%20%22%20:%20%22+%20f2.size()):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20f3.name%20+%20%22%20:%20%22+%20f3.size()):void" source="//A0/f2.size():int"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/f3.size():int" source="//A0/System.out.println(String%20%22taille%20%22%20+%20f3.name%20+%20%22%20:%20%22+%20f3.size()):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20f4.name%20+%20%22%20:%20%22+%20f4.size()):void" source="//A0/f3.size():int"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/f4.size():int" source="//A0/System.out.println(String%20%22taille%20%22%20+%20f4.name%20+%20%22%20:%20%22+%20f4.size()):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.ls():void" source="//A0/f4.size():int"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d2.ls():void" source="//A0/d.ls():void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d3.add(File%20f5):boolean" source="//A0/d2.ls():void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.add(Directory%20d3):boolean" source="//A0/d3.add(File%20f5):boolean"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22%5Cn%20Pretty%20Print:%22):void" source="//A0/d.add(Directory%20d3):boolean"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.accept(PrettyPrintVisitor%20ppv):void" source="//A0/System.out.println(String%20%22%5Cn%20Pretty%20Print:%22):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22%5Cn%20Pretty%20Print:%22):void.1" source="//A0/d.accept(PrettyPrintVisitor%20ppv):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.accept(ElementStockageVisitor%20cv):void" source="//A0/System.out.println(String%20%22%5Cn%20Pretty%20Print:%22):void.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22%5Cnnombre%20fichier%20:%20%22%20+%20((CountVisitor)cv).getCount()):void" source="//A0/d.accept(ElementStockageVisitor%20cv):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/((CountVisitor)cv).getCount():int" source="//A0/System.out.println(String%20%22%5Cnnombre%20fichier%20:%20%22%20+%20((CountVisitor)cv).getCount()):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.accept(ElementStockageVisitor%20jcv):void" source="//A0/((CountVisitor)cv).getCount():int"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/((JavaCleanVisitor)jcv).removeFile():void" source="//A0/d.accept(ElementStockageVisitor%20jcv):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22%5CnAPRES%22):void" source="//A0/((JavaCleanVisitor)jcv).removeFile():void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20d.name%20+%20%22%20:%20%22+%20d.size()):void.1" source="//A0/System.out.println(String%20%22%5CnAPRES%22):void"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.size():int.1" source="//A0/System.out.println(String%20%22taille%20%22%20+%20d.name%20+%20%22%20:%20%22+%20d.size()):void.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20d2.name%20+%20%22%20:%20%22+%20d2.size()):void.1" source="//A0/d.size():int.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d2.size():int.1" source="//A0/System.out.println(String%20%22taille%20%22%20+%20d2.name%20+%20%22%20:%20%22+%20d2.size()):void.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20f.name%20+%20%22%20:%20%22+%20f.size()):void.1" source="//A0/d2.size():int.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/f.size():int.1" source="//A0/System.out.println(String%20%22taille%20%22%20+%20f.name%20+%20%22%20:%20%22+%20f.size()):void.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20f2.name%20+%20%22%20:%20%22+%20f2.size()):void.1" source="//A0/f.size():int.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/f2.size():int.1" source="//A0/System.out.println(String%20%22taille%20%22%20+%20f2.name%20+%20%22%20:%20%22+%20f2.size()):void.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20f3.name%20+%20%22%20:%20%22+%20f3.size()):void.1" source="//A0/f2.size():int.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/f3.size():int.1" source="//A0/System.out.println(String%20%22taille%20%22%20+%20f3.name%20+%20%22%20:%20%22+%20f3.size()):void.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/System.out.println(String%20%22taille%20%22%20+%20f4.name%20+%20%22%20:%20%22+%20f4.size()):void.1" source="//A0/f3.size():int.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/f4.size():int.1" source="//A0/System.out.println(String%20%22taille%20%22%20+%20f4.name%20+%20%22%20:%20%22+%20f4.size()):void.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d.ls():void.1" source="//A0/f4.size():int.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d2.ls():void.1" source="//A0/d.ls():void.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/d3.ls():void" source="//A0/d2.ls():void.1"/>
+    <edge xmi:type="uml:ControlFlow" target="//A0/final" source="//A0/d3.ls():void"/>
     <variable name="args"/>
-    <node xmi:type="uml:InitialNode" name="init" incoming="//A0/edge.0" outgoing="//A0/edge.0 //A0/edge.1"/>
-    <node xmi:type="uml:StructuredActivityNode" name="A3">
-      <node xmi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//A0/edge.1" outgoing="//A0/edge.2">
-        <inputValue/>
-        <outputValue/>
-      </node>
-      <node xmi:type="uml:OpaqueAction" name="sum(int z,int x):int" incoming="//A0/edge.3" outgoing="//A0/edge.4">
-        <inputValue/>
-        <outputValue/>
-      </node>
-      <node xmi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//A0/edge.5" outgoing="//A0/edge.6">
-        <inputValue/>
-        <outputValue/>
-      </node>
-      <node xmi:type="uml:OpaqueAction" name="sum(int z,int z):int" incoming="//A0/edge.6">
-        <inputValue/>
-        <outputValue/>
-      </node>
-      <node xmi:type="uml:OpaqueAction" name="sum(int result,int num):int" incoming="//A0/edge.9" outgoing="//A0/edge.10">
-        <inputValue/>
-        <outputValue/>
-      </node>
-      <node xmi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//A0/edge.13" outgoing="//A0/edge.14">
-        <inputValue/>
-        <outputValue/>
-      </node>
-      <node xmi:type="uml:OpaqueAction" name="sum(int z,int z):int" incoming="//A0/edge.14">
-        <inputValue/>
-        <outputValue/>
-      </node>
-      <node xmi:type="uml:OpaqueAction" name="sum(int x,int y):int" incoming="//A0/edge.15">
-        <inputValue/>
-        <outputValue/>
-      </node>
-    </node>
-    <node xmi:type="uml:DecisionNode" name="z &lt; 10" incoming="//A0/edge.2" outgoing="//A0/edge.3 //A0/edge.11"/>
-    <node xmi:type="uml:DecisionNode" name="z &lt; 5" incoming="//A0/edge.4" outgoing="//A0/edge.5"/>
-    <node xmi:type="uml:MergeNode" name="mergeNode (z &lt; 5)" incoming="//A0/edge.7"/>
-    <node xmi:type="uml:StructuredActivityNode" name="A3">
-      <node xmi:type="uml:OpaqueAction" name="multiply(int x,int y):int" incoming="//A0/edge.11" outgoing="//A0/edge.12">
-        <inputValue/>
-        <outputValue/>
-      </node>
-    </node>
-    <node xmi:type="uml:InitialNode" name="init" incoming="//A0/edge.8" outgoing="//A0/edge.8 //A0/edge.9"/>
-    <node xmi:type="uml:ActivityFinalNode" name="final" incoming="//A0/edge.10"/>
-    <node xmi:type="uml:DecisionNode" name="z &lt; 5" incoming="//A0/edge.12" outgoing="//A0/edge.13 //A0/edge.15"/>
-    <node xmi:type="uml:MergeNode" name="mergeNode (z &lt; 5)" incoming="//A0/edge.16"/>
-    <node xmi:type="uml:MergeNode" name="mergeNode (z &lt; 10)" incoming="//A0/edge.17" outgoing="//A0/edge.18"/>
-    <node xmi:type="uml:OpaqueAction" name="System.out.println(int z):void" incoming="//A0/edge.18" outgoing="//A0/edge.19">
-      <inputValue/>
-      <outputValue/>
-    </node>
-    <node xmi:type="uml:ActivityFinalNode" name="final" incoming="//A0/edge.19"/>
+    <node xmi:type="uml:InitialNode" name="init" outgoing="//A0/@edge.0"/>
+    <node xmi:type="uml:OpaqueAction" name="d.add(File f):boolean" incoming="//A0/@edge.0" outgoing="//A0/@edge.1"/>
+    <node xmi:type="uml:OpaqueAction" name="d.add(File f2):boolean" incoming="//A0/@edge.1" outgoing="//A0/@edge.2"/>
+    <node xmi:type="uml:OpaqueAction" name="d2.add(File f3):boolean" incoming="//A0/@edge.2" outgoing="//A0/@edge.3"/>
+    <node xmi:type="uml:OpaqueAction" name="d.add(Directory d2):boolean" incoming="//A0/@edge.3" outgoing="//A0/@edge.4"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;AVANT&quot; + &quot;\n&quot;):void" incoming="//A0/@edge.4" outgoing="//A0/@edge.5"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + d.name + &quot; : &quot;+ d.size()):void" incoming="//A0/@edge.5" outgoing="//A0/@edge.6"/>
+    <node xmi:type="uml:OpaqueAction" name="d.size():int" incoming="//A0/@edge.6" outgoing="//A0/@edge.7"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + d2.name + &quot; : &quot;+ d2.size()):void" incoming="//A0/@edge.7" outgoing="//A0/@edge.8"/>
+    <node xmi:type="uml:OpaqueAction" name="d2.size():int" incoming="//A0/@edge.8" outgoing="//A0/@edge.9"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + f.name + &quot; : &quot;+ f.size()):void" incoming="//A0/@edge.9" outgoing="//A0/@edge.10"/>
+    <node xmi:type="uml:OpaqueAction" name="f.size():int" incoming="//A0/@edge.10" outgoing="//A0/@edge.11"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + f2.name + &quot; : &quot;+ f2.size()):void" incoming="//A0/@edge.11" outgoing="//A0/@edge.12"/>
+    <node xmi:type="uml:OpaqueAction" name="f2.size():int" incoming="//A0/@edge.12" outgoing="//A0/@edge.13"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + f3.name + &quot; : &quot;+ f3.size()):void" incoming="//A0/@edge.13" outgoing="//A0/@edge.14"/>
+    <node xmi:type="uml:OpaqueAction" name="f3.size():int" incoming="//A0/@edge.14" outgoing="//A0/@edge.15"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + f4.name + &quot; : &quot;+ f4.size()):void" incoming="//A0/@edge.15" outgoing="//A0/@edge.16"/>
+    <node xmi:type="uml:OpaqueAction" name="f4.size():int" incoming="//A0/@edge.16" outgoing="//A0/@edge.17"/>
+    <node xmi:type="uml:OpaqueAction" name="d.ls():void" incoming="//A0/@edge.17" outgoing="//A0/@edge.18"/>
+    <node xmi:type="uml:OpaqueAction" name="d2.ls():void" incoming="//A0/@edge.18" outgoing="//A0/@edge.19"/>
+    <node xmi:type="uml:OpaqueAction" name="d3.add(File f5):boolean" incoming="//A0/@edge.19" outgoing="//A0/@edge.20"/>
+    <node xmi:type="uml:OpaqueAction" name="d.add(Directory d3):boolean" incoming="//A0/@edge.20" outgoing="//A0/@edge.21"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;\n Pretty Print:&quot;):void" incoming="//A0/@edge.21" outgoing="//A0/@edge.22"/>
+    <node xmi:type="uml:OpaqueAction" name="d.accept(PrettyPrintVisitor ppv):void" incoming="//A0/@edge.22" outgoing="//A0/@edge.23"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;\n Pretty Print:&quot;):void" incoming="//A0/@edge.23" outgoing="//A0/@edge.24"/>
+    <node xmi:type="uml:OpaqueAction" name="d.accept(ElementStockageVisitor cv):void" incoming="//A0/@edge.24" outgoing="//A0/@edge.25"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;\nnombre fichier : &quot; + ((CountVisitor)cv).getCount()):void" incoming="//A0/@edge.25" outgoing="//A0/@edge.26"/>
+    <node xmi:type="uml:OpaqueAction" name="((CountVisitor)cv).getCount():int" incoming="//A0/@edge.26" outgoing="//A0/@edge.27"/>
+    <node xmi:type="uml:OpaqueAction" name="d.accept(ElementStockageVisitor jcv):void" incoming="//A0/@edge.27" outgoing="//A0/@edge.28"/>
+    <node xmi:type="uml:OpaqueAction" name="((JavaCleanVisitor)jcv).removeFile():void" incoming="//A0/@edge.28" outgoing="//A0/@edge.29"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;\nAPRES&quot;):void" incoming="//A0/@edge.29" outgoing="//A0/@edge.30"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + d.name + &quot; : &quot;+ d.size()):void" incoming="//A0/@edge.30" outgoing="//A0/@edge.31"/>
+    <node xmi:type="uml:OpaqueAction" name="d.size():int" incoming="//A0/@edge.31" outgoing="//A0/@edge.32"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + d2.name + &quot; : &quot;+ d2.size()):void" incoming="//A0/@edge.32" outgoing="//A0/@edge.33"/>
+    <node xmi:type="uml:OpaqueAction" name="d2.size():int" incoming="//A0/@edge.33" outgoing="//A0/@edge.34"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + f.name + &quot; : &quot;+ f.size()):void" incoming="//A0/@edge.34" outgoing="//A0/@edge.35"/>
+    <node xmi:type="uml:OpaqueAction" name="f.size():int" incoming="//A0/@edge.35" outgoing="//A0/@edge.36"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + f2.name + &quot; : &quot;+ f2.size()):void" incoming="//A0/@edge.36" outgoing="//A0/@edge.37"/>
+    <node xmi:type="uml:OpaqueAction" name="f2.size():int" incoming="//A0/@edge.37" outgoing="//A0/@edge.38"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + f3.name + &quot; : &quot;+ f3.size()):void" incoming="//A0/@edge.38" outgoing="//A0/@edge.39"/>
+    <node xmi:type="uml:OpaqueAction" name="f3.size():int" incoming="//A0/@edge.39" outgoing="//A0/@edge.40"/>
+    <node xmi:type="uml:OpaqueAction" name="System.out.println(String &quot;taille &quot; + f4.name + &quot; : &quot;+ f4.size()):void" incoming="//A0/@edge.40" outgoing="//A0/@edge.41"/>
+    <node xmi:type="uml:OpaqueAction" name="f4.size():int" incoming="//A0/@edge.41" outgoing="//A0/@edge.42"/>
+    <node xmi:type="uml:OpaqueAction" name="d.ls():void" incoming="//A0/@edge.42" outgoing="//A0/@edge.43"/>
+    <node xmi:type="uml:OpaqueAction" name="d2.ls():void" incoming="//A0/@edge.43" outgoing="//A0/@edge.44"/>
+    <node xmi:type="uml:OpaqueAction" name="d3.ls():void" incoming="//A0/@edge.44" outgoing="//A0/@edge.45"/>
+    <node xmi:type="uml:ActivityFinalNode" name="final" incoming="//A0/@edge.45"/>
   </packagedElement>
 </uml:Model>

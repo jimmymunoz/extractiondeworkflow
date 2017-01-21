@@ -199,9 +199,9 @@ public class ActivityDiagramAst
 			TreeMap<Integer, ADInstruction> tmphashInsObj = new TreeMap<Integer, ADInstruction>( hashInstructionsList.get(key) );
 			Integer lastpos = 0;
 			if( tmphashInsObj.size() > 0 ){
-				ADInstruction tmpInstructionInit = new ADInstruction("start", "start", "init", 0, -1);
-				tmphashInsObj.put(0, tmpInstructionInit);//Init Node
-			    hashNodes.get(key).put(0, tmpInstructionInit);
+				ADInstruction tmpInstructionInit = new ADInstruction("init", "init", "init", 1, -1);
+				tmphashInsObj.put(1, tmpInstructionInit);//Init Node
+			    hashNodes.get(key).put(1, tmpInstructionInit);
 			    hashInstructionsList.put(key, tmphashInsObj);
 			    
 			    lastpos = 0;
@@ -230,10 +230,16 @@ public class ActivityDiagramAst
 			Map<Integer, ADInstruction> hashInstructionsObjOrdered = new TreeMap<Integer, ADInstruction>(hashInstructionsList.get(keyclassmethod));
 			//get Existing Hash
 			int lastElsePos = 0;
-			Integer lastsource = 0;
+			Integer lastsource = -1;
 			ADInstruction lastInstruction = null;
+			
+			
+			int i = 0;
 			for( Integer pos : hashInstructionsObjOrdered.keySet()){
 				ADInstruction instruction = hashInstructionsObjOrdered.get(pos);
+				if(i == 1) 
+					lastsource = 1;//Set position Initial Node
+				
 				instruction.setSource(lastsource);
 				
 				if( lastInstruction != null ){//First then
@@ -258,13 +264,18 @@ public class ActivityDiagramAst
 					ADInstructionIf ifParent = (ADInstructionIf) hashInstructionsObjOrdered.get(instruction.getPosParent());
 					instruction.setSource(-1);//Source
 					
-					if(lastElsePos != 0){// Else
+					if( ifParent.getLastPosThen() == lastsource ){
 						instruction.addListSources(ifParent.getLastPosThen());
-						instruction.addListSources(ifParent.getLastPosElse());
+						instruction.addListSources(instruction.getPosParent());
+					}
+					else if(  ifParent.getLastPosElse() != -1 ){// Else
+						instruction.addListSources(ifParent.getLastPosThen());
+						instruction.addListSources(lastsource);
+						//instruction.addListSources(ifParent.getLastPosElse());
 					}
 					else{//Not Else
 						instruction.addListSources(ifParent.getLastPosThen());
-						instruction.addListSources(instruction.getPosParent());
+						instruction.addListSources(lastsource);
 					}
 					//Restart vars
 					//lastThenPos = 0;
@@ -274,6 +285,7 @@ public class ActivityDiagramAst
 					lastsource = instruction.getPosition();
 				
 				lastInstruction = instruction;
+				i++;
 			}
 		}
 	}
@@ -283,10 +295,10 @@ public class ActivityDiagramAst
 		for( String keyclassmethod : this.hashInstructionsList.keySet()){
 			Map<Integer, ADInstruction> hashInstructionsObjOrdered = new TreeMap<Integer, ADInstruction>(hashInstructionsList.get(keyclassmethod));
 			//get Existing Hash
-			System.out.println(" + " + keyclassmethod);
+			System.out.println(" - " + keyclassmethod);
 			for( Integer pos : hashInstructionsObjOrdered.keySet()){
 				ADInstruction instruction = hashInstructionsObjOrdered.get(pos);
-				System.out.println("   + pos:" + pos + " " + instruction.getTypeNode() + " " + instruction.getFlotType() + " - " + instruction.getDisplayInstruction() + " source: " + instruction.getSource() + " parent:" + instruction.getPosParent() );
+				System.out.println("   - [" + pos + "] " + instruction.getTypeNode() + " " + instruction.getFlotType() + " - " + instruction.getDisplayInstruction() + " source: " + instruction.getSource() + " parent:" + instruction.getPosParent() );
 				if( instruction.getTypeNode().equals("merge") ){
 					System.out.println(" 	  sourceList :" + instruction.getListsources().toString());
 				}

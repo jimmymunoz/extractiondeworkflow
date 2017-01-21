@@ -20,6 +20,27 @@ public class Main {
 	private static String fileModelResultEmf = "model/ActivityModelResult.xmi";
 	private static String fileModelResultPapyrus = "model/ActivityModelResult.uml";
 	
+	public static void main(String[] args) throws IOException
+	{
+		setEnviromenTestMac();
+		//setEnviromenTestWindows();
+		initDiagram();
+		System.exit(0);
+		
+		JFrame frame = new JFrame("");
+	    Menu panel = new Menu();
+	    frame.addWindowListener(
+	      new WindowAdapter() {
+	        public void windowClosing(WindowEvent e) {
+	        	System.exit(0);
+	          }
+	        }
+	    );
+	    frame.getContentPane().add(panel,"Center");
+	    frame.setSize(panel.getPreferredSize());
+	    frame.setVisible(true);
+	    //System.out.println(path);
+	}
 	
 	
 	public static String getProjectPath() {
@@ -78,27 +99,7 @@ public class Main {
 		Main.fileModelResultPapyrus = fileModelResultPapyrus;
 	}
 
-	public static void main(String[] args) throws IOException
-	{
-		//setEnviromenTestMac();
-		setEnviromenTestWindows();
-		initDiagram();
-		System.exit(0);
-		
-		JFrame frame = new JFrame("");
-	    Menu panel = new Menu();
-	    frame.addWindowListener(
-	      new WindowAdapter() {
-	        public void windowClosing(WindowEvent e) {
-	        	System.exit(0);
-	          }
-	        }
-	    );
-	    frame.getContentPane().add(panel,"Center");
-	    frame.setSize(panel.getPreferredSize());
-	    frame.setVisible(true);
-	    //System.out.println(path);
-	}
+	
 
 	public static void initDiagram() throws IOException {
 		ActivityDiagramParser adParser = new ActivityDiagramParser(projectPath, projectSourcePath, jrePath, entryClass, entryMethod);
@@ -113,11 +114,12 @@ public class Main {
 	}
 	
 	public static void setEnviromenTestMac(){
-		//projectPath = "/Users/jimmymunoz/Documents/workspace-neon/visitor";
-		projectPath = "/Users/jimmymunoz/Documents/workspace-neon/workFlowTest";
+		projectPath = "/Users/jimmymunoz/Documents/workspace-neon/visitor";
+		//projectPath = "/Users/jimmymunoz/Documents/workspace-neon/workFlowTest";
 		projectSourcePath = projectPath + "/src";
 		jrePath = "/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/rt.jar"; // which java
-		entryClass = "Main";
+		entryClass = "Principale";
+		//entryClass = "Main";
 		entryMethod = "main";
 	}
 	
